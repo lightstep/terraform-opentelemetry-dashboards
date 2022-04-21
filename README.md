@@ -32,4 +32,10 @@ module "collector-dashboards" {
   lightstep_project = "your project"
 }
 
+## Example: Create OpenTelemetry MySQL Integration Dashboard
+module "collector-mysql-dashboards" {
+  source            = "./collector-dashboards/otel-collector-mysql-dashboard"
+  lightstep_project = "your project"
+}
+
 ```
