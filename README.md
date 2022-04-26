@@ -67,5 +67,10 @@ module "kube-dashboards" {
   ]
 }
 
+## Example: expose your module outputs
+output "kube_module" {
+  value = module.kube-dashboards
+}
+
 
 ```
