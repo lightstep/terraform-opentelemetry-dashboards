@@ -38,4 +38,34 @@ module "collector-mysql-dashboards" {
   lightstep_project = "your project"
 }
 
+## Example: Create OpenTelemetry Kubernetes Dashboard
+module "kube-dashboards" {
+  source            = "./terraform-opentelemetry-dashboards/collector-dashboards/otel-collector-kubernetes"
+  lightstep_project = "dev-jkart"
+
+  workloads = [
+    {
+      namespace = "cert-manager"
+      workload  = "cert-manager"
+    },
+    {
+      namespace = "kube-system"
+      workload  = "fluentbit-gke"
+    },
+    {
+      namespace = "kube-system"
+      workload  = "gke-metrics-agent"
+    },
+    {
+      namespace = "kube-system"
+      workload  = "konnectivity-agent"
+    },
+    {
+      namespace = "testapp"
+      workload  = "testapp"
+    }
+  ]
+}
+
+
 ```
