@@ -27,7 +27,6 @@ resource "lightstep_metric_dashboard" "otel_collector_riakreceiver_dashboard" {
         metric              = "riak.memory.limit"
         timeseries_operator = "rate"
 
-
         group_by {
           aggregation_method = "sum"
           keys               = []
@@ -51,7 +50,6 @@ resource "lightstep_metric_dashboard" "otel_collector_riakreceiver_dashboard" {
         metric              = "riak.node.operation.count"
         timeseries_operator = "rate"
 
-
         group_by {
           aggregation_method = "sum"
           keys               = [ "request"]
@@ -73,8 +71,7 @@ resource "lightstep_metric_dashboard" "otel_collector_riakreceiver_dashboard" {
         hidden     = false
 
         metric              = "riak.node.operation.time.mean"
-        timeseries_operator = "rate"
-
+        timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
@@ -99,7 +96,6 @@ resource "lightstep_metric_dashboard" "otel_collector_riakreceiver_dashboard" {
         metric              = "riak.node.read_repair.count"
         timeseries_operator = "rate"
 
-
         group_by {
           aggregation_method = "sum"
           keys               = []
@@ -123,7 +119,6 @@ resource "lightstep_metric_dashboard" "otel_collector_riakreceiver_dashboard" {
         metric              = "riak.vnode.index.operation.count"
         timeseries_operator = "rate"
 
-
         group_by {
           aggregation_method = "sum"
           keys               = [ "operation"]
@@ -146,7 +141,6 @@ resource "lightstep_metric_dashboard" "otel_collector_riakreceiver_dashboard" {
 
         metric              = "riak.vnode.operation.count"
         timeseries_operator = "rate"
-
 
         group_by {
           aggregation_method = "sum"

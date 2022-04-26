@@ -8,14 +8,14 @@ terraform {
   required_version = ">= v1.0.11"
 }
 
-resource "lightstep_metric_dashboard" "otel_collector_iisreceiver_dashboard" {
+resource "lightstep_metric_dashboard" "otel_collector_mongodbreceiver_dashboard" {
     project_name   = var.lightstep_project
-    dashboard_name = "OpenTelemetry iisreceiver Integration"
+    dashboard_name = "OpenTelemetry mongodbreceiver Integration"
 
     
     
     chart {
-      name = "iis.connection.active"
+      name = "mongodb.cache.operations"
       rank = "0"
       type = "timeseries"
 
@@ -24,21 +24,21 @@ resource "lightstep_metric_dashboard" "otel_collector_iisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "iis.connection.active"
+        metric              = "mongodb.cache.operations"
         timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = [ "type"]
         }
         
-        # TODO: add description: Number of active connections.
-        # TODO: add unit: {connections}
+        # TODO: add description: The number of cache operations of the instance.
+        # TODO: add unit: {operations}
       }
     }
     
     chart {
-      name = "iis.connection.anonymous"
+      name = "mongodb.collection.count"
       rank = "1"
       type = "timeseries"
 
@@ -47,21 +47,21 @@ resource "lightstep_metric_dashboard" "otel_collector_iisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "iis.connection.anonymous"
+        metric              = "mongodb.collection.count"
         timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = [ "database"]
         }
         
-        # TODO: add description: Number of connections established anonymously.
-        # TODO: add unit: {connections}
+        # TODO: add description: The number of collections.
+        # TODO: add unit: {collections}
       }
     }
     
     chart {
-      name = "iis.connection.attempt.count"
+      name = "mongodb.connection.count"
       rank = "2"
       type = "timeseries"
 
@@ -70,21 +70,21 @@ resource "lightstep_metric_dashboard" "otel_collector_iisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "iis.connection.attempt.count"
+        metric              = "mongodb.connection.count"
         timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = [ "database", "connection_type"]
         }
         
-        # TODO: add description: Total number of attempts to connect to the server.
-        # TODO: add unit: {attempts}
+        # TODO: add description: The number of connections.
+        # TODO: add unit: {connections}
       }
     }
     
     chart {
-      name = "iis.network.blocked"
+      name = "mongodb.data.size"
       rank = "3"
       type = "timeseries"
 
@@ -93,21 +93,21 @@ resource "lightstep_metric_dashboard" "otel_collector_iisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "iis.network.blocked"
+        metric              = "mongodb.data.size"
         timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = [ "database"]
         }
         
-        # TODO: add description: Number of bytes blocked due to bandwidth throttling.
+        # TODO: add description: The size of the collection. Data compression does not affect this value.
         # TODO: add unit: By
       }
     }
     
     chart {
-      name = "iis.network.file.count"
+      name = "mongodb.extent.count"
       rank = "4"
       type = "timeseries"
 
@@ -116,21 +116,21 @@ resource "lightstep_metric_dashboard" "otel_collector_iisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "iis.network.file.count"
+        metric              = "mongodb.extent.count"
         timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = [ "direction"]
+          keys               = [ "database"]
         }
         
-        # TODO: add description: Number of transmitted files.
-        # TODO: add unit: {files}
+        # TODO: add description: The number of extents.
+        # TODO: add unit: {extents}
       }
     }
     
     chart {
-      name = "iis.network.io"
+      name = "mongodb.global_lock.time"
       rank = "5"
       type = "timeseries"
 
@@ -139,21 +139,21 @@ resource "lightstep_metric_dashboard" "otel_collector_iisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "iis.network.io"
+        metric              = "mongodb.global_lock.time"
         timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = [ "direction"]
+          keys               = []
         }
         
-        # TODO: add description: Total amount of bytes sent and received.
-        # TODO: add unit: By
+        # TODO: add description: The time the global lock has been held.
+        # TODO: add unit: ms
       }
     }
     
     chart {
-      name = "iis.request.count"
+      name = "mongodb.index.count"
       rank = "6"
       type = "timeseries"
 
@@ -162,21 +162,21 @@ resource "lightstep_metric_dashboard" "otel_collector_iisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "iis.request.count"
+        metric              = "mongodb.index.count"
         timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = [ "request"]
+          keys               = [ "database"]
         }
         
-        # TODO: add description: Total number of requests of a given type.
-        # TODO: add unit: {requests}
+        # TODO: add description: The number of indexes.
+        # TODO: add unit: {indexes}
       }
     }
     
     chart {
-      name = "iis.request.queue.age.max"
+      name = "mongodb.index.size"
       rank = "7"
       type = "timeseries"
 
@@ -185,21 +185,21 @@ resource "lightstep_metric_dashboard" "otel_collector_iisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "iis.request.queue.age.max"
-        timeseries_operator = "last"
+        metric              = "mongodb.index.size"
+        timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = [ "database"]
         }
         
-        # TODO: add description: Age of oldest request in the queue.
-        # TODO: add unit: ms
+        # TODO: add description: Sum of the space allocated to all indexes in the database, including free index space.
+        # TODO: add unit: By
       }
     }
     
     chart {
-      name = "iis.request.queue.count"
+      name = "mongodb.memory.usage"
       rank = "8"
       type = "timeseries"
 
@@ -208,21 +208,21 @@ resource "lightstep_metric_dashboard" "otel_collector_iisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "iis.request.queue.count"
+        metric              = "mongodb.memory.usage"
         timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = [ "database", "memory_type"]
         }
         
-        # TODO: add description: Current number of requests in the queue.
-        # TODO: add unit: {requests}
+        # TODO: add description: The amount of memory used.
+        # TODO: add unit: By
       }
     }
     
     chart {
-      name = "iis.request.rejected"
+      name = "mongodb.object.count"
       rank = "9"
       type = "timeseries"
 
@@ -231,21 +231,21 @@ resource "lightstep_metric_dashboard" "otel_collector_iisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "iis.request.rejected"
+        metric              = "mongodb.object.count"
         timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = [ "database"]
         }
         
-        # TODO: add description: Total number of requests rejected.
-        # TODO: add unit: {requests}
+        # TODO: add description: The number of objects.
+        # TODO: add unit: {objects}
       }
     }
     
     chart {
-      name = "iis.thread.active"
+      name = "mongodb.operation.count"
       rank = "10"
       type = "timeseries"
 
@@ -254,21 +254,21 @@ resource "lightstep_metric_dashboard" "otel_collector_iisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "iis.thread.active"
+        metric              = "mongodb.operation.count"
         timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = [ "operation"]
         }
         
-        # TODO: add description: Current number of active threads.
-        # TODO: add unit: {threads}
+        # TODO: add description: The number of operations executed.
+        # TODO: add unit: {operations}
       }
     }
     
     chart {
-      name = "iis.uptime"
+      name = "mongodb.storage.size"
       rank = "11"
       type = "timeseries"
 
@@ -277,16 +277,16 @@ resource "lightstep_metric_dashboard" "otel_collector_iisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "iis.uptime"
-        timeseries_operator = "last"
+        metric              = "mongodb.storage.size"
+        timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = [ "database"]
         }
         
-        # TODO: add description: The amount of time the server has been up.
-        # TODO: add unit: s
+        # TODO: add description: The total amount of storage allocated to this collection.
+        # TODO: add unit: By
       }
     }
 }

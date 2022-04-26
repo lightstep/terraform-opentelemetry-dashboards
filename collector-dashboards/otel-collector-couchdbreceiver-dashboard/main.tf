@@ -25,8 +25,7 @@ resource "lightstep_metric_dashboard" "otel_collector_couchdbreceiver_dashboard"
         hidden     = false
 
         metric              = "couchdb.average_request_time"
-        timeseries_operator = "rate"
-
+        timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
@@ -51,7 +50,6 @@ resource "lightstep_metric_dashboard" "otel_collector_couchdbreceiver_dashboard"
         metric              = "couchdb.database.open"
         timeseries_operator = "rate"
 
-
         group_by {
           aggregation_method = "sum"
           keys               = []
@@ -74,7 +72,6 @@ resource "lightstep_metric_dashboard" "otel_collector_couchdbreceiver_dashboard"
 
         metric              = "couchdb.database.operations"
         timeseries_operator = "rate"
-
 
         group_by {
           aggregation_method = "sum"
@@ -99,7 +96,6 @@ resource "lightstep_metric_dashboard" "otel_collector_couchdbreceiver_dashboard"
         metric              = "couchdb.file_descriptor.open"
         timeseries_operator = "rate"
 
-
         group_by {
           aggregation_method = "sum"
           keys               = []
@@ -122,7 +118,6 @@ resource "lightstep_metric_dashboard" "otel_collector_couchdbreceiver_dashboard"
 
         metric              = "couchdb.httpd.bulk_requests"
         timeseries_operator = "rate"
-
 
         group_by {
           aggregation_method = "sum"
@@ -147,7 +142,6 @@ resource "lightstep_metric_dashboard" "otel_collector_couchdbreceiver_dashboard"
         metric              = "couchdb.httpd.requests"
         timeseries_operator = "rate"
 
-
         group_by {
           aggregation_method = "sum"
           keys               = [ "http.method"]
@@ -171,7 +165,6 @@ resource "lightstep_metric_dashboard" "otel_collector_couchdbreceiver_dashboard"
         metric              = "couchdb.httpd.responses"
         timeseries_operator = "rate"
 
-
         group_by {
           aggregation_method = "sum"
           keys               = [ "http.status_code"]
@@ -194,7 +187,6 @@ resource "lightstep_metric_dashboard" "otel_collector_couchdbreceiver_dashboard"
 
         metric              = "couchdb.httpd.views"
         timeseries_operator = "rate"
-
 
         group_by {
           aggregation_method = "sum"

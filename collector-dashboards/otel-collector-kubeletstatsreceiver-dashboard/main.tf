@@ -8,14 +8,14 @@ terraform {
   required_version = ">= v1.0.11"
 }
 
-resource "lightstep_metric_dashboard" "otel_collector_mysqlreceiver_dashboard" {
+resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashboard" {
     project_name   = var.lightstep_project
-    dashboard_name = "OpenTelemetry mysqlreceiver Integration"
+    dashboard_name = "OpenTelemetry kubeletstatsreceiver Integration"
 
     
     
     chart {
-      name = "mysql.buffer_pool.data_pages"
+      name = "cpu.time"
       rank = "0"
       type = "timeseries"
 
@@ -24,21 +24,21 @@ resource "lightstep_metric_dashboard" "otel_collector_mysqlreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "mysql.buffer_pool.data_pages"
+        metric              = "cpu.time"
         timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = [ "buffer_pool_data"]
+          keys               = []
         }
         
-        # TODO: add description: The number of data pages in the InnoDB buffer pool.
-        # TODO: add unit: 1
+        # TODO: add description: CPU time
+        # TODO: add unit: s
       }
     }
     
     chart {
-      name = "mysql.buffer_pool.limit"
+      name = "cpu.utilization"
       rank = "1"
       type = "timeseries"
 
@@ -47,21 +47,21 @@ resource "lightstep_metric_dashboard" "otel_collector_mysqlreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "mysql.buffer_pool.limit"
-        timeseries_operator = "rate"
+        metric              = "cpu.utilization"
+        timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
           keys               = []
         }
         
-        # TODO: add description: The configured size of the InnoDB buffer pool.
-        # TODO: add unit: By
+        # TODO: add description: CPU utilization
+        # TODO: add unit: 1
       }
     }
     
     chart {
-      name = "mysql.buffer_pool.operations"
+      name = "filesystem.available"
       rank = "2"
       type = "timeseries"
 
@@ -70,21 +70,21 @@ resource "lightstep_metric_dashboard" "otel_collector_mysqlreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "mysql.buffer_pool.operations"
-        timeseries_operator = "rate"
+        metric              = "filesystem.available"
+        timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
-          keys               = [ "buffer_pool_operations"]
+          keys               = []
         }
         
-        # TODO: add description: The number of operations on the InnoDB buffer pool.
-        # TODO: add unit: 1
+        # TODO: add description: Filesystem available
+        # TODO: add unit: By
       }
     }
     
     chart {
-      name = "mysql.buffer_pool.page_flushes"
+      name = "filesystem.capacity"
       rank = "3"
       type = "timeseries"
 
@@ -93,21 +93,21 @@ resource "lightstep_metric_dashboard" "otel_collector_mysqlreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "mysql.buffer_pool.page_flushes"
-        timeseries_operator = "rate"
+        metric              = "filesystem.capacity"
+        timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
           keys               = []
         }
         
-        # TODO: add description: The number of requests to flush pages from the InnoDB buffer pool.
-        # TODO: add unit: 1
+        # TODO: add description: Filesystem capacity
+        # TODO: add unit: By
       }
     }
     
     chart {
-      name = "mysql.buffer_pool.pages"
+      name = "filesystem.usage"
       rank = "4"
       type = "timeseries"
 
@@ -116,21 +116,21 @@ resource "lightstep_metric_dashboard" "otel_collector_mysqlreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "mysql.buffer_pool.pages"
-        timeseries_operator = "rate"
+        metric              = "filesystem.usage"
+        timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
-          keys               = [ "buffer_pool_pages"]
+          keys               = []
         }
         
-        # TODO: add description: The number of pages in the InnoDB buffer pool.
-        # TODO: add unit: 1
+        # TODO: add description: Filesystem usage
+        # TODO: add unit: By
       }
     }
     
     chart {
-      name = "mysql.buffer_pool.usage"
+      name = "memory.available"
       rank = "5"
       type = "timeseries"
 
@@ -139,21 +139,21 @@ resource "lightstep_metric_dashboard" "otel_collector_mysqlreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "mysql.buffer_pool.usage"
-        timeseries_operator = "rate"
+        metric              = "memory.available"
+        timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
-          keys               = [ "buffer_pool_data"]
+          keys               = []
         }
         
-        # TODO: add description: The number of bytes in the InnoDB buffer pool.
+        # TODO: add description: Memory available
         # TODO: add unit: By
       }
     }
     
     chart {
-      name = "mysql.commands"
+      name = "memory.major_page_faults"
       rank = "6"
       type = "timeseries"
 
@@ -162,21 +162,21 @@ resource "lightstep_metric_dashboard" "otel_collector_mysqlreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "mysql.commands"
-        timeseries_operator = "rate"
+        metric              = "memory.major_page_faults"
+        timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
-          keys               = [ "command"]
+          keys               = []
         }
         
-        # TODO: add description: The number of times each type of command has been executed.
+        # TODO: add description: Memory major_page_faults
         # TODO: add unit: 1
       }
     }
     
     chart {
-      name = "mysql.double_writes"
+      name = "memory.page_faults"
       rank = "7"
       type = "timeseries"
 
@@ -185,21 +185,21 @@ resource "lightstep_metric_dashboard" "otel_collector_mysqlreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "mysql.double_writes"
-        timeseries_operator = "rate"
+        metric              = "memory.page_faults"
+        timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
-          keys               = [ "double_writes"]
+          keys               = []
         }
         
-        # TODO: add description: The number of writes to the InnoDB doublewrite buffer.
+        # TODO: add description: Memory page_faults
         # TODO: add unit: 1
       }
     }
     
     chart {
-      name = "mysql.handlers"
+      name = "memory.rss"
       rank = "8"
       type = "timeseries"
 
@@ -208,21 +208,21 @@ resource "lightstep_metric_dashboard" "otel_collector_mysqlreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "mysql.handlers"
-        timeseries_operator = "rate"
+        metric              = "memory.rss"
+        timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
-          keys               = [ "handler"]
+          keys               = []
         }
         
-        # TODO: add description: The number of requests to various MySQL handlers.
-        # TODO: add unit: 1
+        # TODO: add description: Memory rss
+        # TODO: add unit: By
       }
     }
     
     chart {
-      name = "mysql.locks"
+      name = "memory.usage"
       rank = "9"
       type = "timeseries"
 
@@ -231,21 +231,21 @@ resource "lightstep_metric_dashboard" "otel_collector_mysqlreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "mysql.locks"
-        timeseries_operator = "rate"
+        metric              = "memory.usage"
+        timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
-          keys               = [ "locks"]
+          keys               = []
         }
         
-        # TODO: add description: The number of MySQL locks.
-        # TODO: add unit: 1
+        # TODO: add description: Memory usage
+        # TODO: add unit: By
       }
     }
     
     chart {
-      name = "mysql.log_operations"
+      name = "memory.working_set"
       rank = "10"
       type = "timeseries"
 
@@ -254,21 +254,21 @@ resource "lightstep_metric_dashboard" "otel_collector_mysqlreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "mysql.log_operations"
-        timeseries_operator = "rate"
+        metric              = "memory.working_set"
+        timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
-          keys               = [ "log_operations"]
+          keys               = []
         }
         
-        # TODO: add description: The number of InnoDB log operations.
-        # TODO: add unit: 1
+        # TODO: add description: Memory working_set
+        # TODO: add unit: By
       }
     }
     
     chart {
-      name = "mysql.operations"
+      name = "network.errors"
       rank = "11"
       type = "timeseries"
 
@@ -277,21 +277,21 @@ resource "lightstep_metric_dashboard" "otel_collector_mysqlreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "mysql.operations"
+        metric              = "network.errors"
         timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = [ "operations"]
+          keys               = [ "interface", "direction"]
         }
         
-        # TODO: add description: The number of InnoDB operations.
+        # TODO: add description: Network errors
         # TODO: add unit: 1
       }
     }
     
     chart {
-      name = "mysql.page_operations"
+      name = "network.io"
       rank = "12"
       type = "timeseries"
 
@@ -300,21 +300,21 @@ resource "lightstep_metric_dashboard" "otel_collector_mysqlreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "mysql.page_operations"
+        metric              = "network.io"
         timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = [ "page_operations"]
+          keys               = [ "interface", "direction"]
         }
         
-        # TODO: add description: The number of InnoDB page operations.
-        # TODO: add unit: 1
+        # TODO: add description: Network IO
+        # TODO: add unit: By
       }
     }
     
     chart {
-      name = "mysql.row_locks"
+      name = "volume.available"
       rank = "13"
       type = "timeseries"
 
@@ -323,21 +323,21 @@ resource "lightstep_metric_dashboard" "otel_collector_mysqlreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "mysql.row_locks"
-        timeseries_operator = "rate"
+        metric              = "volume.available"
+        timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
-          keys               = [ "row_locks"]
+          keys               = []
         }
         
-        # TODO: add description: The number of InnoDB row locks.
-        # TODO: add unit: 1
+        # TODO: add description: The number of available bytes in the volume.
+        # TODO: add unit: By
       }
     }
     
     chart {
-      name = "mysql.row_operations"
+      name = "volume.capacity"
       rank = "14"
       type = "timeseries"
 
@@ -346,21 +346,21 @@ resource "lightstep_metric_dashboard" "otel_collector_mysqlreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "mysql.row_operations"
-        timeseries_operator = "rate"
+        metric              = "volume.capacity"
+        timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
-          keys               = [ "row_operations"]
+          keys               = []
         }
         
-        # TODO: add description: The number of InnoDB row operations.
-        # TODO: add unit: 1
+        # TODO: add description: The total capacity in bytes of the volume.
+        # TODO: add unit: By
       }
     }
     
     chart {
-      name = "mysql.sorts"
+      name = "volume.inodes"
       rank = "15"
       type = "timeseries"
 
@@ -369,21 +369,21 @@ resource "lightstep_metric_dashboard" "otel_collector_mysqlreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "mysql.sorts"
-        timeseries_operator = "rate"
+        metric              = "volume.inodes"
+        timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
-          keys               = [ "sorts"]
+          keys               = []
         }
         
-        # TODO: add description: The number of MySQL sorts.
+        # TODO: add description: The total inodes in the filesystem.
         # TODO: add unit: 1
       }
     }
     
     chart {
-      name = "mysql.threads"
+      name = "volume.inodes.free"
       rank = "16"
       type = "timeseries"
 
@@ -392,15 +392,38 @@ resource "lightstep_metric_dashboard" "otel_collector_mysqlreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "mysql.threads"
-        timeseries_operator = "rate"
+        metric              = "volume.inodes.free"
+        timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
-          keys               = [ "threads"]
+          keys               = []
         }
         
-        # TODO: add description: The state of MySQL threads.
+        # TODO: add description: The free inodes in the filesystem.
+        # TODO: add unit: 1
+      }
+    }
+    
+    chart {
+      name = "volume.inodes.used"
+      rank = "17"
+      type = "timeseries"
+
+      query {
+        query_name = "a"
+        display    = "line"
+        hidden     = false
+
+        metric              = "volume.inodes.used"
+        timeseries_operator = "last"
+
+        group_by {
+          aggregation_method = "sum"
+          keys               = []
+        }
+        
+        # TODO: add description: The inodes used by the filesystem. This may not equal inodes - free because filesystem may share inodes with other filesystems.
         # TODO: add unit: 1
       }
     }

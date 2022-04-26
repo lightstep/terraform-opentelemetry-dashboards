@@ -27,7 +27,6 @@ resource "lightstep_metric_dashboard" "otel_collector_rabbitmqreceiver_dashboard
         metric              = "rabbitmq.consumer.count"
         timeseries_operator = "rate"
 
-
         group_by {
           aggregation_method = "sum"
           keys               = []
@@ -50,7 +49,6 @@ resource "lightstep_metric_dashboard" "otel_collector_rabbitmqreceiver_dashboard
 
         metric              = "rabbitmq.message.acknowledged"
         timeseries_operator = "rate"
-
 
         group_by {
           aggregation_method = "sum"
@@ -75,7 +73,6 @@ resource "lightstep_metric_dashboard" "otel_collector_rabbitmqreceiver_dashboard
         metric              = "rabbitmq.message.current"
         timeseries_operator = "rate"
 
-
         group_by {
           aggregation_method = "sum"
           keys               = [ "message.state"]
@@ -98,7 +95,6 @@ resource "lightstep_metric_dashboard" "otel_collector_rabbitmqreceiver_dashboard
 
         metric              = "rabbitmq.message.delivered"
         timeseries_operator = "rate"
-
 
         group_by {
           aggregation_method = "sum"
@@ -123,7 +119,6 @@ resource "lightstep_metric_dashboard" "otel_collector_rabbitmqreceiver_dashboard
         metric              = "rabbitmq.message.dropped"
         timeseries_operator = "rate"
 
-
         group_by {
           aggregation_method = "sum"
           keys               = []
@@ -146,7 +141,6 @@ resource "lightstep_metric_dashboard" "otel_collector_rabbitmqreceiver_dashboard
 
         metric              = "rabbitmq.message.published"
         timeseries_operator = "rate"
-
 
         group_by {
           aggregation_method = "sum"

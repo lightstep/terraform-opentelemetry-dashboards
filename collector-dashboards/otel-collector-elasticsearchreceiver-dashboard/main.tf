@@ -8,14 +8,14 @@ terraform {
   required_version = ">= v1.0.11"
 }
 
-resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
+resource "lightstep_metric_dashboard" "otel_collector_elasticsearchreceiver_dashboard" {
     project_name   = var.lightstep_project
-    dashboard_name = "OpenTelemetry redisreceiver Integration"
+    dashboard_name = "OpenTelemetry elasticsearchreceiver Integration"
 
     
     
     chart {
-      name = "redis.clients.blocked"
+      name = "elasticsearch.cluster.data_nodes"
       rank = "0"
       type = "timeseries"
 
@@ -24,7 +24,7 @@ resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "redis.clients.blocked"
+        metric              = "elasticsearch.cluster.data_nodes"
         timeseries_operator = "rate"
 
         group_by {
@@ -32,13 +32,13 @@ resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
           keys               = []
         }
         
-        # TODO: add description: Number of clients pending on a blocking call
-        # TODO: add unit: 
+        # TODO: add description: The number of data nodes in the cluster.
+        # TODO: add unit: {nodes}
       }
     }
     
     chart {
-      name = "redis.clients.connected"
+      name = "elasticsearch.cluster.health"
       rank = "1"
       type = "timeseries"
 
@@ -47,21 +47,21 @@ resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "redis.clients.connected"
+        metric              = "elasticsearch.cluster.health"
         timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = [ "health_status"]
         }
         
-        # TODO: add description: Number of client connections (excluding connections from replicas)
-        # TODO: add unit: 
+        # TODO: add description: The health status of the cluster.
+        # TODO: add unit: {status}
       }
     }
     
     chart {
-      name = "redis.clients.max_input_buffer"
+      name = "elasticsearch.cluster.nodes"
       rank = "2"
       type = "timeseries"
 
@@ -70,21 +70,21 @@ resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "redis.clients.max_input_buffer"
-        timeseries_operator = "last"
+        metric              = "elasticsearch.cluster.nodes"
+        timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
           keys               = []
         }
         
-        # TODO: add description: Biggest input buffer among current client connections
-        # TODO: add unit: 
+        # TODO: add description: The total number of nodes in the cluster.
+        # TODO: add unit: {nodes}
       }
     }
     
     chart {
-      name = "redis.clients.max_output_buffer"
+      name = "elasticsearch.cluster.shards"
       rank = "3"
       type = "timeseries"
 
@@ -93,21 +93,21 @@ resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "redis.clients.max_output_buffer"
-        timeseries_operator = "last"
+        metric              = "elasticsearch.cluster.shards"
+        timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = [ "shard_state"]
         }
         
-        # TODO: add description: Longest output list among current client connections
-        # TODO: add unit: 
+        # TODO: add description: The number of shards in the cluster.
+        # TODO: add unit: {shards}
       }
     }
     
     chart {
-      name = "redis.commands"
+      name = "elasticsearch.node.cache.evictions"
       rank = "4"
       type = "timeseries"
 
@@ -116,21 +116,21 @@ resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "redis.commands"
-        timeseries_operator = "last"
+        metric              = "elasticsearch.node.cache.evictions"
+        timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = [ "cache_name"]
         }
         
-        # TODO: add description: Number of commands processed per second
-        # TODO: add unit: {ops}/s
+        # TODO: add description: The number of evictions from the cache.
+        # TODO: add unit: {evictions}
       }
     }
     
     chart {
-      name = "redis.commands.processed"
+      name = "elasticsearch.node.cache.memory.usage"
       rank = "5"
       type = "timeseries"
 
@@ -139,21 +139,21 @@ resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "redis.commands.processed"
+        metric              = "elasticsearch.node.cache.memory.usage"
         timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = [ "cache_name"]
         }
         
-        # TODO: add description: Total number of commands processed by the server
-        # TODO: add unit: 
+        # TODO: add description: The size in bytes of the cache.
+        # TODO: add unit: By
       }
     }
     
     chart {
-      name = "redis.connections.received"
+      name = "elasticsearch.node.cluster.connections"
       rank = "6"
       type = "timeseries"
 
@@ -162,7 +162,7 @@ resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "redis.connections.received"
+        metric              = "elasticsearch.node.cluster.connections"
         timeseries_operator = "rate"
 
         group_by {
@@ -170,13 +170,13 @@ resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
           keys               = []
         }
         
-        # TODO: add description: Total number of connections accepted by the server
-        # TODO: add unit: 
+        # TODO: add description: The number of open tcp connections for internal cluster communication.
+        # TODO: add unit: {connections}
       }
     }
     
     chart {
-      name = "redis.connections.rejected"
+      name = "elasticsearch.node.cluster.io"
       rank = "7"
       type = "timeseries"
 
@@ -185,21 +185,21 @@ resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "redis.connections.rejected"
+        metric              = "elasticsearch.node.cluster.io"
         timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = [ "direction"]
         }
         
-        # TODO: add description: Number of connections rejected because of maxclients limit
-        # TODO: add unit: 
+        # TODO: add description: The number of bytes sent and received on the network for internal cluster communication.
+        # TODO: add unit: By
       }
     }
     
     chart {
-      name = "redis.cpu.time"
+      name = "elasticsearch.node.documents"
       rank = "8"
       type = "timeseries"
 
@@ -208,21 +208,21 @@ resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "redis.cpu.time"
+        metric              = "elasticsearch.node.documents"
         timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = [ "state"]
+          keys               = [ "document_state"]
         }
         
-        # TODO: add description: System CPU consumed by the Redis server in seconds since server start
-        # TODO: add unit: s
+        # TODO: add description: The number of documents on the node.
+        # TODO: add unit: {documents}
       }
     }
     
     chart {
-      name = "redis.db.avg_ttl"
+      name = "elasticsearch.node.fs.disk.available"
       rank = "9"
       type = "timeseries"
 
@@ -231,21 +231,21 @@ resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "redis.db.avg_ttl"
-        timeseries_operator = "last"
+        metric              = "elasticsearch.node.fs.disk.available"
+        timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = [ "db"]
+          keys               = []
         }
         
-        # TODO: add description: Average keyspace keys TTL
-        # TODO: add unit: ms
+        # TODO: add description: The amount of disk space available across all file stores for this node.
+        # TODO: add unit: By
       }
     }
     
     chart {
-      name = "redis.db.expires"
+      name = "elasticsearch.node.http.connections"
       rank = "10"
       type = "timeseries"
 
@@ -254,21 +254,21 @@ resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "redis.db.expires"
-        timeseries_operator = "last"
+        metric              = "elasticsearch.node.http.connections"
+        timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = [ "db"]
+          keys               = []
         }
         
-        # TODO: add description: Number of keyspace keys with an expiration
-        # TODO: add unit: 
+        # TODO: add description: The number of HTTP connections to the node.
+        # TODO: add unit: {connections}
       }
     }
     
     chart {
-      name = "redis.db.keys"
+      name = "elasticsearch.node.open_files"
       rank = "11"
       type = "timeseries"
 
@@ -277,21 +277,21 @@ resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "redis.db.keys"
-        timeseries_operator = "last"
+        metric              = "elasticsearch.node.open_files"
+        timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = [ "db"]
+          keys               = []
         }
         
-        # TODO: add description: Number of keyspace keys
-        # TODO: add unit: 
+        # TODO: add description: The number of open file descriptors held by the node.
+        # TODO: add unit: {files}
       }
     }
     
     chart {
-      name = "redis.keys.evicted"
+      name = "elasticsearch.node.operations.completed"
       rank = "12"
       type = "timeseries"
 
@@ -300,21 +300,21 @@ resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "redis.keys.evicted"
+        metric              = "elasticsearch.node.operations.completed"
         timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = [ "operation"]
         }
         
-        # TODO: add description: Number of evicted keys due to maxmemory limit
-        # TODO: add unit: 
+        # TODO: add description: The number of operations completed.
+        # TODO: add unit: {operations}
       }
     }
     
     chart {
-      name = "redis.keys.expired"
+      name = "elasticsearch.node.operations.time"
       rank = "13"
       type = "timeseries"
 
@@ -323,21 +323,21 @@ resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "redis.keys.expired"
+        metric              = "elasticsearch.node.operations.time"
         timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = [ "operation"]
         }
         
-        # TODO: add description: Total number of key expiration events
-        # TODO: add unit: 
+        # TODO: add description: Time spent on operations.
+        # TODO: add unit: ms
       }
     }
     
     chart {
-      name = "redis.keyspace.hits"
+      name = "elasticsearch.node.shards.size"
       rank = "14"
       type = "timeseries"
 
@@ -346,7 +346,7 @@ resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "redis.keyspace.hits"
+        metric              = "elasticsearch.node.shards.size"
         timeseries_operator = "rate"
 
         group_by {
@@ -354,13 +354,13 @@ resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
           keys               = []
         }
         
-        # TODO: add description: Number of successful lookup of keys in the main dictionary
-        # TODO: add unit: 
+        # TODO: add description: The size of the shards assigned to this node.
+        # TODO: add unit: By
       }
     }
     
     chart {
-      name = "redis.keyspace.misses"
+      name = "elasticsearch.node.thread_pool.tasks.finished"
       rank = "15"
       type = "timeseries"
 
@@ -369,21 +369,21 @@ resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "redis.keyspace.misses"
+        metric              = "elasticsearch.node.thread_pool.tasks.finished"
         timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = [ "thread_pool_name", "task_state"]
         }
         
-        # TODO: add description: Number of failed lookup of keys in the main dictionary
-        # TODO: add unit: 
+        # TODO: add description: The number of tasks finished by the thread pool.
+        # TODO: add unit: {tasks}
       }
     }
     
     chart {
-      name = "redis.latest_fork"
+      name = "elasticsearch.node.thread_pool.tasks.queued"
       rank = "16"
       type = "timeseries"
 
@@ -392,21 +392,21 @@ resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "redis.latest_fork"
-        timeseries_operator = "last"
+        metric              = "elasticsearch.node.thread_pool.tasks.queued"
+        timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = [ "thread_pool_name"]
         }
         
-        # TODO: add description: Duration of the latest fork operation in microseconds
-        # TODO: add unit: us
+        # TODO: add description: The number of queued tasks in the thread pool.
+        # TODO: add unit: {tasks}
       }
     }
     
     chart {
-      name = "redis.memory.fragmentation_ratio"
+      name = "elasticsearch.node.thread_pool.threads"
       rank = "17"
       type = "timeseries"
 
@@ -415,21 +415,21 @@ resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "redis.memory.fragmentation_ratio"
-        timeseries_operator = "last"
+        metric              = "elasticsearch.node.thread_pool.threads"
+        timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = [ "thread_pool_name", "thread_state"]
         }
         
-        # TODO: add description: Ratio between used_memory_rss and used_memory
-        # TODO: add unit: 
+        # TODO: add description: The number of threads in the thread pool.
+        # TODO: add unit: {threads}
       }
     }
     
     chart {
-      name = "redis.memory.lua"
+      name = "jvm.classes.loaded"
       rank = "18"
       type = "timeseries"
 
@@ -438,7 +438,7 @@ resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "redis.memory.lua"
+        metric              = "jvm.classes.loaded"
         timeseries_operator = "last"
 
         group_by {
@@ -446,13 +446,13 @@ resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
           keys               = []
         }
         
-        # TODO: add description: Number of bytes used by the Lua engine
-        # TODO: add unit: By
+        # TODO: add description: The number of loaded classes
+        # TODO: add unit: 1
       }
     }
     
     chart {
-      name = "redis.memory.peak"
+      name = "jvm.gc.collections.count"
       rank = "19"
       type = "timeseries"
 
@@ -461,21 +461,21 @@ resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "redis.memory.peak"
-        timeseries_operator = "last"
+        metric              = "jvm.gc.collections.count"
+        timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = [ "collector_name"]
         }
         
-        # TODO: add description: Peak memory consumed by Redis (in bytes)
-        # TODO: add unit: By
+        # TODO: add description: The total number of garbage collections that have occurred
+        # TODO: add unit: 1
       }
     }
     
     chart {
-      name = "redis.memory.rss"
+      name = "jvm.gc.collections.elapsed"
       rank = "20"
       type = "timeseries"
 
@@ -484,21 +484,21 @@ resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "redis.memory.rss"
-        timeseries_operator = "last"
+        metric              = "jvm.gc.collections.elapsed"
+        timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = [ "collector_name"]
         }
         
-        # TODO: add description: Number of bytes that Redis allocated as seen by the operating system
-        # TODO: add unit: By
+        # TODO: add description: The approximate accumulated collection elapsed time
+        # TODO: add unit: ms
       }
     }
     
     chart {
-      name = "redis.memory.used"
+      name = "jvm.memory.heap.committed"
       rank = "21"
       type = "timeseries"
 
@@ -507,7 +507,7 @@ resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "redis.memory.used"
+        metric              = "jvm.memory.heap.committed"
         timeseries_operator = "last"
 
         group_by {
@@ -515,13 +515,13 @@ resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
           keys               = []
         }
         
-        # TODO: add description: Total number of bytes allocated by Redis using its allocator
+        # TODO: add description: The amount of memory that is guaranteed to be available for the heap
         # TODO: add unit: By
       }
     }
     
     chart {
-      name = "redis.net.input"
+      name = "jvm.memory.heap.max"
       rank = "22"
       type = "timeseries"
 
@@ -530,21 +530,21 @@ resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "redis.net.input"
-        timeseries_operator = "rate"
+        metric              = "jvm.memory.heap.max"
+        timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
           keys               = []
         }
         
-        # TODO: add description: The total number of bytes read from the network
+        # TODO: add description: The maximum amount of memory can be used for the heap
         # TODO: add unit: By
       }
     }
     
     chart {
-      name = "redis.net.output"
+      name = "jvm.memory.heap.used"
       rank = "23"
       type = "timeseries"
 
@@ -553,21 +553,21 @@ resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "redis.net.output"
-        timeseries_operator = "rate"
+        metric              = "jvm.memory.heap.used"
+        timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
           keys               = []
         }
         
-        # TODO: add description: The total number of bytes written to the network
+        # TODO: add description: The current heap memory usage
         # TODO: add unit: By
       }
     }
     
     chart {
-      name = "redis.rdb.changes_since_last_save"
+      name = "jvm.memory.nonheap.committed"
       rank = "24"
       type = "timeseries"
 
@@ -576,21 +576,21 @@ resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "redis.rdb.changes_since_last_save"
-        timeseries_operator = "rate"
+        metric              = "jvm.memory.nonheap.committed"
+        timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
           keys               = []
         }
         
-        # TODO: add description: Number of changes since the last dump
-        # TODO: add unit: 
+        # TODO: add description: The amount of memory that is guaranteed to be available for non-heap purposes
+        # TODO: add unit: By
       }
     }
     
     chart {
-      name = "redis.replication.backlog_first_byte_offset"
+      name = "jvm.memory.nonheap.used"
       rank = "25"
       type = "timeseries"
 
@@ -599,7 +599,7 @@ resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "redis.replication.backlog_first_byte_offset"
+        metric              = "jvm.memory.nonheap.used"
         timeseries_operator = "last"
 
         group_by {
@@ -607,13 +607,13 @@ resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
           keys               = []
         }
         
-        # TODO: add description: The master offset of the replication backlog buffer
-        # TODO: add unit: 
+        # TODO: add description: The current non-heap memory usage
+        # TODO: add unit: By
       }
     }
     
     chart {
-      name = "redis.replication.offset"
+      name = "jvm.memory.pool.max"
       rank = "26"
       type = "timeseries"
 
@@ -622,21 +622,21 @@ resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "redis.replication.offset"
+        metric              = "jvm.memory.pool.max"
         timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = [ "memory_pool_name"]
         }
         
-        # TODO: add description: The server's current replication offset
-        # TODO: add unit: 
+        # TODO: add description: The maximum amount of memory can be used for the memory pool
+        # TODO: add unit: By
       }
     }
     
     chart {
-      name = "redis.slaves.connected"
+      name = "jvm.memory.pool.used"
       rank = "27"
       type = "timeseries"
 
@@ -645,21 +645,21 @@ resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "redis.slaves.connected"
-        timeseries_operator = "rate"
+        metric              = "jvm.memory.pool.used"
+        timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = [ "memory_pool_name"]
         }
         
-        # TODO: add description: Number of connected replicas
-        # TODO: add unit: 
+        # TODO: add description: The current memory pool memory usage
+        # TODO: add unit: By
       }
     }
     
     chart {
-      name = "redis.uptime"
+      name = "jvm.threads.count"
       rank = "28"
       type = "timeseries"
 
@@ -668,16 +668,16 @@ resource "lightstep_metric_dashboard" "otel_collector_redisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "redis.uptime"
-        timeseries_operator = "rate"
+        metric              = "jvm.threads.count"
+        timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
           keys               = []
         }
         
-        # TODO: add description: Number of seconds since Redis server start
-        # TODO: add unit: s
+        # TODO: add description: The current number of threads
+        # TODO: add unit: 1
       }
     }
 }

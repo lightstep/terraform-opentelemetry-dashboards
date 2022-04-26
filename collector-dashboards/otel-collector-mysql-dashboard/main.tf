@@ -23,7 +23,7 @@ resource "lightstep_metric_dashboard" "otel_collector_mysql_dashboard" {
         hidden     = false
 
         metric              = "mysql.commands"
-        timeseries_operator = "rate"
+        timeseries_operator = "thing"
 
 
         group_by {

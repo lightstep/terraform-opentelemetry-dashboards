@@ -27,7 +27,6 @@ resource "lightstep_metric_dashboard" "otel_collector_zookeeperreceiver_dashboar
         metric              = "zookeeper.connection.active"
         timeseries_operator = "rate"
 
-
         group_by {
           aggregation_method = "sum"
           keys               = []
@@ -50,7 +49,6 @@ resource "lightstep_metric_dashboard" "otel_collector_zookeeperreceiver_dashboar
 
         metric              = "zookeeper.data_tree.ephemeral_node.count"
         timeseries_operator = "rate"
-
 
         group_by {
           aggregation_method = "sum"
@@ -75,7 +73,6 @@ resource "lightstep_metric_dashboard" "otel_collector_zookeeperreceiver_dashboar
         metric              = "zookeeper.data_tree.size"
         timeseries_operator = "rate"
 
-
         group_by {
           aggregation_method = "sum"
           keys               = []
@@ -97,8 +94,7 @@ resource "lightstep_metric_dashboard" "otel_collector_zookeeperreceiver_dashboar
         hidden     = false
 
         metric              = "zookeeper.file_descriptor.limit"
-        timeseries_operator = "rate"
-
+        timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
@@ -123,7 +119,6 @@ resource "lightstep_metric_dashboard" "otel_collector_zookeeperreceiver_dashboar
         metric              = "zookeeper.file_descriptor.open"
         timeseries_operator = "rate"
 
-
         group_by {
           aggregation_method = "sum"
           keys               = []
@@ -146,7 +141,6 @@ resource "lightstep_metric_dashboard" "otel_collector_zookeeperreceiver_dashboar
 
         metric              = "zookeeper.follower.count"
         timeseries_operator = "rate"
-
 
         group_by {
           aggregation_method = "sum"
@@ -171,7 +165,6 @@ resource "lightstep_metric_dashboard" "otel_collector_zookeeperreceiver_dashboar
         metric              = "zookeeper.fsync.exceeded_threshold.count"
         timeseries_operator = "rate"
 
-
         group_by {
           aggregation_method = "sum"
           keys               = []
@@ -193,8 +186,7 @@ resource "lightstep_metric_dashboard" "otel_collector_zookeeperreceiver_dashboar
         hidden     = false
 
         metric              = "zookeeper.latency.avg"
-        timeseries_operator = "rate"
-
+        timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
@@ -217,8 +209,7 @@ resource "lightstep_metric_dashboard" "otel_collector_zookeeperreceiver_dashboar
         hidden     = false
 
         metric              = "zookeeper.latency.max"
-        timeseries_operator = "rate"
-
+        timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
@@ -241,8 +232,7 @@ resource "lightstep_metric_dashboard" "otel_collector_zookeeperreceiver_dashboar
         hidden     = false
 
         metric              = "zookeeper.latency.min"
-        timeseries_operator = "rate"
-
+        timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
@@ -267,7 +257,6 @@ resource "lightstep_metric_dashboard" "otel_collector_zookeeperreceiver_dashboar
         metric              = "zookeeper.packet.count"
         timeseries_operator = "rate"
 
-
         group_by {
           aggregation_method = "sum"
           keys               = [ "direction"]
@@ -290,7 +279,6 @@ resource "lightstep_metric_dashboard" "otel_collector_zookeeperreceiver_dashboar
 
         metric              = "zookeeper.request.active"
         timeseries_operator = "rate"
-
 
         group_by {
           aggregation_method = "sum"
@@ -315,7 +303,6 @@ resource "lightstep_metric_dashboard" "otel_collector_zookeeperreceiver_dashboar
         metric              = "zookeeper.sync.pending"
         timeseries_operator = "rate"
 
-
         group_by {
           aggregation_method = "sum"
           keys               = []
@@ -339,7 +326,6 @@ resource "lightstep_metric_dashboard" "otel_collector_zookeeperreceiver_dashboar
         metric              = "zookeeper.watch.count"
         timeseries_operator = "rate"
 
-
         group_by {
           aggregation_method = "sum"
           keys               = []
@@ -362,7 +348,6 @@ resource "lightstep_metric_dashboard" "otel_collector_zookeeperreceiver_dashboar
 
         metric              = "zookeeper.znode.count"
         timeseries_operator = "rate"
-
 
         group_by {
           aggregation_method = "sum"

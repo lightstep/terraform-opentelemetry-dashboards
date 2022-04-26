@@ -27,7 +27,6 @@ resource "lightstep_metric_dashboard" "otel_collector_activedirectorydsreceiver_
         metric              = "active_directory.ds.bind.rate"
         timeseries_operator = "rate"
 
-
         group_by {
           aggregation_method = "sum"
           keys               = [ "bind_type"]
@@ -49,8 +48,7 @@ resource "lightstep_metric_dashboard" "otel_collector_activedirectorydsreceiver_
         hidden     = false
 
         metric              = "active_directory.ds.ldap.bind.last_successful.time"
-        timeseries_operator = "rate"
-
+        timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
@@ -75,7 +73,6 @@ resource "lightstep_metric_dashboard" "otel_collector_activedirectorydsreceiver_
         metric              = "active_directory.ds.ldap.bind.rate"
         timeseries_operator = "rate"
 
-
         group_by {
           aggregation_method = "sum"
           keys               = []
@@ -98,7 +95,6 @@ resource "lightstep_metric_dashboard" "otel_collector_activedirectorydsreceiver_
 
         metric              = "active_directory.ds.ldap.client.session.count"
         timeseries_operator = "rate"
-
 
         group_by {
           aggregation_method = "sum"
@@ -123,7 +119,6 @@ resource "lightstep_metric_dashboard" "otel_collector_activedirectorydsreceiver_
         metric              = "active_directory.ds.ldap.search.rate"
         timeseries_operator = "rate"
 
-
         group_by {
           aggregation_method = "sum"
           keys               = []
@@ -145,8 +140,7 @@ resource "lightstep_metric_dashboard" "otel_collector_activedirectorydsreceiver_
         hidden     = false
 
         metric              = "active_directory.ds.name_cache.hit_rate"
-        timeseries_operator = "rate"
-
+        timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
@@ -171,7 +165,6 @@ resource "lightstep_metric_dashboard" "otel_collector_activedirectorydsreceiver_
         metric              = "active_directory.ds.notification.queued"
         timeseries_operator = "rate"
 
-
         group_by {
           aggregation_method = "sum"
           keys               = []
@@ -194,7 +187,6 @@ resource "lightstep_metric_dashboard" "otel_collector_activedirectorydsreceiver_
 
         metric              = "active_directory.ds.operation.rate"
         timeseries_operator = "rate"
-
 
         group_by {
           aggregation_method = "sum"
@@ -219,7 +211,6 @@ resource "lightstep_metric_dashboard" "otel_collector_activedirectorydsreceiver_
         metric              = "active_directory.ds.replication.network.io"
         timeseries_operator = "rate"
 
-
         group_by {
           aggregation_method = "sum"
           keys               = [ "direction", "network_data_type"]
@@ -242,7 +233,6 @@ resource "lightstep_metric_dashboard" "otel_collector_activedirectorydsreceiver_
 
         metric              = "active_directory.ds.replication.object.rate"
         timeseries_operator = "rate"
-
 
         group_by {
           aggregation_method = "sum"
@@ -267,7 +257,6 @@ resource "lightstep_metric_dashboard" "otel_collector_activedirectorydsreceiver_
         metric              = "active_directory.ds.replication.operation.pending"
         timeseries_operator = "rate"
 
-
         group_by {
           aggregation_method = "sum"
           keys               = []
@@ -290,7 +279,6 @@ resource "lightstep_metric_dashboard" "otel_collector_activedirectorydsreceiver_
 
         metric              = "active_directory.ds.replication.property.rate"
         timeseries_operator = "rate"
-
 
         group_by {
           aggregation_method = "sum"
@@ -315,7 +303,6 @@ resource "lightstep_metric_dashboard" "otel_collector_activedirectorydsreceiver_
         metric              = "active_directory.ds.replication.sync.object.pending"
         timeseries_operator = "rate"
 
-
         group_by {
           aggregation_method = "sum"
           keys               = []
@@ -338,7 +325,6 @@ resource "lightstep_metric_dashboard" "otel_collector_activedirectorydsreceiver_
 
         metric              = "active_directory.ds.replication.sync.request.count"
         timeseries_operator = "rate"
-
 
         group_by {
           aggregation_method = "sum"
@@ -363,7 +349,6 @@ resource "lightstep_metric_dashboard" "otel_collector_activedirectorydsreceiver_
         metric              = "active_directory.ds.replication.value.rate"
         timeseries_operator = "rate"
 
-
         group_by {
           aggregation_method = "sum"
           keys               = [ "direction", "value_type"]
@@ -386,7 +371,6 @@ resource "lightstep_metric_dashboard" "otel_collector_activedirectorydsreceiver_
 
         metric              = "active_directory.ds.security_descriptor_propagations_event.queued"
         timeseries_operator = "rate"
-
 
         group_by {
           aggregation_method = "sum"
@@ -411,7 +395,6 @@ resource "lightstep_metric_dashboard" "otel_collector_activedirectorydsreceiver_
         metric              = "active_directory.ds.suboperation.rate"
         timeseries_operator = "rate"
 
-
         group_by {
           aggregation_method = "sum"
           keys               = [ "suboperation_type"]
@@ -434,7 +417,6 @@ resource "lightstep_metric_dashboard" "otel_collector_activedirectorydsreceiver_
 
         metric              = "active_directory.ds.thread.count"
         timeseries_operator = "rate"
-
 
         group_by {
           aggregation_method = "sum"

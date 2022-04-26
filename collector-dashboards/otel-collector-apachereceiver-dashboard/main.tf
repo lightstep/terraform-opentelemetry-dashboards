@@ -27,7 +27,6 @@ resource "lightstep_metric_dashboard" "otel_collector_apachereceiver_dashboard" 
         metric              = "apache.current_connections"
         timeseries_operator = "rate"
 
-
         group_by {
           aggregation_method = "sum"
           keys               = [ "server_name"]
@@ -50,7 +49,6 @@ resource "lightstep_metric_dashboard" "otel_collector_apachereceiver_dashboard" 
 
         metric              = "apache.requests"
         timeseries_operator = "rate"
-
 
         group_by {
           aggregation_method = "sum"
@@ -75,7 +73,6 @@ resource "lightstep_metric_dashboard" "otel_collector_apachereceiver_dashboard" 
         metric              = "apache.scoreboard"
         timeseries_operator = "rate"
 
-
         group_by {
           aggregation_method = "sum"
           keys               = [ "server_name", "scoreboard_state"]
@@ -98,7 +95,6 @@ resource "lightstep_metric_dashboard" "otel_collector_apachereceiver_dashboard" 
 
         metric              = "apache.traffic"
         timeseries_operator = "rate"
-
 
         group_by {
           aggregation_method = "sum"
@@ -123,7 +119,6 @@ resource "lightstep_metric_dashboard" "otel_collector_apachereceiver_dashboard" 
         metric              = "apache.uptime"
         timeseries_operator = "rate"
 
-
         group_by {
           aggregation_method = "sum"
           keys               = [ "server_name"]
@@ -146,7 +141,6 @@ resource "lightstep_metric_dashboard" "otel_collector_apachereceiver_dashboard" 
 
         metric              = "apache.workers"
         timeseries_operator = "rate"
-
 
         group_by {
           aggregation_method = "sum"

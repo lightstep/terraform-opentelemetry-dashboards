@@ -8,14 +8,14 @@ terraform {
   required_version = ">= v1.0.11"
 }
 
-resource "lightstep_metric_dashboard" "otel_collector_iisreceiver_dashboard" {
+resource "lightstep_metric_dashboard" "otel_collector_memcachedreceiver_dashboard" {
     project_name   = var.lightstep_project
-    dashboard_name = "OpenTelemetry iisreceiver Integration"
+    dashboard_name = "OpenTelemetry memcachedreceiver Integration"
 
     
     
     chart {
-      name = "iis.connection.active"
+      name = "memcached.bytes"
       rank = "0"
       type = "timeseries"
 
@@ -24,21 +24,21 @@ resource "lightstep_metric_dashboard" "otel_collector_iisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "iis.connection.active"
-        timeseries_operator = "rate"
+        metric              = "memcached.bytes"
+        timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
           keys               = []
         }
         
-        # TODO: add description: Number of active connections.
-        # TODO: add unit: {connections}
+        # TODO: add description: Current number of bytes used by this server to store items.
+        # TODO: add unit: By
       }
     }
     
     chart {
-      name = "iis.connection.anonymous"
+      name = "memcached.commands"
       rank = "1"
       type = "timeseries"
 
@@ -47,21 +47,21 @@ resource "lightstep_metric_dashboard" "otel_collector_iisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "iis.connection.anonymous"
+        metric              = "memcached.commands"
         timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = [ "command"]
         }
         
-        # TODO: add description: Number of connections established anonymously.
-        # TODO: add unit: {connections}
+        # TODO: add description: Commands executed.
+        # TODO: add unit: {commands}
       }
     }
     
     chart {
-      name = "iis.connection.attempt.count"
+      name = "memcached.connections.current"
       rank = "2"
       type = "timeseries"
 
@@ -70,7 +70,7 @@ resource "lightstep_metric_dashboard" "otel_collector_iisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "iis.connection.attempt.count"
+        metric              = "memcached.connections.current"
         timeseries_operator = "rate"
 
         group_by {
@@ -78,13 +78,13 @@ resource "lightstep_metric_dashboard" "otel_collector_iisreceiver_dashboard" {
           keys               = []
         }
         
-        # TODO: add description: Total number of attempts to connect to the server.
-        # TODO: add unit: {attempts}
+        # TODO: add description: The current number of open connections.
+        # TODO: add unit: {connections}
       }
     }
     
     chart {
-      name = "iis.network.blocked"
+      name = "memcached.connections.total"
       rank = "3"
       type = "timeseries"
 
@@ -93,7 +93,7 @@ resource "lightstep_metric_dashboard" "otel_collector_iisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "iis.network.blocked"
+        metric              = "memcached.connections.total"
         timeseries_operator = "rate"
 
         group_by {
@@ -101,13 +101,13 @@ resource "lightstep_metric_dashboard" "otel_collector_iisreceiver_dashboard" {
           keys               = []
         }
         
-        # TODO: add description: Number of bytes blocked due to bandwidth throttling.
-        # TODO: add unit: By
+        # TODO: add description: Total number of connections opened since the server started running.
+        # TODO: add unit: {connections}
       }
     }
     
     chart {
-      name = "iis.network.file.count"
+      name = "memcached.cpu.usage"
       rank = "4"
       type = "timeseries"
 
@@ -116,21 +116,21 @@ resource "lightstep_metric_dashboard" "otel_collector_iisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "iis.network.file.count"
+        metric              = "memcached.cpu.usage"
         timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = [ "direction"]
+          keys               = [ "state"]
         }
         
-        # TODO: add description: Number of transmitted files.
-        # TODO: add unit: {files}
+        # TODO: add description: Accumulated user and system time.
+        # TODO: add unit: s
       }
     }
     
     chart {
-      name = "iis.network.io"
+      name = "memcached.current_items"
       rank = "5"
       type = "timeseries"
 
@@ -139,21 +139,21 @@ resource "lightstep_metric_dashboard" "otel_collector_iisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "iis.network.io"
+        metric              = "memcached.current_items"
         timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = [ "direction"]
+          keys               = []
         }
         
-        # TODO: add description: Total amount of bytes sent and received.
-        # TODO: add unit: By
+        # TODO: add description: Number of items currently stored in the cache.
+        # TODO: add unit: {items}
       }
     }
     
     chart {
-      name = "iis.request.count"
+      name = "memcached.evictions"
       rank = "6"
       type = "timeseries"
 
@@ -162,21 +162,21 @@ resource "lightstep_metric_dashboard" "otel_collector_iisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "iis.request.count"
+        metric              = "memcached.evictions"
         timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = [ "request"]
+          keys               = []
         }
         
-        # TODO: add description: Total number of requests of a given type.
-        # TODO: add unit: {requests}
+        # TODO: add description: Cache item evictions.
+        # TODO: add unit: {evictions}
       }
     }
     
     chart {
-      name = "iis.request.queue.age.max"
+      name = "memcached.network"
       rank = "7"
       type = "timeseries"
 
@@ -185,21 +185,21 @@ resource "lightstep_metric_dashboard" "otel_collector_iisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "iis.request.queue.age.max"
-        timeseries_operator = "last"
+        metric              = "memcached.network"
+        timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = [ "direction"]
         }
         
-        # TODO: add description: Age of oldest request in the queue.
-        # TODO: add unit: ms
+        # TODO: add description: Bytes transferred over the network.
+        # TODO: add unit: by
       }
     }
     
     chart {
-      name = "iis.request.queue.count"
+      name = "memcached.operation_hit_ratio"
       rank = "8"
       type = "timeseries"
 
@@ -208,21 +208,21 @@ resource "lightstep_metric_dashboard" "otel_collector_iisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "iis.request.queue.count"
-        timeseries_operator = "rate"
+        metric              = "memcached.operation_hit_ratio"
+        timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = [ "operation"]
         }
         
-        # TODO: add description: Current number of requests in the queue.
-        # TODO: add unit: {requests}
+        # TODO: add description: Hit ratio for operations, expressed as a percentage value between 0.0 and 100.0.
+        # TODO: add unit: %
       }
     }
     
     chart {
-      name = "iis.request.rejected"
+      name = "memcached.operations"
       rank = "9"
       type = "timeseries"
 
@@ -231,21 +231,21 @@ resource "lightstep_metric_dashboard" "otel_collector_iisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "iis.request.rejected"
+        metric              = "memcached.operations"
         timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = [ "type", "operation"]
         }
         
-        # TODO: add description: Total number of requests rejected.
-        # TODO: add unit: {requests}
+        # TODO: add description: Operation counts.
+        # TODO: add unit: {operations}
       }
     }
     
     chart {
-      name = "iis.thread.active"
+      name = "memcached.threads"
       rank = "10"
       type = "timeseries"
 
@@ -254,7 +254,7 @@ resource "lightstep_metric_dashboard" "otel_collector_iisreceiver_dashboard" {
         display    = "line"
         hidden     = false
 
-        metric              = "iis.thread.active"
+        metric              = "memcached.threads"
         timeseries_operator = "rate"
 
         group_by {
@@ -262,31 +262,8 @@ resource "lightstep_metric_dashboard" "otel_collector_iisreceiver_dashboard" {
           keys               = []
         }
         
-        # TODO: add description: Current number of active threads.
+        # TODO: add description: Number of threads used by the memcached instance.
         # TODO: add unit: {threads}
-      }
-    }
-    
-    chart {
-      name = "iis.uptime"
-      rank = "11"
-      type = "timeseries"
-
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
-
-        metric              = "iis.uptime"
-        timeseries_operator = "last"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: The amount of time the server has been up.
-        # TODO: add unit: s
       }
     }
 }

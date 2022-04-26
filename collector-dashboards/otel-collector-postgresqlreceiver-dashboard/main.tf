@@ -11,6 +11,8 @@ terraform {
 resource "lightstep_metric_dashboard" "otel_collector_postgresqlreceiver_dashboard" {
     project_name   = var.lightstep_project
     dashboard_name = "OpenTelemetry postgresqlreceiver Integration"
+
+    
     
     chart {
       name = "postgresql.backends"
@@ -24,7 +26,6 @@ resource "lightstep_metric_dashboard" "otel_collector_postgresqlreceiver_dashboa
 
         metric              = "postgresql.backends"
         timeseries_operator = "rate"
-
 
         group_by {
           aggregation_method = "sum"
@@ -49,7 +50,6 @@ resource "lightstep_metric_dashboard" "otel_collector_postgresqlreceiver_dashboa
         metric              = "postgresql.blocks_read"
         timeseries_operator = "rate"
 
-
         group_by {
           aggregation_method = "sum"
           keys               = [ "database", "table", "source"]
@@ -72,7 +72,6 @@ resource "lightstep_metric_dashboard" "otel_collector_postgresqlreceiver_dashboa
 
         metric              = "postgresql.commits"
         timeseries_operator = "rate"
-
 
         group_by {
           aggregation_method = "sum"
@@ -97,7 +96,6 @@ resource "lightstep_metric_dashboard" "otel_collector_postgresqlreceiver_dashboa
         metric              = "postgresql.db_size"
         timeseries_operator = "rate"
 
-
         group_by {
           aggregation_method = "sum"
           keys               = [ "database"]
@@ -120,7 +118,6 @@ resource "lightstep_metric_dashboard" "otel_collector_postgresqlreceiver_dashboa
 
         metric              = "postgresql.operations"
         timeseries_operator = "rate"
-
 
         group_by {
           aggregation_method = "sum"
@@ -145,7 +142,6 @@ resource "lightstep_metric_dashboard" "otel_collector_postgresqlreceiver_dashboa
         metric              = "postgresql.rollbacks"
         timeseries_operator = "rate"
 
-
         group_by {
           aggregation_method = "sum"
           keys               = [ "database"]
@@ -168,7 +164,6 @@ resource "lightstep_metric_dashboard" "otel_collector_postgresqlreceiver_dashboa
 
         metric              = "postgresql.rows"
         timeseries_operator = "rate"
-
 
         group_by {
           aggregation_method = "sum"
