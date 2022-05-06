@@ -11,6 +11,19 @@ This is a Terraform module for deploying pre-defined set of OpenTelemetry Integr
 * Terraform v1.0+
 
 
+## How to Use This Module
+
+To deploy create Lightstep dashboards for production using this repo:
+
+- Ensure account meets module pre-requisites from above.
+
+- Create a Terraform configuration that pulls module(s) and specifies values
+  of the required variables.
+
+- Run `terraform init` and `terraform apply` with your API Key set in the environment variable `LIGHTSTEP_API_KEY` (or the environment variable name you specified in configuration).
+
+The following shows an example Terraform configuration:
+
 ```
 terraform {
   required_providers {
