@@ -9,271 +9,232 @@ terraform {
 }
 
 resource "lightstep_metric_dashboard" "otel_collector_dashboard" {
-    project_name   = var.lightstep_project
-    dashboard_name = "OpenTelemetry Collector"
-
-    chart {
-      name = "Instance count"
-      rank = "0"
-      type = "timeseries"
-
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
-
-        metric              = "otelcol_process_uptime"
-        timeseries_operator = "rate"
-
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = ["service_instance_id"]
-        }
-        # TODO: add description: Uptime of the process
-      }
+  project_name   = var.lightstep_project
+  dashboard_name = "OpenTelemetry Collector"
+  chart {
+    name = "Prometheus targets by job, metrics_path"
+    rank = 1
+    type = "timeseries"
+    query {
+      query_name = "a"
+      display    = "bar"
+      hidden     = false
+      tql        = <<EOT
+metric scrape_samples_scraped
+| reduce 1m, count
+| group_by [job, metrics_path], count
+EOT
     }
-
-    chart {
-      name = "CPU"
-      rank = "1"
-      type = "timeseries"
-
-      query {
-        query_name = "a"
-        display = "line"
-        hidden = false
-
-        metric = "otelcol_process_cpu_seconds"
-        timeseries_operator = "rate"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = ["service_instance_id"]
-        }
-        # TODO: add description: Total CPU user and system time in seconds
-        # TODO: add units: Seconds
-      }
+  }
+  chart {
+    name = "Receiver Scrape duration"
+    rank = 2
+    type = "timeseries"
+    query {
+      query_name = "a"
+      display    = "line"
+      hidden     = false
+      tql        = <<EOT
+metric scrape_duration_seconds
+| latest
+| group_by [job], mean
+EOT
     }
-
-    chart {
-      name = "Memory RSS"
-      rank = "2"
-      type = "timeseries"
-
-      query {
-        query_name = "a"
-        display = "line"
-        hidden = false
-
-        metric = "otelcol_process_memory_rss"
-        timeseries_operator = "last"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = ["service_instance_id"]
-        }
-        # TODO: add description: Total physical memory (resident set size)
-        # TODO: add units: Bytes
-      }
+  }
+  chart {
+    name = "Collector up"
+    rank = 3
+    type = "timeseries"
+    query {
+      query_name = "a"
+      display    = "bar"
+      hidden     = false
+      tql        = <<EOT
+metric otelcol_process_uptime
+| rate
+| group_by [k8s_cluster_name,job,service_instance_id], sum
+EOT
     }
+  }
 
-    chart {
-      name = "Receiver: Received spans"
-      rank = "3"
-      type = "timeseries"
-
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
-
-        metric              = "otelcol_receiver_accepted_spans"
-        timeseries_operator = "rate"
-
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = ["receiver"]
-        }
-        # TODO: add description: Number of spans successfully pushed into the pipeline.
-      }
+  chart {
+    name = "Otel collector dropped and failed metric points"
+    rank = 4
+    type = "timeseries"
+    query {
+      query_name = "failed"
+      display    = "line"
+      hidden     = false
+      tql        = <<EOT
+metric otelcol_exporter_send_failed_metric_points
+| delta
+| group_by [exporter], sum
+EOT
     }
-
-    chart {
-      name = "Receiver: Received metric points"
-      rank = "4"
-      type = "timeseries"
-
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
-
-        metric              = "otelcol_receiver_accepted_metric_points"
-        timeseries_operator = "rate"
-
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = ["receiver"]
-        }
-        # TODO: add description: Number of metric points successfully pushed into the pipeline.
-      }
+    query {
+      query_name = "dropped"
+      display    = "line"
+      hidden     = false
+      tql        = <<EOT
+metric otelcol_processor_dropped_metric_points
+| delta
+| group_by [exporter], sum
+EOT
     }
-
-    chart {
-      name = "Receiver: Received log records"
-      rank = "5"
-      type = "timeseries"
-
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
-
-        metric              = "otelcol_receiver_accepted_log_records"
-        timeseries_operator = "rate"
-
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = ["receiver"]
-        }
-        # TODO: add description: Number of log records successfully pushed into the pipeline.
-      }
+  }
+  chart {
+    name = "Otel batch send size"
+    rank = 5
+    type = "timeseries"
+    query {
+      query_name = "a"
+      display    = "line"
+      hidden     = false
+      tql        = <<EOT
+metric otelcol_processor_batch_batch_send_size
+| delta
+| group_by [processor], sum
+| point percentile(value, 50),
+  percentile(value, 95),
+  percentile(value, 99),
+    percentile(value, 99.9)
+EOT
     }
-
-    chart {
-      name = "Receiver: Rejected spans"
-      rank = "6"
-      type = "timeseries"
-
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
-
-        metric              = "otelcol_receiver_refused_spans"
-        timeseries_operator = "rate"
-
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = ["receiver"]
-        }
-        # TODO: add description: Number of spans that could not be pushed into the pipeline.
-      }
+  }
+  chart {
+    name = "Otel Cpu usage vs limits"
+    rank = 6
+    type = "timeseries"
+    query {
+      query_name = "limits"
+      display    = "line"
+      hidden     = false
+      tql        = <<EOT
+metric kube_pod_container_resource_limits
+| latest
+| filter resource == "cpu"
+| filter container == "otc-container"
+| group_by [], sum
+EOT
     }
-
-    chart {
-      name = "Receiver: Rejected metric points"
-      rank = "7"
-      type = "timeseries"
-
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
-
-        metric              = "otelcol_receiver_refused_metric_points"
-        timeseries_operator = "rate"
-
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = ["receiver"]
-        }
-        # TODO: add description: Number of metric points that could not be pushed into the pipeline.
-      }
+    query {
+      query_name = "requests"
+      display    = "line"
+      hidden     = false
+      tql        = <<EOT
+metric kube_pod_container_resource_requests
+| latest
+| filter resource == "cpu"
+| filter container == "otc-container"
+| group_by [], sum
+EOT
     }
-
-    chart {
-      name = "Receiver: Rejected log records"
-      rank = "8"
-      type = "timeseries"
-
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
-
-        metric              = "otelcol_receiver_refused_log_records"
-        timeseries_operator = "rate"
-
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = ["receiver"]
-        }
-        # TODO: add description: Number of log records that could not be pushed into the pipeline.
-      }
+    query {
+      query_name = "usage"
+      display    = "line"
+      hidden     = false
+      tql        = <<EOT
+    metric container_cpu_usage_seconds_total
+    | rate
+    | filter container == "otc-container"
+    | group_by [], sum
+    EOT
     }
-
-    chart {
-      name = "Exporter: Sent spans"
-      rank = "9"
-      type = "timeseries"
-
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
-
-        metric              = "otelcol_exporter_sent_spans"
-        timeseries_operator = "rate"
-
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = ["exporter"]
-        }
-        # TODO: add description: Number of spans successfully sent to destination.
-      }
+  }
+  chart {
+    name = "Collector exporter queue size"
+    rank = 7
+    type = "timeseries"
+    query {
+      query_name = "a"
+      display    = "line"
+      hidden     = false
+      tql        = <<EOT
+metric otelcol_exporter_queue_size
+| latest
+| group_by [exporter], sum
+EOT
     }
-
-    chart {
-      name = "Exporter: Sent metric points"
-      rank = "10"
-      type = "timeseries"
-
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
-
-        metric              = "otelcol_exporter_sent_metric_points"
-        timeseries_operator = "rate"
-
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = ["exporter"]
-        }
-        # TODO: add description: Number of metric points successfully sent to destination.
-      }
+  }
+  chart {
+    name = "Otel points accepted vs refused"
+    rank = 8
+    type = "timeseries"
+    query {
+      query_name = "accepted"
+      display    = "bar"
+      hidden     = false
+      tql        = <<EOT
+metric otelcol_receiver_accepted_metric_points
+| delta
+| group_by [receiver], sum
+EOT
     }
-
-    chart {
-      name = "Exporter: Sent log records"
-      rank = "11"
-      type = "timeseries"
-
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
-
-        metric              = "otelcol_exporter_sent_log_records"
-        timeseries_operator = "rate"
-
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = ["exporter"]
-        }
-        # TODO: add description: Number of log records successfully sent to destination.
-      }
+    query {
+      query_name = "refused"
+      display    = "bar"
+      hidden     = false
+      tql        = <<EOT
+metric otelcol_receiver_refused_metric_points
+| delta
+| group_by [receiver], sum
+EOT
     }
-    
+  }
+  chart {
+    name = "Otel Memory usage vs limits"
+    rank = 9
+    type = "timeseries"
+    query {
+      query_name = "limits"
+      display    = "line"
+      hidden     = false
+      tql        = <<EOT
+metric kube_pod_container_resource_limits
+| latest
+| filter resource == "memory"
+| filter container == "otc-container"
+| group_by [pod], sum
+EOT
+    }
+    query {
+      query_name = "requests"
+      display    = "line"
+      hidden     = false
+      tql        = <<EOT
+metric kube_pod_container_resource_requests
+| latest
+| filter resource == "memory"
+| filter container == "otc-container"
+| group_by [pod], sum
+EOT
+    }
+    query {
+      query_name = "usage"
+      display    = "line"
+      hidden     = false
+      tql        = <<EOT
+    metric container_memory_working_set_bytes
+    | latest
+    | filter container == "otc-container"
+    | group_by [pod], sum
+    EOT
+    }
+  }
+
+  chart {
+    name = "Hourly active time series by service"
+    rank = 10
+    type = "timeseries"
+    query {
+      query_name = "a"
+      display    = "bar"
+      hidden     = false
+      tql        = <<EOT
+metric lightstep.hourly_active_time_series
+| delta 1h
+| group_by [service], sum
+EOT
+    }
+  }
 }
