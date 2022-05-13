@@ -3,7 +3,7 @@
 **:warning:** You are viewing a **beta version** of the official
 module to create and manage OpenTelemetry Integration Dashboards inside Lightstep.
 
-This is a Terraform module for deploying dashboards to monitor a Kubernetes cluster running an OpenTelemetry Collector scraping kuve-state-metrics.
+This is a Terraform module for deploying dashboards to monitor a Kubernetes cluster running an OpenTelemetry Collector scraping kube-state-metrics.
 
 
 ## How to Use This Module
