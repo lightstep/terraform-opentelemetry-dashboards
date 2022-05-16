@@ -33,10 +33,3 @@ output "otel_dash_module" {
 
 1. Run `terraform init/plan/apply` as describe in the [main readme](https://github.com/lightstep/terraform-opentelemetry-dashboards).
 
-
-
-
-
-# OpenTelemetry Collector Dashboard
-
-
