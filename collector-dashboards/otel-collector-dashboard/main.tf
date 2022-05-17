@@ -8,6 +8,12 @@ terraform {
   required_version = ">= v1.0.11"
 }
 
+locals {
+  # Addons
+  prometheus_addon = "prometheus"
+}
+
+
 resource "lightstep_metric_dashboard" "otel_collector_dashboard" {
   project_name   = var.lightstep_project
   dashboard_name = "OpenTelemetry Collector"
@@ -33,7 +39,7 @@ EOT
     rank = 2
     type = "timeseries"
     query {
-      query_name = "limits"
+      query_name = "a * b"
       display    = "line"
       hidden     = false
       tql        = <<EOT
@@ -45,7 +51,8 @@ metric kube_pod_container_resource_limits
 EOT
     }
     query {
-      query_name = "requests"
+      query_name = "request"
+      metric = "request"
       display    = "line"
       hidden     = false
       tql        = <<EOT
@@ -57,7 +64,7 @@ metric kube_pod_container_resource_requests
 EOT
     }
     query {
-      query_name = "usage"
+      query_name = "c"
       display    = "line"
       hidden     = false
       tql        = <<EOT
@@ -306,35 +313,43 @@ EOT
     }
   }
 
-  chart {
-    name = "Prometheus targets by job, metrics_path"
-    rank = 10
-    type = "timeseries"
-    query {
-      query_name = "a"
-      display    = "bar"
-      hidden     = false
-      tql        = <<EOT
+  dynamic "chart" {
+    for_each = [ for addon in var.dashboard_addons: addon if addon == local.prometheus_addon ]
+
+    content {
+      name = "Prometheus targets by job, metrics_path"
+      rank = 10
+      type = "timeseries"
+      query {
+        query_name = "a"
+        display    = "bar"
+        hidden     = false
+        tql        = <<EOT
 metric scrape_samples_scraped
 | reduce 1m, count
 | group_by [job, metrics_path], count
 EOT
+      }
     }
   }
 
-  chart {
-    name = "Receiver Scrape duration"
-    rank = 11
-    type = "timeseries"
-    query {
-      query_name = "a"
-      display    = "line"
-      hidden     = false
-      tql        = <<EOT
+  dynamic "chart" {
+    for_each = [ for addon in var.dashboard_addons: addon if addon == local.prometheus_addon ]
+
+    content {
+      name = "Receiver Scrape duration"
+      rank = 11
+      type = "timeseries"
+      query {
+        query_name = "a"
+        display    = "line"
+        hidden     = false
+        tql        = <<EOT
 metric scrape_duration_seconds
 | latest
 | group_by [job], mean
-EOT
+  EOT
+      }
     }
   }
 
