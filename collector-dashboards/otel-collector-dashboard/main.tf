@@ -39,7 +39,7 @@ EOT
     rank = 2
     type = "timeseries"
     query {
-      query_name = "a * b"
+      query_name = "limits"
       display    = "line"
       hidden     = false
       tql        = <<EOT
@@ -64,7 +64,7 @@ metric kube_pod_container_resource_requests
 EOT
     }
     query {
-      query_name = "c"
+      query_name = "usage"
       display    = "line"
       hidden     = false
       tql        = <<EOT
