@@ -9,7 +9,7 @@ The dashboard can be used to detect data loss, CPU/Memory saturation and details
 
 For a more in-depth recommendation on how to monitor and alert on the OpenTelemetry Collector, please refer to the [documentation](https://github.com/open-telemetry/opentelemetry-collector/blob/main/docs/monitoring.md).
 
-
+---
 ## How to Use This Module
 
 1. Follow the instructions in the [main readme](https://github.com/lightstep/terraform-opentelemetry-dashboards) for basic setup of the Lightstep Terraform Provider.
@@ -28,4 +28,13 @@ For a more in-depth recommendation on how to monitor and alert on the OpenTeleme
     }
     ```
 1. Run `terraform init/plan/apply` as describe in the [main readme](https://github.com/lightstep/terraform-opentelemetry-dashboards).
+---
+## Dashboard Addons
 
+OpenTelemetry Collector is a very extensible system in which one can define a specific set of receivers, processors and exporters to be enabled. Dashboards Addons are a way to customize this dashboad with charts that are specific for enabled components.
+
+----
+### Prometheus Receiver
+Name: `prometheus`
+
+Purpose: charts for monitoring [prometheus-receiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/prometheusreceiver) performance. 
