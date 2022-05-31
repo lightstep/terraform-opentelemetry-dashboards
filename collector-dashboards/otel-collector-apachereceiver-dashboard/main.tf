@@ -9,146 +9,144 @@ terraform {
 }
 
 resource "lightstep_metric_dashboard" "otel_collector_apachereceiver_dashboard" {
-    project_name   = var.lightstep_project
-    dashboard_name = "OpenTelemetry apachereceiver Integration"
+  project_name   = var.lightstep_project
+  dashboard_name = "OpenTelemetry / Apache Integration"
 
-    
-    
-    chart {
-      name = "apache.current_connections"
-      rank = "0"
-      type = "timeseries"
+  chart {
+    name = "Requests"
+    rank = "0"
+    type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+    query {
+      query_name = "a"
+      display    = "line"
+      hidden     = false
 
-        metric              = "apache.current_connections"
-        timeseries_operator = "rate"
+      metric              = "apache.requests"
+      timeseries_operator = "rate"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "server_name"]
-        }
-        
-        # TODO: add description: The number of active connections currently attached to the HTTP server.
-        # TODO: add unit: connections
+      group_by {
+        aggregation_method = "sum"
+        keys               = ["server_name"]
       }
+
+      # TODO: add description: The number of requests serviced by the HTTP server per second.
+      # TODO: add unit: 1
     }
-    
-    chart {
-      name = "apache.requests"
-      rank = "1"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "Bytes"
+    rank = "1"
+    type = "timeseries"
 
-        metric              = "apache.requests"
-        timeseries_operator = "rate"
+    query {
+      query_name = "a"
+      display    = "line"
+      hidden     = false
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "server_name"]
-        }
-        
-        # TODO: add description: The number of requests serviced by the HTTP server per second.
-        # TODO: add unit: 1
+      metric              = "apache.traffic"
+      timeseries_operator = "rate"
+
+      group_by {
+        aggregation_method = "sum"
+        keys               = ["server_name"]
       }
+
+      # TODO: add description: Total HTTP server traffic.
+      # TODO: add unit: By
     }
-    
-    chart {
-      name = "apache.scoreboard"
-      rank = "2"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "Workers"
+    rank = "2"
+    type = "timeseries"
 
-        metric              = "apache.scoreboard"
-        timeseries_operator = "rate"
+    query {
+      query_name = "a"
+      display    = "line"
+      hidden     = false
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "server_name", "scoreboard_state"]
-        }
-        
-        # TODO: add description: The number of connections in each state.
-        # TODO: add unit: scoreboard
+      metric              = "apache.workers"
+      timeseries_operator = "last"
+
+      group_by {
+        aggregation_method = "sum"
+        keys               = ["server_name", "state"]
       }
+
+      # TODO: add description: The number of workers currently attached to the HTTP server.
+      # TODO: add unit: connections
     }
-    
-    chart {
-      name = "apache.traffic"
-      rank = "3"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "Connections"
+    rank = "3"
+    type = "timeseries"
 
-        metric              = "apache.traffic"
-        timeseries_operator = "rate"
+    query {
+      query_name = "a"
+      display    = "line"
+      hidden     = false
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "server_name"]
-        }
-        
-        # TODO: add description: Total HTTP server traffic.
-        # TODO: add unit: By
+      metric              = "apache.current_connections"
+      timeseries_operator = "last"
+
+      group_by {
+        aggregation_method = "sum"
+        keys               = ["server_name"]
       }
+
+      # TODO: add description: The number of active connections currently attached to the HTTP server.
+      # TODO: add unit: connections
     }
-    
-    chart {
-      name = "apache.uptime"
-      rank = "4"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "Scoreboard"
+    rank = "4"
+    type = "timeseries"
 
-        metric              = "apache.uptime"
-        timeseries_operator = "rate"
+    query {
+      query_name = "a"
+      display    = "area"
+      hidden     = false
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "server_name"]
-        }
-        
-        # TODO: add description: The amount of time that the server has been running in seconds.
-        # TODO: add unit: s
+      metric              = "apache.scoreboard"
+      timeseries_operator = "last"
+
+      group_by {
+        aggregation_method = "sum"
+        keys               = ["server_name", "state"]
       }
+
+      # TODO: add description: The number of connections in each state.
+      # TODO: add unit: scoreboard
     }
-    
-    chart {
-      name = "apache.workers"
-      rank = "5"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "Up"
+    rank = "5"
+    type = "timeseries"
 
-        metric              = "apache.workers"
-        timeseries_operator = "rate"
+    query {
+      query_name = "a"
+      display    = "bar"
+      hidden     = false
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "server_name", "workers_state"]
-        }
-        
-        # TODO: add description: The number of workers currently attached to the HTTP server.
-        # TODO: add unit: connections
+      metric              = "apache.uptime"
+      timeseries_operator = "rate"
+
+      group_by {
+        aggregation_method = "sum"
+        keys               = ["server_name"]
       }
+
+      # TODO: add description: The amount of time that the server has been running in seconds.
+      # TODO: add unit: s
     }
+  }
 }
