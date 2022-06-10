@@ -22,68 +22,163 @@ To deploy create Lightstep dashboards for production using this repo:
 
 - Run `terraform init` and `terraform apply` with your API Key set in the environment variable `LIGHTSTEP_API_KEY` (or the environment variable name you specified in configuration).
 
-The following shows an example Terraform configuration:
 
-```
-terraform {
-  required_providers {
-    lightstep = {
-      source = "lightstep/lightstep"
-      version = "1.60.2"
+## Examples
+
+The following shows an example Terraform configuration for various integrations:
+<details>
+  <summary>OpenTelemetry Apache Tomcat Integration Dashboard</summary>
+
+  ```yaml
+  terraform {
+    required_providers {
+      lightstep = {
+        source = "lightstep/lightstep"
+        version = "1.60.2"
+      }
     }
   }
-}
 
-provider "lightstep" {
-  api_key         = "your api key"
-  organization    = "your organization"
-}
+  provider "lightstep" {
+    api_key         = "your api key"
+    organization    = "your organization"
+  }
 
-## Example: Create OpenTelemetry Collector Dashboard
-module "collector-dashboards" {
-  source            = "./collector-dashboards/otel-collector-dashboard"
-  lightstep_project = "your project"
-}
+  module "collector-tomcat-dashboards" {
+    source            = "./collector-dashboards/otel-collector-tomcat-dashboard"
+    lightstep_project = "your project"
+  }
+  ```
 
-## Example: Create OpenTelemetry MySQL Integration Dashboard
-module "collector-mysql-dashboards" {
-  source            = "./collector-dashboards/otel-collector-mysql-dashboard"
-  lightstep_project = "your project"
-}
+</details>
+<details>
+  <summary>OpenTelemetry Collector Dashboard</summary>
 
-## Example: Create OpenTelemetry Kubernetes Dashboard
-module "kube-dashboards" {
-  source            = "./terraform-opentelemetry-dashboards/collector-dashboards/otel-collector-kubernetes"
-  lightstep_project = "dev-jkart"
-
-  workloads = [
-    {
-      namespace = "cert-manager"
-      workload  = "cert-manager"
-    },
-    {
-      namespace = "kube-system"
-      workload  = "fluentbit-gke"
-    },
-    {
-      namespace = "kube-system"
-      workload  = "gke-metrics-agent"
-    },
-    {
-      namespace = "kube-system"
-      workload  = "konnectivity-agent"
-    },
-    {
-      namespace = "testapp"
-      workload  = "testapp"
+  ```yaml
+  terraform {
+    required_providers {
+      lightstep = {
+        source = "lightstep/lightstep"
+        version = "1.60.2"
+      }
     }
-  ]
-}
+  }
 
-## Example: expose your module outputs
-output "kube_module" {
-  value = module.kube-dashboards
-}
+  provider "lightstep" {
+    api_key         = "your api key"
+    organization    = "your organization"
+  }
+
+  module "collector-dashboards" {
+    source            = "./collector-dashboards/otel-collector-dashboard"
+    lightstep_project = "your project"
+  }
+  ```
+
+</details>
+<details>
+  <summary>OpenTelemetry Kubernetes Dashboard</summary>
+
+  ```yaml
+  terraform {
+    required_providers {
+      lightstep = {
+        source = "lightstep/lightstep"
+        version = "1.60.2"
+      }
+    }
+  }
+
+  provider "lightstep" {
+    api_key         = "your api key"
+    organization    = "your organization"
+  }
+
+  module "kube-dashboards" {
+    source            = "./terraform-opentelemetry-dashboards/collector-dashboards/otel-collector-kubernetes"
+    lightstep_project = "dev-jkart"
+
+    workloads = [
+      {
+        namespace = "cert-manager"
+        workload  = "cert-manager"
+      },
+      {
+        namespace = "kube-system"
+        workload  = "fluentbit-gke"
+      },
+      {
+        namespace = "kube-system"
+        workload  = "gke-metrics-agent"
+      },
+      {
+        namespace = "kube-system"
+        workload  = "konnectivity-agent"
+      },
+      {
+        namespace = "testapp"
+        workload  = "testapp"
+      }
+    ]
+  }
+
+  ## Example: expose your module outputs
+  output "kube_module" {
+    value = module.kube-dashboards
+  }
+  ```
+
+</details>
+<details>
+  <summary>OpenTelemetry MySQL Integration Dashboard</summary>
+
+  ```yaml
+  terraform {
+    required_providers {
+      lightstep = {
+        source = "lightstep/lightstep"
+        version = "1.60.2"
+      }
+    }
+  }
+
+  provider "lightstep" {
+    api_key         = "your api key"
+    organization    = "your organization"
+  }
+
+  module "collector-mysql-dashboards" {
+    source            = "./collector-dashboards/otel-collector-mysql-dashboard"
+    lightstep_project = "your project"
+  }
+  ```
+
+</details>
+<details>
+  <summary>OpenTelemetry Redis Integration Dashboard</summary>
 
 
-```
+  ```yaml
+  terraform {
+    required_providers {
+      lightstep = {
+        source = "lightstep/lightstep"
+        version = "1.60.2"
+      }
+    }
+  }
+
+  provider "lightstep" {
+    api_key         = "your api key"
+    organization    = "your organization"
+  }
+
+  module "collector-redisreceiver-dashboards" {
+    source            = "./collector-dashboards/otel-collector-redisreceiver-dashboard"
+    lightstep_project = "your project"
+  }
+  ```
+
+</details>
+
+
