@@ -95,7 +95,7 @@ The following shows an example Terraform configuration for various integrations:
   }
 
   module "kube-dashboards" {
-    source            = "./terraform-opentelemetry-dashboards/collector-dashboards/otel-collector-kubernetes"
+    source            = "./terraform-opentelemetry-dashboards/collector-dashboards/otel-collector-kubernetes-dashboard"
     lightstep_project = "your project"
 
     workloads = [
