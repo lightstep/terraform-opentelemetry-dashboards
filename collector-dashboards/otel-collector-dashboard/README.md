@@ -3,7 +3,7 @@
 **:warning:** You are viewing a **beta version** of the official
 module to create and manage OpenTelemetry Integration Dashboards inside Lightstep.
 
-This module provisions a Lightstep dashboard for monitoring a OpenTelemetry Collector.
+This module provisions a Lightstep dashboard for monitoring an OpenTelemetry Collector deployed on Kubernetes.
 
 The dashboard can be used to detect data loss, CPU/Memory saturation and details about data ingestion. A HATS (Hourly Active Time Series) graph is also included to monitor the effect of the ingested metrics.
 
