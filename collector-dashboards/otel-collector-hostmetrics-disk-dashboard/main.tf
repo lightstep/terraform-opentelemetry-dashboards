@@ -9,191 +9,123 @@ terraform {
 }
 
 resource "lightstep_metric_dashboard" "otel_collector_hostmetrics_disk_dashboard" {
+
   project_name   = var.lightstep_project
   dashboard_name = "OpenTelemetry / Host Metrics / Disk"
 
   chart {
-    name = "idle"
+    name = "Read / Write bytes"
     rank = "0"
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "area"
-      hidden              = false
+      query_name = "a"
+      display    = "line"
+      hidden     = false
 
-      metric              = "system.cpu.time"
+      metric              = "system.disk.operations"
       timeseries_operator = "rate"
+
 
       group_by {
         aggregation_method = "sum"
-        keys = ["cpu",]
+        keys               = ["direction", ]
       }
+
     }
+
   }
 
   chart {
-    name = "interrupt"
+    name = "Read / Write time"
     rank = "1"
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "area"
-      hidden              = false
+      query_name = "a"
+      display    = "line"
+      hidden     = false
 
-      metric              = "system.cpu.time"
+      metric              = "system.disk.operation_time"
       timeseries_operator = "rate"
+
 
       group_by {
         aggregation_method = "sum"
-        keys = ["cpu",]
+        keys               = ["direction", ]
       }
+
     }
+
   }
 
   chart {
-    name = "nice"
+    name = "Usage"
     rank = "2"
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "area"
-      hidden              = false
+      query_name = "a"
+      display    = "bar"
+      hidden     = false
 
-      metric              = "system.cpu.time"
-      timeseries_operator = "rate"
+      metric              = "system.filesystem.usage"
+      timeseries_operator = "last"
+
 
       group_by {
         aggregation_method = "sum"
-        keys = ["cpu",]
+        keys               = ["state", ]
       }
+
     }
+
   }
 
   chart {
-    name = "softirq"
+    name = "Total disk"
     rank = "3"
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "area"
-      hidden              = false
+      query_name = "a"
+      display    = "bar"
+      hidden     = false
 
-      metric              = "system.cpu.time"
-      timeseries_operator = "rate"
+      metric              = "system.filesystem.usage"
+      timeseries_operator = "last"
+
 
       group_by {
         aggregation_method = "sum"
-        keys = ["cpu",]
+        keys               = []
       }
+
     }
+
   }
 
   chart {
-    name = "steal"
+    name = "Inode usage"
     rank = "4"
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "area"
-      hidden              = false
+      query_name = "a"
+      display    = "line"
+      hidden     = false
 
-      metric              = "system.cpu.time"
-      timeseries_operator = "rate"
+      metric              = "system.filesystem.inodes.usage"
+      timeseries_operator = "last"
+
 
       group_by {
         aggregation_method = "sum"
-        keys = ["cpu",]
+        keys               = ["state", ]
       }
+
     }
+
   }
 
-  chart {
-    name = "system"
-    rank = "5"
-    type = "timeseries"
-
-    query {
-      query_name          = "a"
-      display             = "area"
-      hidden              = false
-
-      metric              = "system.cpu.time"
-      timeseries_operator = "rate"
-
-      group_by {
-        aggregation_method = "sum"
-        keys = ["cpu",]
-      }
-    }
-  }
-
-  chart {
-    name = "user"
-    rank = "6"
-    type = "timeseries"
-
-    query {
-      query_name          = "a"
-      display             = "area"
-      hidden              = false
-
-      metric              = "system.cpu.time"
-      timeseries_operator = "rate"
-
-      group_by {
-        aggregation_method = "sum"
-        keys = ["cpu",]
-      }
-    }
-  }
-
-  chart {
-    name = "wait"
-    rank = "7"
-    type = "timeseries"
-
-    query {
-      query_name          = "a"
-      display             = "area"
-      hidden              = false
-
-      metric              = "system.cpu.time"
-      timeseries_operator = "rate"
-
-      group_by {
-        aggregation_method = "sum"
-        keys = ["cpu",]
-      }
-    }
-  }
-
-  #chart {
-  #  name = "Total cores"
-  #  rank = "8"
-  #  type = "timeseries"
-
-  #  query {
-  #    query_name          = "a"
-  #    display             = "big_number"
-  #    hidden              = false
-
-  #    metric              = "system.cpu.time"
-  #    timeseries_operator = "delta"
-
-
-  #    group_by {
-  #      aggregation_method = "count_non_zero"
-  #      keys = []
-  #    }
-  #  }
-  #}
 }
-
-
-
-
