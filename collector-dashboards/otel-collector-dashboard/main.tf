@@ -29,7 +29,7 @@ resource "lightstep_metric_dashboard" "otel_collector_dashboard" {
       tql        = <<EOT
 metric otelcol_process_uptime
 | rate
-| group_by [k8s_cluster_name,job,service_instance_id], sum
+| group_by [collector_name,job,service_instance_id], sum
 EOT
     }
   }
@@ -47,7 +47,7 @@ metric kube_pod_container_resource_limits
 | latest
 | filter resource == "cpu"
 | filter container == "otc-container"
-| group_by [], sum
+| group_by [pod], sum
 EOT
     }
     query {
@@ -60,7 +60,7 @@ metric kube_pod_container_resource_requests
 | latest
 | filter resource == "cpu"
 | filter container == "otc-container"
-| group_by [], sum
+| group_by [pod], sum
 EOT
     }
     query {
@@ -71,7 +71,7 @@ EOT
     metric container_cpu_usage_seconds_total
     | rate
     | filter container == "otc-container"
-    | group_by [], sum
+    | group_by [pod], sum
     EOT
     }
   }
@@ -130,7 +130,7 @@ EOT
       tql        = <<EOT
 metric otelcol_receiver_accepted_metric_points
 | delta
-| group_by [receiver], sum
+| group_by [receiver, collector_name], sum
 EOT
     }
     query {
@@ -140,7 +140,7 @@ EOT
       tql        = <<EOT
 metric otelcol_receiver_accepted_spans
 | delta
-| group_by [receiver], sum
+| group_by [receiver, collector_name], sum
 EOT
     }
     query {
@@ -150,7 +150,7 @@ EOT
       tql        = <<EOT
 metric otelcol_receiver_refused_metric_points
 | delta
-| group_by [receiver], sum
+| group_by [receiver, collector_name], sum
 EOT
     }
 
@@ -161,7 +161,7 @@ EOT
       tql        = <<EOT
 metric otelcol_receiver_refused_spans
 | delta
-| group_by [receiver], sum
+| group_by [receiver, collector_name], sum
 EOT
     }
   }
@@ -178,7 +178,7 @@ EOT
       tql        = <<EOT
 metric otelcol_processor_dropped_metric_points
 | delta
-| group_by [processor], sum
+| group_by [processor, collector_name], sum
 EOT
     }
     query {
@@ -188,7 +188,7 @@ EOT
       tql        = <<EOT
 metric otelcol_processor_dropped_spans
 | delta
-| group_by [exporter], sum
+| group_by [exporter, collector_name], sum
 EOT
     }
     query {
@@ -198,7 +198,7 @@ EOT
       tql        = <<EOT
 metric otelcol_processor_refused_metric_points
 | delta
-| group_by [processor], sum
+| group_by [processor, collector_name], sum
 EOT
     }
     query {
@@ -208,7 +208,7 @@ EOT
       tql        = <<EOT
 metric otelcol_processor_refused_spans
 | delta
-| group_by [exporter], sum
+| group_by [exporter, collector_name], sum
 EOT
     }
   }
@@ -225,7 +225,7 @@ EOT
       tql        = <<EOT
 metric otelcol_exporter_sent_metric_points
 | delta
-| group_by [exporter], sum
+| group_by [exporter, collector_name], sum
 EOT
     }
     query {
@@ -235,7 +235,7 @@ EOT
       tql        = <<EOT
 metric otelcol_exporter_sent_spans
 | delta
-| group_by [exporter], sum
+| group_by [exporter, collector_name], sum
 EOT
     }
     query {
@@ -245,7 +245,7 @@ EOT
       tql        = <<EOT
 metric otelcol_exporter_send_failed_metric_points
 | delta
-| group_by [exporter], sum
+| group_by [exporter, collector_name], sum
 EOT
     }
     query {
@@ -255,7 +255,7 @@ EOT
       tql        = <<EOT
 metric otelcol_exporter_send_failed_spans
 | delta
-| group_by [exporter], sum
+| group_by [exporter, collector_name], sum
 EOT
     }
   }
@@ -272,11 +272,8 @@ EOT
       tql        = <<EOT
 metric otelcol_processor_batch_batch_send_size
 | delta
-| group_by [processor], sum
-| point percentile(value, 50),
-  percentile(value, 95),
-  percentile(value, 99),
-    percentile(value, 99.9)
+| group_by [processor, collector_name], sum
+| point percentile(value, 99)
 EOT
     }
   }
@@ -292,7 +289,7 @@ EOT
       tql        = <<EOT
 metric otelcol_exporter_queue_size
 | latest
-| group_by [exporter], sum
+| group_by [exporter, collector_name], sum
 EOT
     }
   }
@@ -308,7 +305,7 @@ EOT
       tql        = <<EOT
 metric lightstep.hourly_active_time_series
 | delta 1h
-| group_by [service], sum
+| group_by [service, service.name], sum
 EOT
     }
   }
