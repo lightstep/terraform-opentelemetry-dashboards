@@ -21,7 +21,10 @@ resource "lightstep_metric_dashboard" "otel_collector_hostmetrics_cpu_dashboard"
       query_name          = "a"
       display             = "area"
       hidden              = false
-
+      include_filters = [ {
+        "key": "state",
+        "value": "idle"
+      } ]
       metric              = "system.cpu.time"
       timeseries_operator = "rate"
 
@@ -41,6 +44,10 @@ resource "lightstep_metric_dashboard" "otel_collector_hostmetrics_cpu_dashboard"
       query_name          = "a"
       display             = "area"
       hidden              = false
+      include_filters = [ {
+        "key": "state",
+        "value": "interrupt"
+      } ]
 
       metric              = "system.cpu.time"
       timeseries_operator = "rate"
@@ -61,6 +68,10 @@ resource "lightstep_metric_dashboard" "otel_collector_hostmetrics_cpu_dashboard"
       query_name          = "a"
       display             = "area"
       hidden              = false
+      include_filters = [ {
+        "key": "state",
+        "value": "nice"
+      } ]
 
       metric              = "system.cpu.time"
       timeseries_operator = "rate"
@@ -81,6 +92,10 @@ resource "lightstep_metric_dashboard" "otel_collector_hostmetrics_cpu_dashboard"
       query_name          = "a"
       display             = "area"
       hidden              = false
+      include_filters = [ {
+        "key": "state",
+        "value": "softirq"
+      } ]
 
       metric              = "system.cpu.time"
       timeseries_operator = "rate"
@@ -101,6 +116,10 @@ resource "lightstep_metric_dashboard" "otel_collector_hostmetrics_cpu_dashboard"
       query_name          = "a"
       display             = "area"
       hidden              = false
+      include_filters = [ {
+        "key": "state",
+        "value": "steal"
+      } ]
 
       metric              = "system.cpu.time"
       timeseries_operator = "rate"
@@ -121,6 +140,10 @@ resource "lightstep_metric_dashboard" "otel_collector_hostmetrics_cpu_dashboard"
       query_name          = "a"
       display             = "area"
       hidden              = false
+      include_filters = [ {
+        "key": "state",
+        "value": "system"
+      } ]
 
       metric              = "system.cpu.time"
       timeseries_operator = "rate"
@@ -141,6 +164,10 @@ resource "lightstep_metric_dashboard" "otel_collector_hostmetrics_cpu_dashboard"
       query_name          = "a"
       display             = "area"
       hidden              = false
+      include_filters = [ {
+        "key": "state",
+        "value": "user"
+      } ]
 
       metric              = "system.cpu.time"
       timeseries_operator = "rate"
@@ -161,6 +188,10 @@ resource "lightstep_metric_dashboard" "otel_collector_hostmetrics_cpu_dashboard"
       query_name          = "a"
       display             = "area"
       hidden              = false
+      include_filters = [ {
+        "key": "state",
+        "value": "wait"
+      } ]
 
       metric              = "system.cpu.time"
       timeseries_operator = "rate"

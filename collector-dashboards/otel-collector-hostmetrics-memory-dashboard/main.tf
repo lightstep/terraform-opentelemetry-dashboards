@@ -27,7 +27,6 @@ resource "lightstep_metric_dashboard" "otel_collector_hostmetrics_memory_dashboa
       metric              = "system.memory.usage"
       timeseries_operator = "last"
 
-
       group_by {
         aggregation_method = "sum"
         keys               = ["state", ]
