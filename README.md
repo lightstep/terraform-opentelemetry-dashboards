@@ -77,6 +77,31 @@ The following shows an example Terraform configuration for various integrations:
 
 </details>
 <details>
+  <summary>OpenTelemetry Host Integration Dashboard</summary>
+
+  ```yaml
+  terraform {
+    required_providers {
+      lightstep = {
+        source = "lightstep/lightstep"
+        version = "1.60.2"
+      }
+    }
+  }
+
+  provider "lightstep" {
+    api_key         = "your api key"
+    organization    = "your organization"
+  }
+
+  module "collector-host-dashboards" {
+    source            = "./collector-dashboards/otel-collector-host-dashboard"
+    lightstep_project = "your project"
+  }
+  ```
+
+</details>
+<details>
   <summary>OpenTelemetry Host Metrics CPU Integration Dashboard</summary>
 
   ```yaml
