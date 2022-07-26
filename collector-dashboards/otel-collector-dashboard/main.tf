@@ -305,7 +305,7 @@ EOT
       tql        = <<EOT
 metric lightstep.hourly_active_time_series
 | delta 1h
-| group_by [service, service.name], sum
+| group_by [service.name], sum
 EOT
     }
   }
