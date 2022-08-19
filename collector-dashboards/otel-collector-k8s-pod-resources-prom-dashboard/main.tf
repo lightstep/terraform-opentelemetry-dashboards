@@ -1,20 +1,20 @@
 terraform {
-    required_providers {
-        lightstep = {
-            source = "lightstep/lightstep"
-            version = "~> 1.60.2"
-        }
+  required_providers {
+    lightstep = {
+      source  = "lightstep/lightstep"
+      version = "~> 1.60.2"
     }
-    required_version = ">= v1.0.11"
+  }
+  required_version = ">= v1.0.11"
 }
 
 provider "lightstep" {
-    api_key         = var.api_key
-    organization    = var.organization
+  api_key      = var.api_key
+  organization = var.organization
 }
 
 resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
-  project_name = var.lightstep_project
+  project_name   = var.lightstep_project
   dashboard_name = "Kubernetes Resources - Pod (import)"
 
   chart {
@@ -23,9 +23,9 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "line"
-      hidden              = false
+      query_name = "a"
+      display    = "line"
+      hidden     = false
 
       metric              = "container_cpu_usage_seconds_total"
       timeseries_operator = "rate"
@@ -33,7 +33,7 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
 
       group_by {
         aggregation_method = "avg"
-        keys = ["container",]
+        keys               = ["container", ]
       }
 
     }
@@ -46,9 +46,9 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "line"
-      hidden              = false
+      query_name = "a"
+      display    = "line"
+      hidden     = false
 
       metric              = "kube_pod_container_resource_requests"
       timeseries_operator = "last"
@@ -56,15 +56,15 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
 
       group_by {
         aggregation_method = "sum"
-        keys = []
+        keys               = []
       }
 
     }
 
     query {
-      query_name          = "b"
-      display             = "line"
-      hidden              = false
+      query_name = "b"
+      display    = "line"
+      hidden     = false
 
       metric              = "kube_pod_container_resource_limits"
       timeseries_operator = "last"
@@ -72,7 +72,7 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
 
       group_by {
         aggregation_method = "sum"
-        keys = []
+        keys               = []
       }
 
     }
@@ -85,9 +85,9 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "area"
-      hidden              = true
+      query_name = "a"
+      display    = "area"
+      hidden     = true
 
       metric              = "container_cpu_cfs_throttled_periods_total"
       timeseries_operator = "rate"
@@ -95,22 +95,22 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
 
       group_by {
         aggregation_method = "sum"
-        keys = []
+        keys               = []
       }
 
     }
 
     query {
-      query_name          = "a / b"
-      display             = "area"
-      hidden              = false
+      query_name = "a / b"
+      display    = "area"
+      hidden     = false
 
     }
 
     query {
-      query_name          = "b"
-      display             = "area"
-      hidden              = true
+      query_name = "b"
+      display    = "area"
+      hidden     = true
 
       metric              = "container_cpu_cfs_periods_total"
       timeseries_operator = "rate"
@@ -118,7 +118,7 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
 
       group_by {
         aggregation_method = "sum"
-        keys = []
+        keys               = []
       }
 
     }
@@ -131,9 +131,9 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "line"
-      hidden              = false
+      query_name = "a"
+      display    = "line"
+      hidden     = false
 
       metric              = "container_memory_working_set_bytes"
       timeseries_operator = "last"
@@ -141,7 +141,7 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
 
       group_by {
         aggregation_method = "sum"
-        keys = ["container",]
+        keys               = ["container", ]
       }
 
     }
@@ -154,9 +154,9 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "line"
-      hidden              = false
+      query_name = "a"
+      display    = "line"
+      hidden     = false
 
       metric              = "kube_pod_container_resource_requests"
       timeseries_operator = "last"
@@ -164,15 +164,15 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
 
       group_by {
         aggregation_method = "sum"
-        keys = []
+        keys               = []
       }
 
     }
 
     query {
-      query_name          = "b"
-      display             = "line"
-      hidden              = false
+      query_name = "b"
+      display    = "line"
+      hidden     = false
 
       metric              = "kube_pod_container_resource_limits"
       timeseries_operator = "last"
@@ -180,7 +180,7 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
 
       group_by {
         aggregation_method = "sum"
-        keys = []
+        keys               = []
       }
 
     }
@@ -193,9 +193,9 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "bar"
-      hidden              = false
+      query_name = "a"
+      display    = "bar"
+      hidden     = false
 
       metric              = "container_memory_working_set_bytes"
       timeseries_operator = "last"
@@ -203,7 +203,7 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
 
       group_by {
         aggregation_method = "sum"
-        keys = ["container",]
+        keys               = ["container", ]
       }
 
     }
@@ -216,9 +216,9 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "line"
-      hidden              = false
+      query_name = "a"
+      display    = "line"
+      hidden     = false
 
       metric              = "container_network_receive_bytes_total"
       timeseries_operator = "rate"
@@ -226,7 +226,7 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
 
       group_by {
         aggregation_method = "sum"
-        keys = ["pod",]
+        keys               = ["pod", ]
       }
 
     }
@@ -239,9 +239,9 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "line"
-      hidden              = false
+      query_name = "a"
+      display    = "line"
+      hidden     = false
 
       metric              = "container_network_transmit_bytes_total"
       timeseries_operator = "rate"
@@ -249,7 +249,7 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
 
       group_by {
         aggregation_method = "sum"
-        keys = ["pod",]
+        keys               = ["pod", ]
       }
 
     }
@@ -262,9 +262,9 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "line"
-      hidden              = false
+      query_name = "a"
+      display    = "line"
+      hidden     = false
 
       metric              = "container_network_receive_packets_total"
       timeseries_operator = "rate"
@@ -272,7 +272,7 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
 
       group_by {
         aggregation_method = "sum"
-        keys = ["pod",]
+        keys               = ["pod", ]
       }
 
     }
@@ -285,9 +285,9 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "line"
-      hidden              = false
+      query_name = "a"
+      display    = "line"
+      hidden     = false
 
       metric              = "container_network_transmit_packets_total"
       timeseries_operator = "rate"
@@ -295,7 +295,7 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
 
       group_by {
         aggregation_method = "sum"
-        keys = ["pod",]
+        keys               = ["pod", ]
       }
 
     }
@@ -308,9 +308,9 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "line"
-      hidden              = false
+      query_name = "a"
+      display    = "line"
+      hidden     = false
 
       metric              = "container_network_receive_packets_dropped_total"
       timeseries_operator = "rate"
@@ -318,7 +318,7 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
 
       group_by {
         aggregation_method = "sum"
-        keys = ["pod",]
+        keys               = ["pod", ]
       }
 
     }
@@ -331,9 +331,9 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "line"
-      hidden              = false
+      query_name = "a"
+      display    = "line"
+      hidden     = false
 
       metric              = "container_network_transmit_packets_dropped_total"
       timeseries_operator = "rate"
@@ -341,7 +341,7 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
 
       group_by {
         aggregation_method = "sum"
-        keys = ["pod",]
+        keys               = ["pod", ]
       }
 
     }
@@ -354,9 +354,9 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "line"
-      hidden              = true
+      query_name = "a"
+      display    = "line"
+      hidden     = true
 
       metric              = "container_fs_writes_total"
       timeseries_operator = "rate"
@@ -364,22 +364,22 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
 
       group_by {
         aggregation_method = "sum"
-        keys = ["pod",]
+        keys               = ["pod", ]
       }
 
     }
 
     query {
-      query_name          = "a + b"
-      display             = "line"
-      hidden              = false
+      query_name = "a + b"
+      display    = "line"
+      hidden     = false
 
     }
 
     query {
-      query_name          = "b"
-      display             = "line"
-      hidden              = true
+      query_name = "b"
+      display    = "line"
+      hidden     = true
 
       metric              = "container_fs_reads_total"
       timeseries_operator = "rate"
@@ -387,7 +387,7 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
 
       group_by {
         aggregation_method = "sum"
-        keys = ["pod",]
+        keys               = ["pod", ]
       }
 
     }
@@ -400,9 +400,9 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "line"
-      hidden              = true
+      query_name = "a"
+      display    = "line"
+      hidden     = true
 
       metric              = "container_fs_writes_bytes_total"
       timeseries_operator = "rate"
@@ -410,22 +410,22 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
 
       group_by {
         aggregation_method = "sum"
-        keys = ["pod",]
+        keys               = ["pod", ]
       }
 
     }
 
     query {
-      query_name          = "a + b"
-      display             = "line"
-      hidden              = false
+      query_name = "a + b"
+      display    = "line"
+      hidden     = false
 
     }
 
     query {
-      query_name          = "b"
-      display             = "line"
-      hidden              = true
+      query_name = "b"
+      display    = "line"
+      hidden     = true
 
       metric              = "container_fs_reads_bytes_total"
       timeseries_operator = "rate"
@@ -433,7 +433,7 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
 
       group_by {
         aggregation_method = "sum"
-        keys = ["pod",]
+        keys               = ["pod", ]
       }
 
     }
@@ -446,9 +446,9 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "line"
-      hidden              = true
+      query_name = "a"
+      display    = "line"
+      hidden     = true
 
       metric              = "container_fs_writes_total"
       timeseries_operator = "rate"
@@ -456,22 +456,22 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
 
       group_by {
         aggregation_method = "sum"
-        keys = ["container",]
+        keys               = ["container", ]
       }
 
     }
 
     query {
-      query_name          = "a + b"
-      display             = "line"
-      hidden              = false
+      query_name = "a + b"
+      display    = "line"
+      hidden     = false
 
     }
 
     query {
-      query_name          = "b"
-      display             = "line"
-      hidden              = true
+      query_name = "b"
+      display    = "line"
+      hidden     = true
 
       metric              = "container_fs_reads_total"
       timeseries_operator = "rate"
@@ -479,7 +479,7 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
 
       group_by {
         aggregation_method = "sum"
-        keys = ["container",]
+        keys               = ["container", ]
       }
 
     }
@@ -492,9 +492,9 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "line"
-      hidden              = true
+      query_name = "a"
+      display    = "line"
+      hidden     = true
 
       metric              = "container_fs_writes_bytes_total"
       timeseries_operator = "rate"
@@ -502,22 +502,22 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
 
       group_by {
         aggregation_method = "sum"
-        keys = ["container",]
+        keys               = ["container", ]
       }
 
     }
 
     query {
-      query_name          = "a + b"
-      display             = "line"
-      hidden              = false
+      query_name = "a + b"
+      display    = "line"
+      hidden     = false
 
     }
 
     query {
-      query_name          = "b"
-      display             = "line"
-      hidden              = true
+      query_name = "b"
+      display    = "line"
+      hidden     = true
 
       metric              = "container_fs_reads_bytes_total"
       timeseries_operator = "rate"
@@ -525,7 +525,7 @@ resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
 
       group_by {
         aggregation_method = "sum"
-        keys = ["container",]
+        keys               = ["container", ]
       }
 
     }
