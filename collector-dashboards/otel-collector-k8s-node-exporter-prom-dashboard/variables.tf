@@ -1,14 +1,14 @@
 variable "project" {
   description = "Lightstep Project Name"
-  type = string
+  type        = string
 }
 
 variable "api_key" {
   description = "API Key"
-  type = string
-}  
+  type        = string
+}
 
 variable "organization" {
   description = "The organization that owns your account."
-  type = string
+  type        = string
 }
