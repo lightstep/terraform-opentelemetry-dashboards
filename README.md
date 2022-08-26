@@ -204,6 +204,8 @@ The following shows an example Terraform configuration for various integrations:
 <details>
   <summary>OpenTelemetry Kubernetes Dashboard</summary>
 
+Visit Lightstep to [Learn how to send telemetry from an OpenTelemetry Collector to Lightstep using the Kubernetes Operator for OpenTelemetry](https://docs.lightstep.com/paths/collector-operator-path).
+
   ```yaml
   terraform {
     required_providers {
