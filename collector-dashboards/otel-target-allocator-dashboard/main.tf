@@ -2,7 +2,7 @@ terraform {
   required_providers {
     lightstep = {
       source  = "lightstep/lightstep"
-      version = "~> 1.61.2"
+      version = "~> 1.62.0"
     }
   }
   required_version = ">= v1.0.11"
@@ -77,16 +77,13 @@ resource "lightstep_metric_dashboard" "otel_target_allocator_dashboard" {
             exclude_filters     = []
             hidden              = false
             include_filters     = []
-            metric              = "opentelemetry_allocator_time_to_allocate"
             query_name          = "a"
-            timeseries_operator = "delta"
-
-            group_by {
-                aggregation_method = "sum"
-                keys               = [
-                    "method",
-                ]
-            }
+            tql                 = <<-EOT
+                metric opentelemetry_allocator_time_to_allocate
+                | delta 5m
+                | group_by [method], sum
+                | point percentile(value, 50.0), percentile(value, 95.0), percentile(value, 99.0)
+            EOT
         }
     }
     chart {
@@ -143,16 +140,13 @@ resource "lightstep_metric_dashboard" "otel_target_allocator_dashboard" {
             exclude_filters     = []
             hidden              = false
             include_filters     = []
-            metric              = "opentelemetry_allocator_http_duration_seconds"
             query_name          = "a"
-            timeseries_operator = "delta"
-
-            group_by {
-                aggregation_method = "sum"
-                keys               = [
-                    "path",
-                ]
-            }
+            tql                 = <<-EOT
+                metric opentelemetry_allocator_http_duration_seconds
+                | delta 5m
+                | group_by [path], sum
+                | point percentile(value, 50.0), percentile(value, 95.0), percentile(value, 99.0)
+            EOT
         }
     }
     chart {
