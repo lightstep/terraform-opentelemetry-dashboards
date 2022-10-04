@@ -15,7 +15,7 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
     
     
     chart {
-      name = "cpu.time"
+      name = "container.cpu.time"
       rank = "0"
       type = "timeseries"
 
@@ -24,12 +24,12 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
         display    = "line"
         hidden     = false
 
-        metric              = "cpu.time"
+        metric              = "container.cpu.time"
         timeseries_operator = "rate"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = ["k8s.pod.name", "k8s.namespace.name"]
         }
         
         # TODO: add description: CPU time
@@ -38,7 +38,7 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
     }
     
     chart {
-      name = "cpu.utilization"
+      name = "container.cpu.utilization"
       rank = "1"
       type = "timeseries"
 
@@ -47,12 +47,12 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
         display    = "line"
         hidden     = false
 
-        metric              = "cpu.utilization"
+        metric              = "container.cpu.utilization"
         timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = ["k8s.pod.name", "k8s.namespace.name"]
         }
         
         # TODO: add description: CPU utilization
@@ -61,7 +61,7 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
     }
     
     chart {
-      name = "filesystem.available"
+      name = "container.filesystem.available"
       rank = "2"
       type = "timeseries"
 
@@ -70,12 +70,12 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
         display    = "line"
         hidden     = false
 
-        metric              = "filesystem.available"
+        metric              = "container.filesystem.available"
         timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = ["k8s.pod.name", "k8s.namespace.name"]
         }
         
         # TODO: add description: Filesystem available
@@ -84,7 +84,7 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
     }
     
     chart {
-      name = "filesystem.capacity"
+      name = "container.filesystem.capacity"
       rank = "3"
       type = "timeseries"
 
@@ -93,12 +93,12 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
         display    = "line"
         hidden     = false
 
-        metric              = "filesystem.capacity"
+        metric              = "container.filesystem.capacity"
         timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = ["k8s.pod.name", "k8s.namespace.name"]
         }
         
         # TODO: add description: Filesystem capacity
@@ -107,7 +107,7 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
     }
     
     chart {
-      name = "filesystem.usage"
+      name = "container.filesystem.usage"
       rank = "4"
       type = "timeseries"
 
@@ -116,12 +116,12 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
         display    = "line"
         hidden     = false
 
-        metric              = "filesystem.usage"
+        metric              = "container.filesystem.usage"
         timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = ["k8s.pod.name", "k8s.namespace.name"]
         }
         
         # TODO: add description: Filesystem usage
@@ -130,7 +130,7 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
     }
     
     chart {
-      name = "memory.available"
+      name = "container.memory.available"
       rank = "5"
       type = "timeseries"
 
@@ -139,12 +139,12 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
         display    = "line"
         hidden     = false
 
-        metric              = "memory.available"
+        metric              = "container.memory.available"
         timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = ["k8s.pod.name", "k8s.namespace.name"]
         }
         
         # TODO: add description: Memory available
@@ -153,7 +153,7 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
     }
     
     chart {
-      name = "memory.major_page_faults"
+      name = "container.memory.major_page_faults"
       rank = "6"
       type = "timeseries"
 
@@ -162,12 +162,12 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
         display    = "line"
         hidden     = false
 
-        metric              = "memory.major_page_faults"
+        metric              = "container.memory.major_page_faults"
         timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = ["k8s.pod.name", "k8s.namespace.name"]
         }
         
         # TODO: add description: Memory major_page_faults
@@ -176,7 +176,7 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
     }
     
     chart {
-      name = "memory.page_faults"
+      name = "container.memory.page_faults"
       rank = "7"
       type = "timeseries"
 
@@ -185,12 +185,12 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
         display    = "line"
         hidden     = false
 
-        metric              = "memory.page_faults"
+        metric              = "container.memory.page_faults"
         timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = ["k8s.pod.name", "k8s.namespace.name"]
         }
         
         # TODO: add description: Memory page_faults
@@ -199,7 +199,7 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
     }
     
     chart {
-      name = "memory.rss"
+      name = "container.memory.rss"
       rank = "8"
       type = "timeseries"
 
@@ -208,12 +208,12 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
         display    = "line"
         hidden     = false
 
-        metric              = "memory.rss"
+        metric              = "container.memory.rss"
         timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = ["k8s.pod.name", "k8s.namespace.name"]
         }
         
         # TODO: add description: Memory rss
@@ -222,7 +222,7 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
     }
     
     chart {
-      name = "memory.usage"
+      name = "container.memory.usage"
       rank = "9"
       type = "timeseries"
 
@@ -231,12 +231,12 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
         display    = "line"
         hidden     = false
 
-        metric              = "memory.usage"
+        metric              = "container.memory.usage"
         timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = ["k8s.pod.name", "k8s.namespace.name"]
         }
         
         # TODO: add description: Memory usage
@@ -245,7 +245,7 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
     }
     
     chart {
-      name = "memory.working_set"
+      name = "container.memory.working_set"
       rank = "10"
       type = "timeseries"
 
@@ -254,12 +254,12 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
         display    = "line"
         hidden     = false
 
-        metric              = "memory.working_set"
+        metric              = "container.memory.working_set"
         timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = ["k8s.pod.name", "k8s.namespace.name"]
         }
         
         # TODO: add description: Memory working_set
@@ -268,7 +268,7 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
     }
     
     chart {
-      name = "network.errors"
+      name = "k8s.pod.network.errors"
       rank = "11"
       type = "timeseries"
 
@@ -277,7 +277,7 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
         display    = "line"
         hidden     = false
 
-        metric              = "network.errors"
+        metric              = "k8s.pod.network.errors"
         timeseries_operator = "rate"
 
         group_by {
@@ -291,7 +291,7 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
     }
     
     chart {
-      name = "network.io"
+      name = "k8s.pod.network.io"
       rank = "12"
       type = "timeseries"
 
@@ -300,7 +300,7 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
         display    = "line"
         hidden     = false
 
-        metric              = "network.io"
+        metric              = "k8s.pod.network.io"
         timeseries_operator = "rate"
 
         group_by {
@@ -314,7 +314,7 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
     }
     
     chart {
-      name = "volume.available"
+      name = "k8s.volume.available"
       rank = "13"
       type = "timeseries"
 
@@ -323,12 +323,12 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
         display    = "line"
         hidden     = false
 
-        metric              = "volume.available"
+        metric              = "k8s.volume.available"
         timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = ["k8s.pod.name", "k8s.namespace.name"]
         }
         
         # TODO: add description: The number of available bytes in the volume.
@@ -337,7 +337,7 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
     }
     
     chart {
-      name = "volume.capacity"
+      name = "k8s.volume.capacity"
       rank = "14"
       type = "timeseries"
 
@@ -346,12 +346,12 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
         display    = "line"
         hidden     = false
 
-        metric              = "volume.capacity"
+        metric              = "k8s.volume.capacity"
         timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = ["k8s.pod.name", "k8s.namespace.name"]
         }
         
         # TODO: add description: The total capacity in bytes of the volume.
@@ -360,7 +360,7 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
     }
     
     chart {
-      name = "volume.inodes"
+      name = "k8s.volume.inodes"
       rank = "15"
       type = "timeseries"
 
@@ -369,12 +369,12 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
         display    = "line"
         hidden     = false
 
-        metric              = "volume.inodes"
+        metric              = "k8s.volume.inodes"
         timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = ["k8s.pod.name", "k8s.namespace.name"]
         }
         
         # TODO: add description: The total inodes in the filesystem.
@@ -383,7 +383,7 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
     }
     
     chart {
-      name = "volume.inodes.free"
+      name = "k8s.volume.inodes.free"
       rank = "16"
       type = "timeseries"
 
@@ -392,12 +392,12 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
         display    = "line"
         hidden     = false
 
-        metric              = "volume.inodes.free"
+        metric              = "k8s.volume.inodes.free"
         timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = ["k8s.pod.name", "k8s.namespace.name"]
         }
         
         # TODO: add description: The free inodes in the filesystem.
@@ -406,7 +406,7 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
     }
     
     chart {
-      name = "volume.inodes.used"
+      name = "k8s.volume.inodes.used"
       rank = "17"
       type = "timeseries"
 
@@ -415,12 +415,12 @@ resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashb
         display    = "line"
         hidden     = false
 
-        metric              = "volume.inodes.used"
+        metric              = "k8s.volume.inodes.used"
         timeseries_operator = "last"
 
         group_by {
           aggregation_method = "sum"
-          keys               = []
+          keys               = ["k8s.pod.name", "k8s.namespace.name"]
         }
         
         # TODO: add description: The inodes used by the filesystem. This may not equal inodes - free because filesystem may share inodes with other filesystems.
