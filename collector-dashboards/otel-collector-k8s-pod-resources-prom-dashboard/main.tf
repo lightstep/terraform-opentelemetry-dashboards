@@ -2,15 +2,10 @@ terraform {
   required_providers {
     lightstep = {
       source  = "lightstep/lightstep"
-      version = "~> 1.60.2"
+      version = "~> 1.62.0"
     }
   }
   required_version = ">= v1.0.11"
-}
-
-provider "lightstep" {
-  api_key      = var.api_key
-  organization = var.organization
 }
 
 resource "lightstep_metric_dashboard" "k8s_resources_pod_dashboard" {
