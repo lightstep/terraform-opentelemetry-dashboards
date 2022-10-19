@@ -8,6 +8,7 @@ This is a Terraform module for deploying pre-defined set of OpenTelemetry Integr
 ## Pre-requisites
 
 * Lightstep account and API Key with `member` permissons.
+    * You can obtain the API key from https://app.lightstep.com/<your-project-name>/account/api-keys
 * Terraform v1.0+
 
 
