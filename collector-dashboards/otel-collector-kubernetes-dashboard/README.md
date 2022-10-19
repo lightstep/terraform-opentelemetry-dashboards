@@ -13,7 +13,7 @@ Visit Lightstep to [Learn how to send telemetry from an OpenTelemetry Collector 
 
 1. Identify which Kubernetes workloads you would like to monitor.
     ```bash
-    % kubectl get deployment,daemonset,statefulset -A | awk ‘{print $1 $2}’
+    % kubectl get deployment,daemonset,statefulset -A | awk '{print $1 $2}'
     % kubectl get deployment,daemonset,statefulset -A -o jsonpath='{range .items[*]}namespace:{@.metadata.namespace} workload:{@.metadata.name}{"\n"}{end}'
     ```
 1. Create a module in your `.tf` file for the Kubernetes dashbaords.
