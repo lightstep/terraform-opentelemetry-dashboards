@@ -34,7 +34,7 @@ The following shows an example Terraform configuration for various integrations:
     required_providers {
       lightstep = {
         source = "lightstep/lightstep"
-        version = "1.62.0"
+        version = "1.70.6"
       }
     }
   }
@@ -59,7 +59,7 @@ The following shows an example Terraform configuration for various integrations:
     required_providers {
       lightstep = {
         source = "lightstep/lightstep"
-        version = "1.62.0"
+        version = "1.70.6"
       }
     }
   }
@@ -84,7 +84,7 @@ The following shows an example Terraform configuration for various integrations:
     required_providers {
       lightstep = {
         source = "lightstep/lightstep"
-        version = "1.62.0"
+        version = "1.70.6"
       }
     }
   }
@@ -109,7 +109,7 @@ The following shows an example Terraform configuration for various integrations:
     required_providers {
       lightstep = {
         source = "lightstep/lightstep"
-        version = "1.62.0"
+        version = "1.70.6"
       }
     }
   }
@@ -134,7 +134,7 @@ The following shows an example Terraform configuration for various integrations:
     required_providers {
       lightstep = {
         source = "lightstep/lightstep"
-        version = "1.62.0"
+        version = "1.70.6"
       }
     }
   }
@@ -159,7 +159,7 @@ The following shows an example Terraform configuration for various integrations:
     required_providers {
       lightstep = {
         source = "lightstep/lightstep"
-        version = "1.62.0"
+        version = "1.70.6"
       }
     }
   }
@@ -184,7 +184,7 @@ The following shows an example Terraform configuration for various integrations:
     required_providers {
       lightstep = {
         source = "lightstep/lightstep"
-        version = "1.62.0"
+        version = "1.70.6"
       }
     }
   }
@@ -211,7 +211,7 @@ Visit Lightstep to [Learn how to send telemetry from an OpenTelemetry Collector 
     required_providers {
       lightstep = {
         source = "lightstep/lightstep"
-        version = "1.62.0"
+        version = "1.70.6"
       }
     }
   }
@@ -264,7 +264,7 @@ Visit Lightstep to [Learn how to send telemetry from an OpenTelemetry Collector 
     required_providers {
       lightstep = {
         source = "lightstep/lightstep"
-        version = "1.62.0"
+        version = "1.70.6"
       }
     }
   }
@@ -290,7 +290,7 @@ Visit Lightstep to [Learn how to send telemetry from an OpenTelemetry Collector 
     required_providers {
       lightstep = {
         source = "lightstep/lightstep"
-        version = "1.62.0"
+        version = "1.70.6"
       }
     }
   }
