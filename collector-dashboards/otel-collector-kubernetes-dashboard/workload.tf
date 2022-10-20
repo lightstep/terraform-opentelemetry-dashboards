@@ -3,7 +3,7 @@ locals {
 }
 
 
-resource "lightstep_metric_dashboard" "k8s_compute_resources_workload" {
+resource "lightstep_dashboard" "k8s_compute_resources_workload" {
   project_name   = var.lightstep_project
   count          = length(var.workloads)
   dashboard_name = "Kubernetes / Compute Resources / Workload / ${var.workloads[count.index].workload}"
@@ -14,10 +14,10 @@ resource "lightstep_metric_dashboard" "k8s_compute_resources_workload" {
     type = "timeseries"
 
     query {
-      hidden     = false
-      query_name = "a"
-      display    = "line"
-      tql        = <<EOT
+      hidden       = false
+      query_name   = "a"
+      display      = "line"
+      query_string = <<EOT
 with
 cpu =
   fetch container_cpu_usage_seconds_total
@@ -38,10 +38,10 @@ EOT
 
 
     query {
-      hidden     = false
-      query_name = "b"
-      display    = "line"
-      tql        = <<EOT
+      hidden       = false
+      query_name   = "b"
+      display      = "line"
+      query_string = <<EOT
 with
 request =
   fetch kube_pod_container_resource_requests
@@ -69,10 +69,10 @@ EOT
     type = "timeseries"
 
     query {
-      hidden     = false
-      query_name = "a"
-      display    = "line"
-      tql        = <<EOT
+      hidden       = false
+      query_name   = "a"
+      display      = "line"
+      query_string = <<EOT
 with
 mem =
   fetch container_memory_working_set_bytes
@@ -92,10 +92,10 @@ EOT
     }
 
     query {
-      hidden     = false
-      query_name = "b"
-      display    = "line"
-      tql        = <<EOT
+      hidden       = false
+      query_name   = "b"
+      display      = "line"
+      query_string = <<EOT
 with
 request =
   fetch kube_pod_container_resource_requests
@@ -122,10 +122,10 @@ EOT
     type = "timeseries"
 
     query {
-      hidden     = false
-      query_name = "a"
-      display    = "line"
-      tql        = <<EOT
+      hidden       = false
+      query_name   = "a"
+      display      = "line"
+      query_string = <<EOT
 with
 net_rx =
   fetch container_network_receive_bytes_total
@@ -151,10 +151,10 @@ EOT
     type = "timeseries"
 
     query {
-      hidden     = false
-      query_name = "a"
-      display    = "line"
-      tql        = <<EOT
+      hidden       = false
+      query_name   = "a"
+      display      = "line"
+      query_string = <<EOT
 with
 net_tx=
   fetch container_network_transmit_bytes_total
@@ -180,10 +180,10 @@ EOT
     type = "timeseries"
 
     query {
-      hidden     = false
-      query_name = "a"
-      display    = "line"
-      tql        = <<EOT
+      hidden       = false
+      query_name   = "a"
+      display      = "line"
+      query_string = <<EOT
 with
 pkt_rx =
   fetch container_network_receive_packets_total
@@ -209,10 +209,10 @@ EOT
     type = "timeseries"
 
     query {
-      hidden     = false
-      query_name = "a"
-      display    = "line"
-      tql        = <<EOT
+      hidden       = false
+      query_name   = "a"
+      display      = "line"
+      query_string = <<EOT
 with
 pkt_tx=
   fetch container_network_transmit_packets_total
