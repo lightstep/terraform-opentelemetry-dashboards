@@ -1,5 +1,5 @@
 
-resource "lightstep_metric_dashboard" "k8s_compute_resources_cluster" {
+resource "lightstep_dashboard" "k8s_compute_resources_cluster" {
   project_name   = var.lightstep_project
   dashboard_name = "Kubernetes / Compute Resources / Cluster"
 
@@ -22,8 +22,8 @@ resource "lightstep_metric_dashboard" "k8s_compute_resources_cluster" {
       //    time_window_aggregation_method = "latest"
       //  }
 
-      display = "line"
-      tql     = <<EOT
+      display      = "line"
+      query_string = <<EOT
 with
 cpu =
   fetch node_cpu_seconds_total
@@ -61,8 +61,8 @@ EOT
       //    time_window_aggregation_method = "mean"
       //  }
 
-      display = "line"
-      tql     = <<EOT
+      display      = "line"
+      query_string = <<EOT
 with
 
 alloctable =
@@ -109,8 +109,8 @@ EOT
       //    time_window_aggregation_method = "mean"
       //  }
 
-      display = "line"
-      tql     = <<EOT
+      display      = "line"
+      query_string = <<EOT
 with
 
 alloctable =
@@ -159,8 +159,8 @@ EOT
       //    time_window_aggregation_method = "latest"
       //  }
 
-      display = "line"
-      tql     = <<EOT
+      display      = "line"
+      query_string = <<EOT
 # 1 - sum(:node_memory_MemAvailable_bytes:sum{cluster="$cluster"}) / sum(node_memory_MemTotal_bytes{job="node-exporter",cluster="$cluster"})
 
 
@@ -200,8 +200,8 @@ EOT
       //    time_window_aggregation_method = "mean"
       //  }
 
-      display = "line"
-      tql     = <<EOT
+      display      = "line"
+      query_string = <<EOT
 with
 
 alloctable =
@@ -248,8 +248,8 @@ EOT
       //    time_window_aggregation_method = "mean"
       //  }
 
-      display = "line"
-      tql     = <<EOT
+      display      = "line"
+      query_string = <<EOT
 with
 
 alloctable =
@@ -286,10 +286,10 @@ EOT
     type = "timeseries"
 
     query {
-      hidden     = false
-      query_name = "a"
-      display    = "line"
-      tql        = <<EOT
+      hidden       = false
+      query_name   = "a"
+      display      = "line"
+      query_string = <<EOT
 fetch container_cpu_usage_seconds_total
 | rate
 | filter image =~ ".+" && container =~ ".+"
@@ -304,10 +304,10 @@ EOT
     type = "timeseries"
 
     query {
-      hidden     = false
-      query_name = "a"
-      display    = "line"
-      tql        = <<EOT
+      hidden       = false
+      query_name   = "a"
+      display      = "line"
+      query_string = <<EOT
 fetch container_memory_working_set_bytes
 | latest
 | filter image =~ ".+" && container =~ ".+"
@@ -322,10 +322,10 @@ EOT
     type = "timeseries"
 
     query {
-      hidden     = false
-      query_name = "a"
-      display    = "line"
-      tql        = <<EOT
+      hidden       = false
+      query_name   = "a"
+      display      = "line"
+      query_string = <<EOT
 fetch container_network_receive_bytes_total
 | rate
 | filter image =~ ".+"
@@ -340,10 +340,10 @@ EOT
     type = "timeseries"
 
     query {
-      hidden     = false
-      query_name = "a"
-      display    = "line"
-      tql        = <<EOT
+      hidden       = false
+      query_name   = "a"
+      display      = "line"
+      query_string = <<EOT
 fetch container_network_transmit_bytes_total
 | rate
 | filter image =~ ".+"
@@ -358,10 +358,10 @@ EOT
     type = "timeseries"
 
     query {
-      hidden     = false
-      query_name = "a"
-      display    = "line"
-      tql        = <<EOT
+      hidden       = false
+      query_name   = "a"
+      display      = "line"
+      query_string = <<EOT
 fetch container_network_receive_packets_total
 | rate
 | filter image =~ ".+"
@@ -376,10 +376,10 @@ EOT
     type = "timeseries"
 
     query {
-      hidden     = false
-      query_name = "a"
-      display    = "line"
-      tql        = <<EOT
+      hidden       = false
+      query_name   = "a"
+      display      = "line"
+      query_string = <<EOT
 fetch container_network_transmit_packets_total
 | rate
 | filter image =~ ".+"
@@ -394,10 +394,10 @@ EOT
     type = "timeseries"
 
     query {
-      hidden     = false
-      query_name = "a"
-      display    = "line"
-      tql        = <<EOT
+      hidden       = false
+      query_name   = "a"
+      display      = "line"
+      query_string = <<EOT
 with
   reads = metric container_fs_reads_total
   | rate
@@ -428,10 +428,10 @@ EOT
     type = "timeseries"
 
     query {
-      hidden     = false
-      query_name = "a"
-      display    = "line"
-      tql        = <<EOT
+      hidden       = false
+      query_name   = "a"
+      display      = "line"
+      query_string = <<EOT
 with
   reads = metric container_fs_reads_bytes_total
   | rate
