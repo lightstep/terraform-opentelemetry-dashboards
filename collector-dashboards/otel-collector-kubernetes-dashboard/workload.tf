@@ -1,5 +1,5 @@
 locals {
-  pod_owner_regex = "(-[bcdfghjklmnpqrstvwxz2456789]{3}[bcdfghjklmnpqrstvwxz2456789]{3}[bcdfghjklmnpqrstvwxz2456789]{4})?$"
+  pod_owner_regex = ".*"
 }
 
 
