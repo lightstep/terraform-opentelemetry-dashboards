@@ -2,153 +2,112 @@ terraform {
   required_providers {
     lightstep = {
       source  = "lightstep/lightstep"
-      version = "~> 1.70.6"
+      version = "~> 1.70.10"
     }
   }
   required_version = ">= v1.0.11"
 }
 
-resource "lightstep_metric_dashboard" "otel_collector_rabbitmqreceiver_dashboard" {
-    project_name   = var.lightstep_project
-    dashboard_name = "OpenTelemetry rabbitmqreceiver Integration"
 
-    
-    
-    chart {
-      name = "rabbitmq.consumer.count"
-      rank = "0"
-      type = "timeseries"
+resource "lightstep_dashboard" "otel_collector_rabbitmqreceiver_dashboard" {
+  project_name          = var.lightstep_project
+  dashboard_name        = "RabbitMQ Dashboard"
+  dashboard_description = "Monitor RabbitMQ with this message metrics summay."
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "Consumer Count"
+    rank = "0"
+    type = "timeseries"
 
-        metric              = "rabbitmq.consumer.count"
-        timeseries_operator = "rate"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: The number of consumers currently reading from the queue.
-        # TODO: add unit: {consumers}
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric rabbitmq.consumer.count | rate | group_by [], sum
+EOT
     }
-    
-    chart {
-      name = "rabbitmq.message.acknowledged"
-      rank = "1"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "rabbitmq.message.acknowledged"
-        timeseries_operator = "rate"
+  chart {
+    name = "Message Acknowledged"
+    rank = "1"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: The number of messages acknowledged by consumers.
-        # TODO: add unit: {messages}
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric rabbitmq.message.acknowledged | rate | group_by [], sum
+EOT
     }
-    
-    chart {
-      name = "rabbitmq.message.current"
-      rank = "2"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "rabbitmq.message.current"
-        timeseries_operator = "rate"
+  chart {
+    name = "Message Current"
+    rank = "2"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "message.state"]
-        }
-        
-        # TODO: add description: The total number of messages currently in the queue.
-        # TODO: add unit: {messages}
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric rabbitmq.message.current | rate | group_by ["message.state"], sum
+EOT
     }
-    
-    chart {
-      name = "rabbitmq.message.delivered"
-      rank = "3"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "rabbitmq.message.delivered"
-        timeseries_operator = "rate"
+  chart {
+    name = "Message Delivered"
+    rank = "3"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: The number of messages delivered to consumers.
-        # TODO: add unit: {messages}
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric rabbitmq.message.delivered | rate | group_by [], sum
+EOT
     }
-    
-    chart {
-      name = "rabbitmq.message.dropped"
-      rank = "4"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "rabbitmq.message.dropped"
-        timeseries_operator = "rate"
+  chart {
+    name = "Message Dropped"
+    rank = "4"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: The number of messages dropped as unroutable.
-        # TODO: add unit: {messages}
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric rabbitmq.message.dropped | rate | group_by [], sum
+EOT
     }
-    
-    chart {
-      name = "rabbitmq.message.published"
-      rank = "5"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "rabbitmq.message.published"
-        timeseries_operator = "rate"
+  chart {
+    name = "Message Published"
+    rank = "5"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: The number of messages published to a queue.
-        # TODO: add unit: {messages}
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric rabbitmq.message.published | rate | group_by [], sum
+EOT
     }
+
+  }
+
 }
