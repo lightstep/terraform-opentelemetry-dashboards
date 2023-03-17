@@ -24,6 +24,7 @@ resource "lightstep_dashboard" "k8s_node_exporter_dashboard" {
       hidden       = false
       query_string = <<EOT
 metric node_load1 | reduce mean | group_by [], min
+
 EOT
     }
 
@@ -33,6 +34,7 @@ EOT
       hidden       = false
       query_string = <<EOT
 metric node_load5 | reduce mean | group_by [], min
+
 EOT
     }
 
@@ -42,6 +44,7 @@ EOT
       hidden       = false
       query_string = <<EOT
 metric node_load15 | reduce mean | group_by [], min
+
 EOT
     }
 
@@ -51,6 +54,7 @@ EOT
       hidden       = false
       query_string = <<EOT
 metric node_cpu_seconds_total | rate | group_by [], sum
+
 EOT
     }
 
@@ -70,6 +74,7 @@ with
   a = metric node_cpu_seconds_total | rate | group_by ["cpu"], sum;
   b = metric node_cpu_seconds_total | delta | group_by ["cpu"], count;
 join (1 - (a / b)), a=0, b=0
+
 EOT
     }
 
@@ -89,6 +94,7 @@ with
   a = metric node_memory_MemAvailable_bytes | reduce mean | group_by [], sum;
   b = metric node_memory_MemTotal_bytes | reduce mean | group_by [], sum;
 join (100 - ((a / b) * 100)), a=0, b=0
+
 EOT
     }
 
@@ -106,9 +112,10 @@ EOT
       query_string = <<EOT
 with
   a = metric node_memory_MemTotal_bytes | reduce mean | group_by [], sum;
-  e = metric node_memory_Cached_bytes | reduce mean | group_by [], sum;
-  f = metric node_memory_MemFree_bytes | reduce mean | group_by [], sum;
-join ((a - f) - e), a=0, e=0, f=0
+  b = metric node_memory_Cached_bytes | reduce mean | group_by [], sum;
+  c = metric node_memory_MemFree_bytes | reduce mean | group_by [], sum;
+join ((a - c) - b), a=0, b=0, c=0
+
 EOT
     }
 
@@ -118,6 +125,7 @@ EOT
       hidden       = false
       query_string = <<EOT
 metric node_memory_Buffers_bytes | reduce mean | group_by [], sum
+
 EOT
     }
 
@@ -134,6 +142,7 @@ EOT
       hidden       = false
       query_string = <<EOT
 metric node_disk_read_bytes_total | rate | group_by [], sum
+
 EOT
     }
 
@@ -143,6 +152,7 @@ EOT
       hidden       = false
       query_string = <<EOT
 metric node_disk_written_bytes_total | rate | group_by [], sum
+
 EOT
     }
 
@@ -152,6 +162,7 @@ EOT
       hidden       = false
       query_string = <<EOT
 metric node_disk_io_time_seconds_total | rate | group_by [], sum
+
 EOT
     }
 
@@ -168,6 +179,7 @@ EOT
       hidden       = false
       query_string = <<EOT
 metric node_disk_io_time_seconds_total | rate | group_by [], sum
+
 EOT
     }
 
@@ -177,6 +189,7 @@ EOT
       hidden       = false
       query_string = <<EOT
 metric node_disk_discard_time_seconds_total | rate | group_by [], sum
+
 EOT
     }
 
@@ -186,6 +199,7 @@ EOT
       hidden       = false
       query_string = <<EOT
 metric node_disk_flush_requests_time_seconds_total | rate | group_by [], sum
+
 EOT
     }
 
@@ -205,6 +219,7 @@ with
   a = metric node_filesystem_size_bytes | latest | group_by ["mountpoint"], max;
   b = metric node_filesystem_avail_bytes | latest | group_by ["mountpoint"], max;
 join (1 - (b / a)), a=0, b=0
+
 EOT
     }
 
@@ -221,6 +236,7 @@ EOT
       hidden       = false
       query_string = <<EOT
 metric node_network_receive_bytes_total | rate | group_by ["device"], mean
+
 EOT
     }
 
@@ -237,6 +253,7 @@ EOT
       hidden       = false
       query_string = <<EOT
 metric node_network_transmit_bytes_total | rate | group_by ["device"], mean
+
 EOT
     }
 
