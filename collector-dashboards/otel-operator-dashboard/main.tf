@@ -11,7 +11,7 @@ terraform {
 resource "lightstep_dashboard" "otel_operator_dashboard_dashboard" {
   project_name          = var.lightstep_project
   dashboard_name        = "OpenTelemetry Operator"
-  dashboard_description = ""
+  dashboard_description = "Monitor your OpenTelemetry operator with this overview dashboard."
 
   chart {
     name = "Total reconciles"
