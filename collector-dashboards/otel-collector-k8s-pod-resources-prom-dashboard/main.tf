@@ -11,7 +11,7 @@ terraform {
 resource "lightstep_dashboard" "k8s_resources_pod_dashboard" {
   project_name          = var.lightstep_project
   dashboard_name        = "Kubernetes Resources - Pod"
-  dashboard_description = ""
+  dashboard_description = "Monitor K8S Pod Resources with this overview dashboard."
 
   chart {
     name = "CPU Usage - Seconds"
