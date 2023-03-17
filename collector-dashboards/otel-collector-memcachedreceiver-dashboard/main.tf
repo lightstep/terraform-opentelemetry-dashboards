@@ -2,268 +2,179 @@ terraform {
   required_providers {
     lightstep = {
       source  = "lightstep/lightstep"
-      version = "~> 1.70.6"
+      version = "~> 1.70.10"
     }
   }
   required_version = ">= v1.0.11"
 }
 
-resource "lightstep_metric_dashboard" "otel_collector_memcachedreceiver_dashboard" {
-    project_name   = var.lightstep_project
-    dashboard_name = "OpenTelemetry memcachedreceiver Integration"
+resource "lightstep_dashboard" "otel_collector_memcachedreceiver_dashboard" {
+  project_name          = var.lightstep_project
+  dashboard_name        = "OpenTelemetry memcachedreceiver Integration"
+  dashboard_description = "Monitor Memcached performance with this overview dashboard."
 
-    
-    
-    chart {
-      name = "memcached.bytes"
-      rank = "0"
-      type = "timeseries"
+  chart {
+    name = "Bytes"
+    rank = "0"
+    type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
-
-        metric              = "memcached.bytes"
-        timeseries_operator = "last"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: Current number of bytes used by this server to store items.
-        # TODO: add unit: By
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = "metric memcached.bytes | latest | group_by [], sum"
     }
-    
-    chart {
-      name = "memcached.commands"
-      rank = "1"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "memcached.commands"
-        timeseries_operator = "rate"
+  chart {
+    name = "Commands"
+    rank = "1"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "command"]
-        }
-        
-        # TODO: add description: Commands executed.
-        # TODO: add unit: {commands}
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric memcached.commands | rate | group_by ["command"], sum
+EOT
     }
-    
-    chart {
-      name = "memcached.connections.current"
-      rank = "2"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "memcached.connections.current"
-        timeseries_operator = "rate"
+  chart {
+    name = "Connections - Current"
+    rank = "2"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: The current number of open connections.
-        # TODO: add unit: {connections}
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = "metric memcached.connections.current | rate | group_by [], sum"
     }
-    
-    chart {
-      name = "memcached.connections.total"
-      rank = "3"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "memcached.connections.total"
-        timeseries_operator = "rate"
+  chart {
+    name = "Connections - Total"
+    rank = "3"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: Total number of connections opened since the server started running.
-        # TODO: add unit: {connections}
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = "metric memcached.connections.total | rate | group_by [], sum"
     }
-    
-    chart {
-      name = "memcached.cpu.usage"
-      rank = "4"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "memcached.cpu.usage"
-        timeseries_operator = "rate"
+  chart {
+    name = "CPU Usage (by State)"
+    rank = "4"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "state"]
-        }
-        
-        # TODO: add description: Accumulated user and system time.
-        # TODO: add unit: s
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric memcached.cpu.usage | rate | group_by ["state"], sum
+EOT
     }
-    
-    chart {
-      name = "memcached.current_items"
-      rank = "5"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "memcached.current_items"
-        timeseries_operator = "rate"
+  chart {
+    name = "Current Items"
+    rank = "5"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: Number of items currently stored in the cache.
-        # TODO: add unit: {items}
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = "metric memcached.current_items | rate | group_by [], sum"
     }
-    
-    chart {
-      name = "memcached.evictions"
-      rank = "6"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "memcached.evictions"
-        timeseries_operator = "rate"
+  chart {
+    name = "Evictions"
+    rank = "6"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: Cache item evictions.
-        # TODO: add unit: {evictions}
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = "metric memcached.evictions | rate | group_by [], sum"
     }
-    
-    chart {
-      name = "memcached.network"
-      rank = "7"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "memcached.network"
-        timeseries_operator = "rate"
+  chart {
+    name = "Throughput (by Direction)"
+    rank = "7"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "direction"]
-        }
-        
-        # TODO: add description: Bytes transferred over the network.
-        # TODO: add unit: by
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric memcached.network | rate | group_by ["direction"], sum
+EOT
     }
-    
-    chart {
-      name = "memcached.operation_hit_ratio"
-      rank = "8"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "memcached.operation_hit_ratio"
-        timeseries_operator = "last"
+  chart {
+    name = "Hit Ratio (by Operation)"
+    rank = "8"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "operation"]
-        }
-        
-        # TODO: add description: Hit ratio for operations, expressed as a percentage value between 0.0 and 100.0.
-        # TODO: add unit: %
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric memcached.operation_hit_ratio | latest | group_by ["operation"], sum
+EOT
     }
-    
-    chart {
-      name = "memcached.operations"
-      rank = "9"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "memcached.operations"
-        timeseries_operator = "rate"
+  chart {
+    name = "Operations (by Type)"
+    rank = "9"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "type", "operation"]
-        }
-        
-        # TODO: add description: Operation counts.
-        # TODO: add unit: {operations}
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric memcached.operations | rate | group_by ["type", "operation"], sum
+EOT
     }
-    
-    chart {
-      name = "memcached.threads"
-      rank = "10"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "memcached.threads"
-        timeseries_operator = "rate"
+  chart {
+    name = "Threads "
+    rank = "10"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: Number of threads used by the memcached instance.
-        # TODO: add unit: {threads}
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = "metric memcached.threads | rate | group_by [], sum"
     }
+
+  }
+
 }
