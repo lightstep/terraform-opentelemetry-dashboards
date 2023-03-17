@@ -2,15 +2,16 @@ terraform {
   required_providers {
     lightstep = {
       source  = "lightstep/lightstep"
-      version = "~> 1.70.6"
+      version = "~> 1.70.10"
     }
   }
   required_version = ">= v1.0.11"
 }
 
-resource "lightstep_metric_dashboard" "k8s_node_exporter_dashboard" {
-  project_name   = var.lightstep_project
-  dashboard_name = "Node Exporter (import)"
+resource "lightstep_dashboard" "k8s_node_exporter_dashboard" {
+  project_name          = var.lightstep_project
+  dashboard_name        = "Node Exporter"
+  dashboard_description = "Monitor your K8S nodes using this overview dashboard with Node Exporter."
 
   chart {
     name = "Load Average"
@@ -18,67 +19,39 @@ resource "lightstep_metric_dashboard" "k8s_node_exporter_dashboard" {
     type = "timeseries"
 
     query {
-      query_name = "a"
-      display    = "line"
-      hidden     = false
-
-      metric              = "node_load1"
-      timeseries_operator = "avg"
-
-
-      group_by {
-        aggregation_method = "min"
-        keys               = []
-      }
-
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric node_load1 | reduce mean | group_by [], min
+EOT
     }
 
     query {
-      query_name = "b"
-      display    = "line"
-      hidden     = false
-
-      metric              = "node_load5"
-      timeseries_operator = "avg"
-
-
-      group_by {
-        aggregation_method = "min"
-        keys               = []
-      }
-
+      query_name   = "b"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric node_load5 | reduce mean | group_by [], min
+EOT
     }
 
     query {
-      query_name = "c"
-      display    = "line"
-      hidden     = false
-
-      metric              = "node_load15"
-      timeseries_operator = "avg"
-
-
-      group_by {
-        aggregation_method = "min"
-        keys               = []
-      }
-
+      query_name   = "c"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric node_load15 | reduce mean | group_by [], min
+EOT
     }
 
     query {
-      query_name = "d"
-      display    = "line"
-      hidden     = false
-
-      metric              = "node_cpu_seconds_total"
-      timeseries_operator = "rate"
-
-
-      group_by {
-        aggregation_method = "sum"
-        keys               = []
-      }
-
+      query_name   = "d"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric node_cpu_seconds_total | rate | group_by [], sum
+EOT
     }
 
   }
@@ -89,90 +62,34 @@ resource "lightstep_metric_dashboard" "k8s_node_exporter_dashboard" {
     type = "timeseries"
 
     query {
-      query_name = "1 - a / b"
-      display    = "line"
-      hidden     = false
-
-    }
-
-    query {
-      query_name = "a"
-      display    = "line"
-      hidden     = true
-
-      metric              = "node_cpu_seconds_total"
-      timeseries_operator = "rate"
-
-
-      group_by {
-        aggregation_method = "sum"
-        keys               = ["cpu", ]
-      }
-
-    }
-
-    query {
-      query_name = "b"
-      display    = "line"
-      hidden     = true
-
-      metric              = "node_cpu_seconds_total"
-      timeseries_operator = "delta"
-
-
-      group_by {
-        aggregation_method = "count"
-        keys               = ["cpu", ]
-      }
-
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+with
+  a = metric node_cpu_seconds_total | rate | group_by ["cpu"], sum;
+  b = metric node_cpu_seconds_total | delta | group_by ["cpu"], count;
+join (1 - (a / b)), a=0, b=0
+EOT
     }
 
   }
 
-  // NOTE: The Grafana Dashboard in kube-prometheus-stack uses a big_number
-  // type of display.
   chart {
     name = "Memory Usage"
     rank = "2"
     type = "timeseries"
 
     query {
-      query_name = "100 - a / b * 100"
-      display    = "line"
-      hidden     = false
-
-    }
-
-    query {
-      query_name = "a"
-      display    = "line"
-      hidden     = true
-
-      metric              = "node_memory_MemAvailable_bytes"
-      timeseries_operator = "avg"
-
-
-      group_by {
-        aggregation_method = "sum"
-        keys               = []
-      }
-
-    }
-
-    query {
-      query_name = "b"
-      display    = "line"
-      hidden     = true
-
-      metric              = "node_memory_MemTotal_bytes"
-      timeseries_operator = "avg"
-
-
-      group_by {
-        aggregation_method = "sum"
-        keys               = []
-      }
-
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+with
+  a = metric node_memory_MemAvailable_bytes | reduce mean | group_by [], sum;
+  b = metric node_memory_MemTotal_bytes | reduce mean | group_by [], sum;
+join (100 - ((a / b) * 100)), a=0, b=0
+EOT
     }
 
   }
@@ -183,74 +100,25 @@ resource "lightstep_metric_dashboard" "k8s_node_exporter_dashboard" {
     type = "timeseries"
 
     query {
-      query_name = "a"
-      display    = "line"
-      hidden     = true
-
-      metric              = "node_memory_MemTotal_bytes"
-      timeseries_operator = "avg"
-
-
-      group_by {
-        aggregation_method = "sum"
-        keys               = []
-      }
-
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+with
+  a = metric node_memory_MemTotal_bytes | reduce mean | group_by [], sum;
+  e = metric node_memory_Cached_bytes | reduce mean | group_by [], sum;
+  f = metric node_memory_MemFree_bytes | reduce mean | group_by [], sum;
+join ((a - f) - e), a=0, e=0, f=0
+EOT
     }
 
     query {
-      query_name = "a - f - e"
-      display    = "line"
-      hidden     = false
-
-    }
-
-    query {
-      query_name = "d"
-      display    = "line"
-      hidden     = false
-
-      metric              = "node_memory_Buffers_bytes"
-      timeseries_operator = "avg"
-
-
-      group_by {
-        aggregation_method = "sum"
-        keys               = []
-      }
-
-    }
-
-    query {
-      query_name = "e"
-      display    = "line"
-      hidden     = false
-
-      metric              = "node_memory_Cached_bytes"
-      timeseries_operator = "avg"
-
-
-      group_by {
-        aggregation_method = "sum"
-        keys               = []
-      }
-
-    }
-
-    query {
-      query_name = "f"
-      display    = "line"
-      hidden     = false
-
-      metric              = "node_memory_MemFree_bytes"
-      timeseries_operator = "avg"
-
-
-      group_by {
-        aggregation_method = "sum"
-        keys               = []
-      }
-
+      query_name   = "b"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric node_memory_Buffers_bytes | reduce mean | group_by [], sum
+EOT
     }
 
   }
@@ -261,51 +129,30 @@ resource "lightstep_metric_dashboard" "k8s_node_exporter_dashboard" {
     type = "timeseries"
 
     query {
-      query_name = "a"
-      display    = "line"
-      hidden     = false
-
-      metric              = "node_disk_read_bytes_total"
-      timeseries_operator = "rate"
-
-
-      group_by {
-        aggregation_method = "sum"
-        keys               = []
-      }
-
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric node_disk_read_bytes_total | rate | group_by [], sum
+EOT
     }
 
     query {
-      query_name = "b"
-      display    = "line"
-      hidden     = false
-
-      metric              = "node_disk_written_bytes_total"
-      timeseries_operator = "rate"
-
-
-      group_by {
-        aggregation_method = "sum"
-        keys               = []
-      }
-
+      query_name   = "b"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric node_disk_written_bytes_total | rate | group_by [], sum
+EOT
     }
 
     query {
-      query_name = "c"
-      display    = "line"
-      hidden     = true
-
-      metric              = "node_disk_io_time_seconds_total"
-      timeseries_operator = "rate"
-
-
-      group_by {
-        aggregation_method = "sum"
-        keys               = []
-      }
-
+      query_name   = "c"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric node_disk_io_time_seconds_total | rate | group_by [], sum
+EOT
     }
 
   }
@@ -316,51 +163,30 @@ resource "lightstep_metric_dashboard" "k8s_node_exporter_dashboard" {
     type = "timeseries"
 
     query {
-      query_name = "a"
-      display    = "line"
-      hidden     = false
-
-      metric              = "node_disk_io_time_seconds_total"
-      timeseries_operator = "rate"
-
-
-      group_by {
-        aggregation_method = "sum"
-        keys               = []
-      }
-
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric node_disk_io_time_seconds_total | rate | group_by [], sum
+EOT
     }
 
     query {
-      query_name = "b"
-      display    = "line"
-      hidden     = false
-
-      metric              = "node_disk_discard_time_seconds_total"
-      timeseries_operator = "rate"
-
-
-      group_by {
-        aggregation_method = "sum"
-        keys               = []
-      }
-
+      query_name   = "b"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric node_disk_discard_time_seconds_total | rate | group_by [], sum
+EOT
     }
 
     query {
-      query_name = "c"
-      display    = "line"
-      hidden     = false
-
-      metric              = "node_disk_flush_requests_time_seconds_total"
-      timeseries_operator = "rate"
-
-
-      group_by {
-        aggregation_method = "sum"
-        keys               = []
-      }
-
+      query_name   = "c"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric node_disk_flush_requests_time_seconds_total | rate | group_by [], sum
+EOT
     }
 
   }
@@ -371,42 +197,15 @@ resource "lightstep_metric_dashboard" "k8s_node_exporter_dashboard" {
     type = "timeseries"
 
     query {
-      query_name = "1 - b / a"
-      display    = "line"
-      hidden     = false
-
-    }
-
-    query {
-      query_name = "a"
-      display    = "line"
-      hidden     = true
-
-      metric              = "node_filesystem_size_bytes"
-      timeseries_operator = "last"
-
-
-      group_by {
-        aggregation_method = "max"
-        keys               = ["mountpoint", ]
-      }
-
-    }
-
-    query {
-      query_name = "b"
-      display    = "line"
-      hidden     = true
-
-      metric              = "node_filesystem_avail_bytes"
-      timeseries_operator = "last"
-
-
-      group_by {
-        aggregation_method = "max"
-        keys               = ["mountpoint", ]
-      }
-
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+with
+  a = metric node_filesystem_size_bytes | latest | group_by ["mountpoint"], max;
+  b = metric node_filesystem_avail_bytes | latest | group_by ["mountpoint"], max;
+join (1 - (b / a)), a=0, b=0
+EOT
     }
 
   }
@@ -417,19 +216,12 @@ resource "lightstep_metric_dashboard" "k8s_node_exporter_dashboard" {
     type = "timeseries"
 
     query {
-      query_name = "a"
-      display    = "line"
-      hidden     = false
-
-      metric              = "node_network_receive_bytes_total"
-      timeseries_operator = "rate"
-
-
-      group_by {
-        aggregation_method = "avg"
-        keys               = ["device", ]
-      }
-
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric node_network_receive_bytes_total | rate | group_by ["device"], mean
+EOT
     }
 
   }
@@ -440,19 +232,12 @@ resource "lightstep_metric_dashboard" "k8s_node_exporter_dashboard" {
     type = "timeseries"
 
     query {
-      query_name = "a"
-      display    = "line"
-      hidden     = false
-
-      metric              = "node_network_transmit_bytes_total"
-      timeseries_operator = "rate"
-
-
-      group_by {
-        aggregation_method = "avg"
-        keys               = ["device", ]
-      }
-
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric node_network_transmit_bytes_total | rate | group_by ["device"], mean
+EOT
     }
 
   }
