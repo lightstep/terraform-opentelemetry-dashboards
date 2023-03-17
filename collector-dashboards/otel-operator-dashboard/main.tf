@@ -8,7 +8,7 @@ terraform {
   required_version = ">= v1.0.11"
 }
 
-resource "lightstep_dashboard" "otel_operator_dashboard_dashboard" {
+resource "lightstep_dashboard" "otel_operator_dashboard" {
   project_name          = var.lightstep_project
   dashboard_name        = "OpenTelemetry Operator"
   dashboard_description = "Monitor your OpenTelemetry operator with this overview dashboard."
