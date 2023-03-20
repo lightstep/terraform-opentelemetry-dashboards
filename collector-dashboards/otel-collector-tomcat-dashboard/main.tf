@@ -88,7 +88,7 @@ EOT
   }
 
   chart {
-    name = "JVM Memory used"
+    name = "JVM Memory Used"
     rank = "5"
     type = "timeseries"
 
