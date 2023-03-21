@@ -14,7 +14,7 @@ resource "lightstep_dashboard" "otel_collector_zookeeperreceiver_dashboard" {
   dashboard_description = "Monitor Zookeeper with this overview dashboard."
 
   chart {
-    name = "zookeeper.connection.active"
+    name = "Active Connections"
     rank = "0"
     type = "timeseries"
 
@@ -28,7 +28,7 @@ resource "lightstep_dashboard" "otel_collector_zookeeperreceiver_dashboard" {
   }
 
   chart {
-    name = "zookeeper.data_tree.ephemeral_node.count"
+    name = "Ephemeral Node Count"
     rank = "1"
     type = "timeseries"
 
@@ -42,7 +42,7 @@ resource "lightstep_dashboard" "otel_collector_zookeeperreceiver_dashboard" {
   }
 
   chart {
-    name = "zookeeper.data_tree.size"
+    name = "Tree Size"
     rank = "2"
     type = "timeseries"
 
@@ -56,7 +56,7 @@ resource "lightstep_dashboard" "otel_collector_zookeeperreceiver_dashboard" {
   }
 
   chart {
-    name = "zookeeper.file_descriptor.limit"
+    name = "File Descriptor Limit"
     rank = "3"
     type = "timeseries"
 
@@ -70,7 +70,7 @@ resource "lightstep_dashboard" "otel_collector_zookeeperreceiver_dashboard" {
   }
 
   chart {
-    name = "zookeeper.file_descriptor.open"
+    name = "File Descriptors Open"
     rank = "4"
     type = "timeseries"
 
@@ -84,7 +84,7 @@ resource "lightstep_dashboard" "otel_collector_zookeeperreceiver_dashboard" {
   }
 
   chart {
-    name = "zookeeper.follower.count"
+    name = "Follower Count"
     rank = "5"
     type = "timeseries"
 
@@ -100,7 +100,7 @@ EOT
   }
 
   chart {
-    name = "zookeeper.fsync.exceeded_threshold.count"
+    name = "Fsync Exceeded Threshold Count"
     rank = "6"
     type = "timeseries"
 
@@ -114,7 +114,7 @@ EOT
   }
 
   chart {
-    name = "zookeeper.latency.avg"
+    name = "Average Latency"
     rank = "7"
     type = "timeseries"
 
@@ -128,7 +128,7 @@ EOT
   }
 
   chart {
-    name = "zookeeper.latency.max"
+    name = "Max Latency"
     rank = "8"
     type = "timeseries"
 
@@ -142,7 +142,7 @@ EOT
   }
 
   chart {
-    name = "zookeeper.latency.min"
+    name = "Min Latency"
     rank = "9"
     type = "timeseries"
 
@@ -156,7 +156,7 @@ EOT
   }
 
   chart {
-    name = "zookeeper.packet.count"
+    name = "Packet Count"
     rank = "10"
     type = "timeseries"
 
@@ -172,7 +172,7 @@ EOT
   }
 
   chart {
-    name = "zookeeper.request.active"
+    name = "Active Requests"
     rank = "11"
     type = "timeseries"
 
@@ -186,7 +186,7 @@ EOT
   }
 
   chart {
-    name = "zookeeper.sync.pending"
+    name = "Pending Syncs"
     rank = "12"
     type = "timeseries"
 
@@ -200,7 +200,7 @@ EOT
   }
 
   chart {
-    name = "zookeeper.watch.count"
+    name = "Watch Count"
     rank = "13"
     type = "timeseries"
 
@@ -214,7 +214,7 @@ EOT
   }
 
   chart {
-    name = "zookeeper.znode.count"
+    name = "Znode Count"
     rank = "14"
     type = "timeseries"
 
