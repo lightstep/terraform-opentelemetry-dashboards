@@ -109,7 +109,7 @@ EOT
 
   chart {
     name = "Evictions"
-    rank = "6"
+    rank = "5"
     type = "timeseries"
 
     query {
@@ -126,7 +126,7 @@ EOT
 
   chart {
     name = "Blocked Clients"
-    rank = "7"
+    rank = "6"
     type = "timeseries"
 
     query {
@@ -135,6 +135,23 @@ EOT
       hidden       = false
       query_string = <<EOT
 metric redis.clients.blocked | latest | group_by [], sum
+
+EOT
+    }
+
+  }
+
+  chart {
+    name = "Fragmentation Ratio"
+    rank = "7"
+    type = "timeseries"
+
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric redis.memory.fragmentation_ratio | latest | group_by [], mean
 
 EOT
     }
@@ -159,25 +176,8 @@ EOT
   }
 
   chart {
-    name = "Fragmentation Ratio"
-    rank = "9"
-    type = "timeseries"
-
-    query {
-      query_name   = "a"
-      display      = "line"
-      hidden       = false
-      query_string = <<EOT
-metric redis.memory.fragmentation_ratio | latest | group_by [], mean
-
-EOT
-    }
-
-  }
-
-  chart {
     name = "Connected Clients"
-    rank = "10"
+    rank = "9"
     type = "timeseries"
 
     query {
@@ -194,7 +194,7 @@ EOT
 
   chart {
     name = "Connected Replicas"
-    rank = "11"
+    rank = "10"
     type = "timeseries"
 
     query {
@@ -211,7 +211,7 @@ EOT
 
   chart {
     name = "Rejected Connections"
-    rank = "12"
+    rank = "11"
     type = "timeseries"
 
     query {
