@@ -159,25 +159,8 @@ EOT
   }
 
   chart {
-    name = "Fragmentation Ratio"
-    rank = "8"
-    type = "timeseries"
-
-    query {
-      query_name   = "a"
-      display      = "line"
-      hidden       = false
-      query_string = <<EOT
-metric redis.memory.fragmentation_ratio | latest | group_by [], mean
-
-EOT
-    }
-
-  }
-
-  chart {
     name = "Connected Clients"
-    rank = "9"
+    rank = "8"
     type = "timeseries"
 
     query {
@@ -194,7 +177,7 @@ EOT
 
   chart {
     name = "Connected Replicas"
-    rank = "10"
+    rank = "9"
     type = "timeseries"
 
     query {
@@ -211,7 +194,7 @@ EOT
 
   chart {
     name = "Rejected Connections"
-    rank = "11"
+    rank = "10"
     type = "timeseries"
 
     query {
