@@ -19,14 +19,15 @@ resource "lightstep_dashboard" "otel_collector_redis_dashboard" {
     type = "timeseries"
 
     query {
-      query_name   = "(a/(a+b))"
-      display      = "big_number"
+      query_name   = "a"
+      display      = "line"
       hidden       = false
       query_string = <<EOT
 with
   a = metric redis.keyspace.hits | rate 1s | group_by [], sum;
   b = metric redis.keyspace.misses | rate 1s | group_by [], sum;
 join ((a /(a + b))), a=0, b=0
+
 EOT
     }
 
@@ -39,10 +40,11 @@ EOT
 
     query {
       query_name   = "a"
-      display      = "big_number"
+      display      = "line"
       hidden       = false
       query_string = <<EOT
 metric redis.rdb.changes_since_last_save | reduce mean | group_by [], sum
+
 EOT
     }
 
@@ -59,6 +61,7 @@ EOT
       hidden       = false
       query_string = <<EOT
 metric redis.commands | latest | group_by [], sum
+
 EOT
     }
 
@@ -70,26 +73,7 @@ EOT
     type = "timeseries"
 
     query {
-      query_name   = "((a/(a+b))*100)"
-      display      = "big_number"
-      hidden       = false
-      query_string = <<EOT
-with
-  a = metric redis.keyspace.hits | rate 1s | group_by [], sum;
-  b = metric redis.keyspace.misses | rate 1s | group_by [], sum;
-join (((a /(a + b))*100)), a=0, b=0
-EOT
-    }
-
-  }
-
-  chart {
-    name = "Cache Hit Rate"
-    rank = "4"
-    type = "timeseries"
-
-    query {
-      query_name   = "((a/(a+b))*100)"
+      query_name   = "a"
       display      = "line"
       hidden       = false
       query_string = <<EOT
@@ -97,6 +81,7 @@ with
   a = metric redis.keyspace.hits | rate 1s | group_by [], sum;
   b = metric redis.keyspace.misses | rate 1s | group_by [], sum;
 join (((a /(a + b))*100)), a=0, b=0
+
 EOT
     }
 
@@ -104,11 +89,11 @@ EOT
 
   chart {
     name = "Percent Used Memory"
-    rank = "5"
+    rank = "4"
     type = "timeseries"
 
     query {
-      query_name   = "((a/b)*100)"
+      query_name   = "a"
       display      = "line"
       hidden       = false
       query_string = <<EOT
@@ -116,6 +101,7 @@ with
   a = metric redis.memory.used | latest | group_by ["host"], sum;
   b = metric redis.memory.peak | latest | group_by ["host"], sum;
 join (((a / b)*100)), a=0, b=0
+
 EOT
     }
 
@@ -123,7 +109,7 @@ EOT
 
   chart {
     name = "Evictions"
-    rank = "6"
+    rank = "5"
     type = "timeseries"
 
     query {
@@ -132,6 +118,7 @@ EOT
       hidden       = false
       query_string = <<EOT
 metric redis.keys.evicted | rate 1s | group_by ["host"], sum
+
 EOT
     }
 
@@ -139,15 +126,16 @@ EOT
 
   chart {
     name = "Blocked Clients"
-    rank = "7"
+    rank = "6"
     type = "timeseries"
 
     query {
       query_name   = "a"
-      display      = "big_number"
+      display      = "line"
       hidden       = false
       query_string = <<EOT
 metric redis.clients.blocked | latest | group_by [], sum
+
 EOT
     }
 
@@ -155,23 +143,7 @@ EOT
 
   chart {
     name = "Fragmentation Ratio"
-    rank = "8"
-    type = "timeseries"
-
-    query {
-      query_name   = "a"
-      display      = "big_number"
-      hidden       = false
-      query_string = <<EOT
-metric redis.memory.fragmentation_ratio | latest | group_by [], mean
-EOT
-    }
-
-  }
-
-  chart {
-    name = "Fragmentation Ratio"
-    rank = "9"
+    rank = "7"
     type = "timeseries"
 
     query {
@@ -180,6 +152,7 @@ EOT
       hidden       = false
       query_string = <<EOT
 metric redis.memory.fragmentation_ratio | latest | group_by [], mean
+
 EOT
     }
 
@@ -187,7 +160,7 @@ EOT
 
   chart {
     name = "Connected Clients"
-    rank = "10"
+    rank = "8"
     type = "timeseries"
 
     query {
@@ -196,6 +169,7 @@ EOT
       hidden       = false
       query_string = <<EOT
 metric redis.clients.connected | latest | group_by [], sum
+
 EOT
     }
 
@@ -203,7 +177,7 @@ EOT
 
   chart {
     name = "Connected Replicas"
-    rank = "11"
+    rank = "9"
     type = "timeseries"
 
     query {
@@ -212,6 +186,7 @@ EOT
       hidden       = false
       query_string = <<EOT
 metric redis.slaves.connected | latest | group_by [], sum
+
 EOT
     }
 
@@ -219,7 +194,7 @@ EOT
 
   chart {
     name = "Rejected Connections"
-    rank = "12"
+    rank = "10"
     type = "timeseries"
 
     query {
@@ -228,6 +203,7 @@ EOT
       hidden       = false
       query_string = <<EOT
 metric redis.connections.rejected | delta | group_by [], sum
+
 EOT
     }
 
