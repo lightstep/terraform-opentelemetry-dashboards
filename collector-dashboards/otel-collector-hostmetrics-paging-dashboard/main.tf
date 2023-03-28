@@ -8,31 +8,25 @@ terraform {
   required_version = ">= v1.0.11"
 }
 
-resource "lightstep_metric_dashboard" "otel_collector_hostmetrics_paging_dashboard" {
-
-  project_name   = var.lightstep_project
-  dashboard_name = "OpenTelemetry / Host Metrics / Paging"
-
+resource "lightstep_dashboard" "otel_collector_hostmetrics_paging_dashboard" {
+  project_name          = var.lightstep_project
+  dashboard_name        = "OpenTelemetry / Host Metrics / Paging"
+  dashboard_description = "Monitor Host Paging metrics."
 
   chart {
-    name = "Usage used/free"
+    name = "Usage Used/Free"
     rank = "0"
     type = "timeseries"
 
     query {
-      query_name = "a"
-      display    = "bar"
-      hidden     = false
-
-      metric              = "system.paging.usage"
-      timeseries_operator = "last"
-
-
-      group_by {
-        aggregation_method = "sum"
-        keys               = ["state", ]
-      }
+      query_name   = "a"
+      display      = "bar"
+      hidden       = false
+      query_string = <<EOT
+metric system.paging.usage | latest | group_by ["state"], sum
+EOT
     }
+
   }
 
   chart {
@@ -41,19 +35,14 @@ resource "lightstep_metric_dashboard" "otel_collector_hostmetrics_paging_dashboa
     type = "timeseries"
 
     query {
-      query_name = "a"
-      display    = "line"
-      hidden     = false
-
-      metric              = "system.paging.operations"
-      timeseries_operator = "rate"
-
-
-      group_by {
-        aggregation_method = "sum"
-        keys               = ["direction", ]
-      }
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric system.paging.operations | rate | group_by ["direction"], sum
+EOT
     }
+
   }
 
   chart {
@@ -62,19 +51,14 @@ resource "lightstep_metric_dashboard" "otel_collector_hostmetrics_paging_dashboa
     type = "timeseries"
 
     query {
-      query_name = "a"
-      display    = "line"
-      hidden     = false
-
-      metric              = "system.paging.faults"
-      timeseries_operator = "rate"
-
-
-      group_by {
-        aggregation_method = "sum"
-        keys               = ["type", ]
-      }
-
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric system.paging.faults | rate | group_by ["type"], sum
+EOT
     }
+
   }
+
 }
