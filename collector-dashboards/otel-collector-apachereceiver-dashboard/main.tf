@@ -8,9 +8,10 @@ terraform {
   required_version = ">= v1.0.11"
 }
 
-resource "lightstep_metric_dashboard" "otel_collector_apachereceiver_dashboard" {
-  project_name   = var.lightstep_project
-  dashboard_name = "OpenTelemetry / Apache Integration"
+resource "lightstep_dashboard" "otel_collector_apache_dashboard" {
+  project_name          = var.lightstep_project
+  dashboard_name        = "OpenTelemetry / Apache Integration"
+  dashboard_description = "Monitor Apache HTTP Server with this dashboard."
 
   chart {
     name = "Requests"
@@ -18,21 +19,14 @@ resource "lightstep_metric_dashboard" "otel_collector_apachereceiver_dashboard" 
     type = "timeseries"
 
     query {
-      query_name = "a"
-      display    = "line"
-      hidden     = false
-
-      metric              = "apache.requests"
-      timeseries_operator = "rate"
-
-      group_by {
-        aggregation_method = "sum"
-        keys               = ["server_name"]
-      }
-
-      # TODO: add description: The number of requests serviced by the HTTP server per second.
-      # TODO: add unit: 1
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric apache.requests | rate | group_by ["server_name"], sum
+EOT
     }
+
   }
 
   chart {
@@ -41,21 +35,14 @@ resource "lightstep_metric_dashboard" "otel_collector_apachereceiver_dashboard" 
     type = "timeseries"
 
     query {
-      query_name = "a"
-      display    = "line"
-      hidden     = false
-
-      metric              = "apache.traffic"
-      timeseries_operator = "rate"
-
-      group_by {
-        aggregation_method = "sum"
-        keys               = ["server_name"]
-      }
-
-      # TODO: add description: Total HTTP server traffic.
-      # TODO: add unit: By
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric apache.traffic | rate | group_by ["server_name"], sum
+EOT
     }
+
   }
 
   chart {
@@ -64,21 +51,14 @@ resource "lightstep_metric_dashboard" "otel_collector_apachereceiver_dashboard" 
     type = "timeseries"
 
     query {
-      query_name = "a"
-      display    = "line"
-      hidden     = false
-
-      metric              = "apache.workers"
-      timeseries_operator = "last"
-
-      group_by {
-        aggregation_method = "sum"
-        keys               = ["server_name", "state"]
-      }
-
-      # TODO: add description: The number of workers currently attached to the HTTP server.
-      # TODO: add unit: connections
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric apache.workers | latest | group_by ["server_name", "state"], sum
+EOT
     }
+
   }
 
   chart {
@@ -87,21 +67,14 @@ resource "lightstep_metric_dashboard" "otel_collector_apachereceiver_dashboard" 
     type = "timeseries"
 
     query {
-      query_name = "a"
-      display    = "line"
-      hidden     = false
-
-      metric              = "apache.current_connections"
-      timeseries_operator = "last"
-
-      group_by {
-        aggregation_method = "sum"
-        keys               = ["server_name"]
-      }
-
-      # TODO: add description: The number of active connections currently attached to the HTTP server.
-      # TODO: add unit: connections
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric apache.current_connections | latest | group_by ["server_name"], sum
+EOT
     }
+
   }
 
   chart {
@@ -110,43 +83,32 @@ resource "lightstep_metric_dashboard" "otel_collector_apachereceiver_dashboard" 
     type = "timeseries"
 
     query {
-      query_name = "a"
-      display    = "area"
-      hidden     = false
-
-      metric              = "apache.scoreboard"
-      timeseries_operator = "last"
-
-      group_by {
-        aggregation_method = "sum"
-        keys               = ["server_name", "state"]
-      }
-
-      # TODO: add description: The number of connections in each state.
-      # TODO: add unit: scoreboard
+      query_name   = "a"
+      display      = "area"
+      hidden       = false
+      query_string = <<EOT
+metric apache.scoreboard | latest | group_by ["server_name", "state"], sum
+EOT
     }
-  }
 
+  }
+  
+  /*
+  // TODO: create big_number display
   chart {
     name = "Up"
     rank = "5"
     type = "timeseries"
 
     query {
-      query_name = "a"
-      display    = "bar"
-      hidden     = false
-
-      metric              = "apache.uptime"
-      timeseries_operator = "rate"
-
-      group_by {
-        aggregation_method = "sum"
-        keys               = ["server_name"]
-      }
-
-      # TODO: add description: The amount of time that the server has been running in seconds.
-      # TODO: add unit: s
+      query_name   = "a"
+      display      = "big_number"
+      hidden       = false
+      query_string = <<EOT
+metric apache.uptime | latest | group_by ["server_name"], sum
+EOT
     }
   }
+  */
+
 }
