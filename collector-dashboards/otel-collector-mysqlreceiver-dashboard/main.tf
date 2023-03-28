@@ -8,400 +8,315 @@ terraform {
   required_version = ">= v1.0.11"
 }
 
-resource "lightstep_metric_dashboard" "otel_collector_mysqlreceiver_dashboard" {
-    project_name   = var.lightstep_project
-    dashboard_name = "OpenTelemetry mysqlreceiver Integration"
+resource "lightstep_dashboard" "otel_collector_mysql_dashboard" {
+  project_name          = var.lightstep_project
+  dashboard_name        = "MySQL"
+  dashboard_description = "Monitor MySQL performance with this overview dashboard."
 
-    
-    
-    chart {
-      name = "mysql.buffer_pool.data_pages"
-      rank = "0"
-      type = "timeseries"
+  chart {
+    name = "Row Operations"
+    rank = "1"
+    type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric mysql.row_operations | rate | group_by ["operation"], sum
 
-        metric              = "mysql.buffer_pool.data_pages"
-        timeseries_operator = "rate"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "buffer_pool_data"]
-        }
-        
-        # TODO: add description: The number of data pages in the InnoDB buffer pool.
-        # TODO: add unit: 1
-      }
+EOT
     }
-    
-    chart {
-      name = "mysql.buffer_pool.limit"
-      rank = "1"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "mysql.buffer_pool.limit"
-        timeseries_operator = "rate"
+  chart {
+    name = "Sorts"
+    rank = "2"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: The configured size of the InnoDB buffer pool.
-        # TODO: add unit: By
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric mysql.sorts | rate | group_by ["kind"], sum
+
+EOT
     }
-    
-    chart {
-      name = "mysql.buffer_pool.operations"
-      rank = "2"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "mysql.buffer_pool.operations"
-        timeseries_operator = "rate"
+  chart {
+    name = "Buffer Pool Limit"
+    rank = "3"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "buffer_pool_operations"]
-        }
-        
-        # TODO: add description: The number of operations on the InnoDB buffer pool.
-        # TODO: add unit: 1
-      }
+
+  }
+
+  chart {
+    name = "Buffer Pool Utilization (Usage / Limit)"
+    rank = "4"
+    type = "timeseries"
+
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric mysql.buffer_pool.usage | latest | group_by ["status"], sum
+
+EOT
     }
-    
-    chart {
-      name = "mysql.buffer_pool.page_flushes"
-      rank = "3"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
-
-        metric              = "mysql.buffer_pool.page_flushes"
-        timeseries_operator = "rate"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: The number of requests to flush pages from the InnoDB buffer pool.
-        # TODO: add unit: 1
-      }
+    query {
+      query_name   = "b"
+      display      = "line"
+      hidden       = false
+      query_string = "metric mysql.buffer_pool.limit | latest | group_by [], sum"
     }
-    
-    chart {
-      name = "mysql.buffer_pool.pages"
-      rank = "4"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "mysql.buffer_pool.pages"
-        timeseries_operator = "rate"
+  chart {
+    name = "Buffer Pool Operations"
+    rank = "5"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "buffer_pool_pages"]
-        }
-        
-        # TODO: add description: The number of pages in the InnoDB buffer pool.
-        # TODO: add unit: 1
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric mysql.buffer_pool.operations | rate | group_by ["operation"], sum
+
+EOT
     }
-    
-    chart {
-      name = "mysql.buffer_pool.usage"
-      rank = "5"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "mysql.buffer_pool.usage"
-        timeseries_operator = "rate"
+  chart {
+    name = "Connections"
+    rank = "6"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "buffer_pool_data"]
-        }
-        
-        # TODO: add description: The number of bytes in the InnoDB buffer pool.
-        # TODO: add unit: By
-      }
+    query {
+      query_name   = "a"
+      display      = "big_number"
+      hidden       = false
+      query_string = <<EOT
+metric mysql.threads | filter (kind == "connected") | latest | group_by [], sum
+
+EOT
     }
-    
-    chart {
-      name = "mysql.commands"
-      rank = "6"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "mysql.commands"
-        timeseries_operator = "rate"
+  chart {
+    name = "Locked Connects"
+    rank = "7"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "command"]
-        }
-        
-        # TODO: add description: The number of times each type of command has been executed.
-        # TODO: add unit: 1
-      }
+    query {
+      query_name   = "a"
+      display      = "big_number"
+      hidden       = false
+      query_string = "metric mysql.locked_connects | rate | group_by [], sum"
     }
-    
-    chart {
-      name = "mysql.double_writes"
-      rank = "7"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "mysql.double_writes"
-        timeseries_operator = "rate"
+  chart {
+    name = "Slow Queries"
+    rank = "8"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "double_writes"]
-        }
-        
-        # TODO: add description: The number of writes to the InnoDB doublewrite buffer.
-        # TODO: add unit: 1
-      }
+    query {
+      query_name   = "a"
+      display      = "big_number"
+      hidden       = false
+      query_string = "metric mysql.query.slow.count | rate | group_by [], sum"
     }
-    
-    chart {
-      name = "mysql.handlers"
-      rank = "8"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "mysql.handlers"
-        timeseries_operator = "rate"
+  chart {
+    name = "Database Locks"
+    rank = "9"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "handler"]
-        }
-        
-        # TODO: add description: The number of requests to various MySQL handlers.
-        # TODO: add unit: 1
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = "metric mysql.locks | rate | group_by [], sum"
     }
-    
-    chart {
-      name = "mysql.locks"
-      rank = "9"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "mysql.locks"
-        timeseries_operator = "rate"
+  chart {
+    name = "Row Locks"
+    rank = "10"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "locks"]
-        }
-        
-        # TODO: add description: The number of MySQL locks.
-        # TODO: add unit: 1
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = "metric mysql.row_locks | rate | group_by [], sum"
     }
-    
-    chart {
-      name = "mysql.log_operations"
-      rank = "10"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "mysql.log_operations"
-        timeseries_operator = "rate"
+  chart {
+    name = "Buffer Pool Pages"
+    rank = "11"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "log_operations"]
-        }
-        
-        # TODO: add description: The number of InnoDB log operations.
-        # TODO: add unit: 1
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric mysql.buffer_pool.pages | latest | group_by ["kind"], sum
+
+EOT
     }
-    
-    chart {
-      name = "mysql.operations"
-      rank = "11"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "mysql.operations"
-        timeseries_operator = "rate"
+  chart {
+    name = "Page Flushes"
+    rank = "12"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "operations"]
-        }
-        
-        # TODO: add description: The number of InnoDB operations.
-        # TODO: add unit: 1
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = "metric mysql.buffer_pool.page_flushes | rate | group_by [], sum"
     }
-    
-    chart {
-      name = "mysql.page_operations"
-      rank = "12"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "mysql.page_operations"
-        timeseries_operator = "rate"
+  chart {
+    name = "Logs"
+    rank = "13"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "page_operations"]
-        }
-        
-        # TODO: add description: The number of InnoDB page operations.
-        # TODO: add unit: 1
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric mysql.log_operations | rate | group_by ["operation"], sum
+
+EOT
     }
-    
-    chart {
-      name = "mysql.row_locks"
-      rank = "13"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "mysql.row_locks"
-        timeseries_operator = "rate"
+  chart {
+    name = "Data Pages"
+    rank = "14"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "row_locks"]
-        }
-        
-        # TODO: add description: The number of InnoDB row locks.
-        # TODO: add unit: 1
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric mysql.buffer_pool.data_pages | latest | group_by ["status"], sum
+
+EOT
     }
-    
-    chart {
-      name = "mysql.row_operations"
-      rank = "14"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "mysql.row_operations"
-        timeseries_operator = "rate"
+  chart {
+    name = "Handlers"
+    rank = "15"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "row_operations"]
-        }
-        
-        # TODO: add description: The number of InnoDB row operations.
-        # TODO: add unit: 1
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric mysql.handlers | rate | group_by ["kind"], sum
+
+EOT
     }
-    
-    chart {
-      name = "mysql.sorts"
-      rank = "15"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "mysql.sorts"
-        timeseries_operator = "rate"
+  chart {
+    name = "Threads"
+    rank = "16"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "sorts"]
-        }
-        
-        # TODO: add description: The number of MySQL sorts.
-        # TODO: add unit: 1
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric mysql.threads | latest | group_by ["kind"], sum
+
+EOT
     }
-    
-    chart {
-      name = "mysql.threads"
-      rank = "16"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "mysql.threads"
-        timeseries_operator = "rate"
+  chart {
+    name = "Opened Resources"
+    rank = "17"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "threads"]
-        }
-        
-        # TODO: add description: The state of MySQL threads.
-        # TODO: add unit: 1
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric mysql.opened_resources | rate | group_by ["kind"], sum
+
+EOT
     }
+
+  }
+
+  chart {
+    name = "Temporary Resources"
+    rank = "18"
+    type = "timeseries"
+
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric mysql.tmp_resources | rate | group_by ["resource"], sum
+
+EOT
+    }
+
+  }
+
+  chart {
+    name = "Double Writes"
+    rank = "19"
+    type = "timeseries"
+
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric mysql.double_writes | rate | group_by ["kind"], sum
+
+EOT
+    }
+
+  }
+
 }
