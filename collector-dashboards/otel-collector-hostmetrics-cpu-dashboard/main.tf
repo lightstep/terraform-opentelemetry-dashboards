@@ -8,9 +8,10 @@ terraform {
   required_version = ">= v1.0.11"
 }
 
-resource "lightstep_metric_dashboard" "otel_collector_hostmetrics_cpu_dashboard" {
-  project_name   = var.lightstep_project
-  dashboard_name = "OpenTelemetry / Host Metrics / CPU"
+resource "lightstep_dashboard" "otel_collector_hostmetrics_cpu_dashboard" {
+  project_name          = var.lightstep_project
+  dashboard_name        = "OpenTelemetry / Host Metrics / CPU"
+  dashboard_description = "Monitor Host CPU metrics."
 
   chart {
     name = "idle"
@@ -18,21 +19,14 @@ resource "lightstep_metric_dashboard" "otel_collector_hostmetrics_cpu_dashboard"
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "area"
-      hidden              = false
-      include_filters = [ {
-        "key": "state",
-        "value": "idle"
-      } ]
-      metric              = "system.cpu.time"
-      timeseries_operator = "rate"
-
-      group_by {
-        aggregation_method = "sum"
-        keys = ["cpu",]
-      }
+      query_name   = "a"
+      display      = "area"
+      hidden       = false
+      query_string = <<EOT
+metric system.cpu.time | filter (state == "idle") | rate | group_by ["cpu"], sum
+EOT
     }
+
   }
 
   chart {
@@ -41,22 +35,14 @@ resource "lightstep_metric_dashboard" "otel_collector_hostmetrics_cpu_dashboard"
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "area"
-      hidden              = false
-      include_filters = [ {
-        "key": "state",
-        "value": "interrupt"
-      } ]
-
-      metric              = "system.cpu.time"
-      timeseries_operator = "rate"
-
-      group_by {
-        aggregation_method = "sum"
-        keys = ["cpu",]
-      }
+      query_name   = "a"
+      display      = "area"
+      hidden       = false
+      query_string = <<EOT
+metric system.cpu.time | filter (state == "interrupt") | rate | group_by ["cpu"], sum
+EOT
     }
+
   }
 
   chart {
@@ -65,22 +51,14 @@ resource "lightstep_metric_dashboard" "otel_collector_hostmetrics_cpu_dashboard"
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "area"
-      hidden              = false
-      include_filters = [ {
-        "key": "state",
-        "value": "nice"
-      } ]
-
-      metric              = "system.cpu.time"
-      timeseries_operator = "rate"
-
-      group_by {
-        aggregation_method = "sum"
-        keys = ["cpu",]
-      }
+      query_name   = "a"
+      display      = "area"
+      hidden       = false
+      query_string = <<EOT
+metric system.cpu.time | filter (state == "nice") | rate | group_by ["cpu"], sum
+EOT
     }
+
   }
 
   chart {
@@ -89,22 +67,14 @@ resource "lightstep_metric_dashboard" "otel_collector_hostmetrics_cpu_dashboard"
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "area"
-      hidden              = false
-      include_filters = [ {
-        "key": "state",
-        "value": "softirq"
-      } ]
-
-      metric              = "system.cpu.time"
-      timeseries_operator = "rate"
-
-      group_by {
-        aggregation_method = "sum"
-        keys = ["cpu",]
-      }
+      query_name   = "a"
+      display      = "area"
+      hidden       = false
+      query_string = <<EOT
+metric system.cpu.time | filter (state == "softirq") | rate | group_by ["cpu"], sum
+EOT
     }
+
   }
 
   chart {
@@ -113,22 +83,14 @@ resource "lightstep_metric_dashboard" "otel_collector_hostmetrics_cpu_dashboard"
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "area"
-      hidden              = false
-      include_filters = [ {
-        "key": "state",
-        "value": "steal"
-      } ]
-
-      metric              = "system.cpu.time"
-      timeseries_operator = "rate"
-
-      group_by {
-        aggregation_method = "sum"
-        keys = ["cpu",]
-      }
+      query_name   = "a"
+      display      = "area"
+      hidden       = false
+      query_string = <<EOT
+metric system.cpu.time | filter (state == "steal") | rate | group_by ["cpu"], sum
+EOT
     }
+
   }
 
   chart {
@@ -137,22 +99,14 @@ resource "lightstep_metric_dashboard" "otel_collector_hostmetrics_cpu_dashboard"
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "area"
-      hidden              = false
-      include_filters = [ {
-        "key": "state",
-        "value": "system"
-      } ]
-
-      metric              = "system.cpu.time"
-      timeseries_operator = "rate"
-
-      group_by {
-        aggregation_method = "sum"
-        keys = ["cpu",]
-      }
+      query_name   = "a"
+      display      = "area"
+      hidden       = false
+      query_string = <<EOT
+metric system.cpu.time | filter (state == "system") | rate | group_by ["cpu"], sum
+EOT
     }
+
   }
 
   chart {
@@ -161,22 +115,14 @@ resource "lightstep_metric_dashboard" "otel_collector_hostmetrics_cpu_dashboard"
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "area"
-      hidden              = false
-      include_filters = [ {
-        "key": "state",
-        "value": "user"
-      } ]
-
-      metric              = "system.cpu.time"
-      timeseries_operator = "rate"
-
-      group_by {
-        aggregation_method = "sum"
-        keys = ["cpu",]
-      }
+      query_name   = "a"
+      display      = "area"
+      hidden       = false
+      query_string = <<EOT
+metric system.cpu.time | filter (state == "user") | rate | group_by ["cpu"], sum
+EOT
     }
+
   }
 
   chart {
@@ -185,46 +131,14 @@ resource "lightstep_metric_dashboard" "otel_collector_hostmetrics_cpu_dashboard"
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "area"
-      hidden              = false
-      include_filters = [ {
-        "key": "state",
-        "value": "wait"
-      } ]
-
-      metric              = "system.cpu.time"
-      timeseries_operator = "rate"
-
-      group_by {
-        aggregation_method = "sum"
-        keys = ["cpu",]
-      }
+      query_name   = "a"
+      display      = "area"
+      hidden       = false
+      query_string = <<EOT
+metric system.cpu.time | filter (state == "wait") | rate | group_by ["cpu"], sum
+EOT
     }
+
   }
 
-  #chart {
-  #  name = "Total cores"
-  #  rank = "8"
-  #  type = "timeseries"
-
-  #  query {
-  #    query_name          = "a"
-  #    display             = "big_number"
-  #    hidden              = false
-
-  #    metric              = "system.cpu.time"
-  #    timeseries_operator = "delta"
-
-
-  #    group_by {
-  #      aggregation_method = "count_non_zero"
-  #      keys = []
-  #    }
-  #  }
-  #}
 }
-
-
-
-
