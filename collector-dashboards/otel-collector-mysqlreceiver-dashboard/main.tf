@@ -48,14 +48,6 @@ EOT
   }
 
   chart {
-    name = "Buffer Pool Limit"
-    rank = "3"
-    type = "timeseries"
-
-
-  }
-
-  chart {
     name = "Buffer Pool Utilization (Usage / Limit)"
     rank = "4"
     type = "timeseries"
