@@ -233,22 +233,6 @@ EOT
   }
 
   chart {
-    name = "Backends"
-    rank = "24"
-    type = "timeseries"
-
-    query {
-      query_name   = "a"
-      display      = "line"
-      hidden       = false
-      query_string = <<EOT
-metric postgresql.backends | latest | group_by ["postgresql.database.name"], sum
-EOT
-    }
-
-  }
-
-  chart {
     name = "Allocated Buffers"
     rank = "25"
     type = "timeseries"
@@ -319,7 +303,9 @@ EOT
       query_name   = "a"
       display      = "big_number"
       hidden       = false
-      query_string = "metric postgresql.bgwriter.maxwritten | rate | group_by [], sum"
+      query_string = <<EOT
+metric postgresql.bgwriter.maxwritten | rate | group_by [], sum
+EOT
     }
 
   }
