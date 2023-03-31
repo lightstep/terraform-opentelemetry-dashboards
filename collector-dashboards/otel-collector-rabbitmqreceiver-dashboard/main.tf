@@ -12,7 +12,7 @@ terraform {
 resource "lightstep_dashboard" "otel_collector_rabbitmqreceiver_dashboard" {
   project_name          = var.lightstep_project
   dashboard_name        = "RabbitMQ Dashboard"
-  dashboard_description = "Monitor RabbitMQ with this message metrics summay."
+  dashboard_description = "Monitor RabbitMQ with this message metrics summary."
 
   chart {
     name = "Consumer Count"
