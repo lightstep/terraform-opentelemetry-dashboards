@@ -8,285 +8,155 @@ terraform {
   required_version = ">= v1.0.11"
 }
 
-resource "lightstep_metric_dashboard" "otel_collector_iisreceiver_dashboard" {
-    project_name   = var.lightstep_project
-    dashboard_name = "OpenTelemetry iisreceiver Integration"
+resource "lightstep_dashboard" "otel_collector_iisreceiver_dashboard" {
+  project_name          = var.lightstep_project
+  dashboard_name        = "OpenTelemetry iisreceiver Integration"
+  dashboard_description = ""
 
-    
-    
-    chart {
-      name = "iis.connection.active"
-      rank = "0"
-      type = "timeseries"
+  chart {
+    name = "Active connections"
+    rank = "0"
+    type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
-
-        metric              = "iis.connection.active"
-        timeseries_operator = "rate"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: Number of active connections.
-        # TODO: add unit: {connections}
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = "metric windows_iis_current_connections | rate | group_by [], sum"
     }
-    
-    chart {
-      name = "iis.connection.anonymous"
-      rank = "1"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "iis.connection.anonymous"
-        timeseries_operator = "rate"
+  chart {
+    name = "Anonymous users"
+    rank = "1"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: Number of connections established anonymously.
-        # TODO: add unit: {connections}
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = "metric windows_iis_current_anonymous_users | rate | group_by [], sum"
     }
-    
-    chart {
-      name = "iis.connection.attempt.count"
-      rank = "2"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "iis.connection.attempt.count"
-        timeseries_operator = "rate"
+  chart {
+    name = "Worker processes"
+    rank = "2"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: Total number of attempts to connect to the server.
-        # TODO: add unit: {attempts}
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = "metric windows_iis_current_worker_processes | rate | group_by [], sum"
     }
-    
-    chart {
-      name = "iis.network.blocked"
-      rank = "3"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "iis.network.blocked"
-        timeseries_operator = "rate"
+  chart {
+    name = "Blocked requests"
+    rank = "3"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: Number of bytes blocked due to bandwidth throttling.
-        # TODO: add unit: By
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = "metric windows_iis_current_blocked_async_io_requests | rate | group_by [], sum"
     }
-    
-    chart {
-      name = "iis.network.file.count"
-      rank = "4"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "iis.network.file.count"
-        timeseries_operator = "rate"
+  chart {
+    name = "Total bytes received"
+    rank = "4"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "direction"]
-        }
-        
-        # TODO: add description: Number of transmitted files.
-        # TODO: add unit: {files}
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric windows_iis_received_bytes_total | rate | group_by [], sum
+EOT
     }
-    
-    chart {
-      name = "iis.network.io"
-      rank = "5"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "iis.network.io"
-        timeseries_operator = "rate"
+  chart {
+    name = "Failed Worker Processes"
+    rank = "5"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "direction"]
-        }
-        
-        # TODO: add description: Total amount of bytes sent and received.
-        # TODO: add unit: By
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric windows_iis_recent_worker_process_failures | rate | group_by [], sum
+EOT
     }
-    
-    chart {
-      name = "iis.request.count"
-      rank = "6"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "iis.request.count"
-        timeseries_operator = "rate"
+  chart {
+    name = "Current CGI requests"
+    rank = "6"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "request"]
-        }
-        
-        # TODO: add description: Total number of requests of a given type.
-        # TODO: add unit: {requests}
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric windows_iis_current_cgi_requests | rate | group_by [], sum
+EOT
     }
-    
-    chart {
-      name = "iis.request.queue.age.max"
-      rank = "7"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "iis.request.queue.age.max"
-        timeseries_operator = "last"
+  chart {
+    name = "Cache size in bytes"
+    rank = "7"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: Age of oldest request in the queue.
-        # TODO: add unit: ms
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = "metric windows_iis_worker_file_cache_memory_bytes | latest | group_by [], sum"
     }
-    
-    chart {
-      name = "iis.request.queue.count"
-      rank = "8"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "iis.request.queue.count"
-        timeseries_operator = "rate"
+  chart {
+    name = "URI blocks cached"
+    rank = "8"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: Current number of requests in the queue.
-        # TODO: add unit: {requests}
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = "metric windows_iis_worker_uri_cache_items | rate | group_by [], sum"
     }
-    
-    chart {
-      name = "iis.request.rejected"
-      rank = "9"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "iis.request.rejected"
-        timeseries_operator = "rate"
+  chart {
+    name = "Active threads in the worker process"
+    rank = "9"
+    type = "timeseries"
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: Total number of requests rejected.
-        # TODO: add unit: {requests}
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = "metric windows_iis_worker_threads | rate | group_by [], sum"
     }
-    
-    chart {
-      name = "iis.thread.active"
-      rank = "10"
-      type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  }
 
-        metric              = "iis.thread.active"
-        timeseries_operator = "rate"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: Current number of active threads.
-        # TODO: add unit: {threads}
-      }
-    }
-    
-    chart {
-      name = "iis.uptime"
-      rank = "11"
-      type = "timeseries"
-
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
-
-        metric              = "iis.uptime"
-        timeseries_operator = "last"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: The amount of time the server has been up.
-        # TODO: add unit: s
-      }
-    }
 }
