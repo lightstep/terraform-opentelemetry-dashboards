@@ -11,10 +11,10 @@ terraform {
 resource "lightstep_dashboard" "otel_collector_ceph_dashboard" {
   project_name          = var.lightstep_project
   dashboard_name        = "Ceph - Overview"
-  dashboard_description = "This dashboard displays a high-level overview of Ceph operations and performance, so you can track throughput and latency metrics from your clusters, hosts, and pools and spot performance bottlenecks."
+  dashboard_description = "Track Ceph throughput, latency metrics and identify bottlenecks with the performance monitoring dashboard."
 
   chart {
-    name = "Healthy"
+    name = "Healthy Instances"
     rank = "0"
     type = "timeseries"
 
