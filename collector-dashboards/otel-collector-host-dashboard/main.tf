@@ -8,7 +8,7 @@ terraform {
   required_version = ">= v1.0.11"
 }
 
-resource "lightstep_metric_dashboard" "otel_collector_host_dashboard" {
+resource "lightstep_dashboard" "otel_collector_host_dashboard" {
 
   project_name   = var.lightstep_project
   dashboard_name = "OpenTelemetry / Host"
@@ -19,18 +19,12 @@ resource "lightstep_metric_dashboard" "otel_collector_host_dashboard" {
     type = "timeseries"
 
     query {
-      query_name = "a"
-      display    = "line"
-      hidden     = false
-
-      metric              = "system.disk.operations"
-      timeseries_operator = "rate"
-
-
-      group_by {
-        aggregation_method = "sum"
-        keys               = ["direction", ]
-      }
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric system.disk.operations | rate | group_by ["direction"], sum
+EOT
     }
   }
 
@@ -40,17 +34,12 @@ resource "lightstep_metric_dashboard" "otel_collector_host_dashboard" {
     type = "timeseries"
 
     query {
-      query_name = "a"
-      display    = "line"
-      hidden     = false
-
-      metric              = "system.disk.operation_time"
-      timeseries_operator = "rate"
-
-      group_by {
-        aggregation_method = "sum"
-        keys               = ["direction", ]
-      }
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric system.disk.operation_time | rate | group_by ["direction"], sum
+EOT
     }
   }
 
@@ -60,17 +49,12 @@ resource "lightstep_metric_dashboard" "otel_collector_host_dashboard" {
     type = "timeseries"
 
     query {
-      query_name = "a"
-      display    = "bar"
-      hidden     = false
-
-      metric              = "system.filesystem.usage"
-      timeseries_operator = "last"
-
-      group_by {
-        aggregation_method = "sum"
-        keys               = ["state", ]
-      }
+      query_name   = "a"
+      display      = "bar"
+      hidden       = false
+      query_string = <<EOT
+metric system.filesystem.usage | last | group_by ["state"], sum
+EOT
     }
   }
 
@@ -80,17 +64,12 @@ resource "lightstep_metric_dashboard" "otel_collector_host_dashboard" {
     type = "timeseries"
 
     query {
-      query_name = "a"
-      display    = "bar"
-      hidden     = false
-
-      metric              = "system.filesystem.usage"
-      timeseries_operator = "last"
-
-      group_by {
-        aggregation_method = "sum"
-        keys               = []
-      }
+      query_name   = "a"
+      display      = "bar"
+      hidden       = false
+      query_string = <<EOT
+metric system.filesystem.usage | last | group_by [], sum
+EOT
     }
   }
 
@@ -100,17 +79,12 @@ resource "lightstep_metric_dashboard" "otel_collector_host_dashboard" {
     type = "timeseries"
 
     query {
-      query_name = "a"
-      display    = "line"
-      hidden     = false
-
-      metric              = "system.filesystem.inodes.usage"
-      timeseries_operator = "last"
-
-      group_by {
-        aggregation_method = "sum"
-        keys               = ["state", ]
-      }
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric system.filesystem.inodes.usage | last | group_by ["state"], sum
+EOT
     }
   }
 
@@ -120,17 +94,12 @@ resource "lightstep_metric_dashboard" "otel_collector_host_dashboard" {
     type = "timeseries"
 
     query {
-      query_name = "a"
-      display    = "bar"
-      hidden     = false
-
-      metric              = "system.memory.usage"
-      timeseries_operator = "last"
-
-      group_by {
-        aggregation_method = "sum"
-        keys               = ["state", ]
-      }
+      query_name   = "a"
+      display      = "bar"
+      hidden       = false
+      query_string = <<EOT
+metric system.memory.usage | last | group_by ["state"], sum
+EOT
     }
   }
 
@@ -140,17 +109,12 @@ resource "lightstep_metric_dashboard" "otel_collector_host_dashboard" {
     type = "timeseries"
 
     query {
-      query_name = "a"
-      display    = "bar"
-      hidden     = false
-
-      metric              = "system.paging.usage"
-      timeseries_operator = "last"
-
-      group_by {
-        aggregation_method = "sum"
-        keys               = ["state", ]
-      }
+      query_name   = "a"
+      display      = "bar"
+      hidden       = false
+      query_string = <<EOT
+metric system.paging.usage | last | group_by ["state"], sum
+EOT
     }
   }
 
@@ -160,17 +124,12 @@ resource "lightstep_metric_dashboard" "otel_collector_host_dashboard" {
     type = "timeseries"
 
     query {
-      query_name = "a"
-      display    = "line"
-      hidden     = false
-
-      metric              = "system.paging.operations"
-      timeseries_operator = "rate"
-
-      group_by {
-        aggregation_method = "sum"
-        keys               = ["direction", ]
-      }
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric system.paging.operations | rate | group_by ["direction"], sum
+EOT
     }
   }
 
@@ -180,17 +139,12 @@ resource "lightstep_metric_dashboard" "otel_collector_host_dashboard" {
     type = "timeseries"
 
     query {
-      query_name = "a"
-      display    = "line"
-      hidden     = false
-
-      metric              = "system.paging.faults"
-      timeseries_operator = "rate"
-
-      group_by {
-        aggregation_method = "sum"
-        keys               = ["type", ]
-      }
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric system.paging.faults | rate | group_by ["type"], sum
+EOT
     }
   }
 
@@ -200,17 +154,12 @@ resource "lightstep_metric_dashboard" "otel_collector_host_dashboard" {
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "area"
-      hidden              = false
-
-      metric              = "system.cpu.time"
-      timeseries_operator = "rate"
-
-      group_by {
-        aggregation_method = "sum"
-        keys = ["cpu", "state"]
-      }
+      query_name   = "a"
+      display      = "area"
+      hidden       = false
+      query_string = <<EOT
+metric system.cpu.time | rate | group_by ["cpu", "state"], sum
+EOT
     }
   }
 }
