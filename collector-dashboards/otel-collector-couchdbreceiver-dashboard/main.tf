@@ -19,10 +19,10 @@ resource "lightstep_dashboard" "otel_collector_couchdbreceiver_dashboard" {
 
     query {
       query_name   = "a"
-      display_type = "line"
+      display      = "line"
       hidden       = false
       query_string = <<EOT
-metric couchdb.average_request_time | last | group_by [], sum
+metric couchdb.average_request_time | latest | group_by [], sum
 EOT
     }
   }
@@ -34,7 +34,7 @@ EOT
 
     query {
       query_name   = "a"
-      display_type = "line"
+      display      = "line"
       hidden       = false
       query_string = <<EOT
 metric couchdb.database.open | rate | group_by [], sum
@@ -49,7 +49,7 @@ EOT
 
     query {
       query_name   = "a"
-      display_type = "line"
+      display      = "line"
       hidden       = false
       query_string = <<EOT
 metric couchdb.database.operations | rate | group_by ["operation"], sum
@@ -64,7 +64,7 @@ EOT
 
     query {
       query_name   = "a"
-      display_type = "line"
+      display      = "line"
       hidden       = false
       query_string = <<EOT
 metric couchdb.file_descriptor.open | rate | group_by [], sum
@@ -79,7 +79,7 @@ EOT
 
     query {
       query_name   = "a"
-      display_type = "line"
+      display      = "line"
       hidden       = false
       query_string = <<EOT
 metric couchdb.httpd.bulk_requests | rate | group_by [], sum
@@ -94,7 +94,7 @@ EOT
 
     query {
       query_name   = "a"
-      display_type = "line"
+      display      = "line"
       hidden       = false
       query_string = <<EOT
 metric couchdb.httpd.requests | rate | group_by ["http.method"], sum
@@ -109,7 +109,7 @@ EOT
 
     query {
       query_name   = "a"
-      display_type = "line"
+      display      = "line"
       hidden       = false
       query_string = <<EOT
 metric couchdb.httpd.responses | rate | group_by ["http.status_code"], sum
@@ -124,7 +124,7 @@ EOT
 
     query {
       query_name   = "a"
-      display_type = "line"
+      display      = "line"
       hidden       = false
       query_string = <<EOT
 metric couchdb.httpd.views | rate | group_by ["view"], sum
