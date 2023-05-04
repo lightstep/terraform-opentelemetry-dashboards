@@ -10,7 +10,8 @@ terraform {
 
 resource "lightstep_dashboard" "otel_collector_nginxreceiver_dashboard" {
   project_name   = var.lightstep_project
-  dashboard_name = "OpenTelemetry nginxreceiver Integration"
+  dashboard_name = "OpenTelemetry Nginx Integration"
+  dashboard_description = "Monitor Nginx with this metrics overview dashboard."
 
   chart {
     name = "Nginx Connections Accepted"
@@ -19,7 +20,7 @@ resource "lightstep_dashboard" "otel_collector_nginxreceiver_dashboard" {
 
     query {
       query_name   = "a"
-      display_type = "line"
+      display = "line"
       hidden       = false
       query_string = <<EOT
 metric nginx.connections_accepted | rate | group_by [], sum
@@ -34,10 +35,10 @@ EOT
 
     query {
       query_name   = "a"
-      display_type = "line"
+      display = "line"
       hidden       = false
       query_string = <<EOT
-metric nginx.connections_current | last | group_by ["state"], sum
+metric nginx.connections_current | latest | group_by ["state"], sum
 EOT
     }
   }
@@ -49,7 +50,7 @@ EOT
 
     query {
       query_name   = "a"
-      display_type = "line"
+      display = "line"
       hidden       = false
       query_string = <<EOT
 metric nginx.connections_handled | rate | group_by [], sum
@@ -64,7 +65,7 @@ EOT
 
     query {
       query_name   = "a"
-      display_type = "line"
+      display = "line"
       hidden       = false
       query_string = <<EOT
 metric nginx.requests | rate | group_by [], sum
