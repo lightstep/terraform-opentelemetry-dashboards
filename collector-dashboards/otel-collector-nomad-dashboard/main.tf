@@ -8,7 +8,6 @@ terraform {
   required_version = ">= v1.0.11"
 }
 
-r
 resource "lightstep_dashboard" "otel_collector_nomad_dashboard" {
   project_name          = var.lightstep_project
   dashboard_name        = "Hashcorp Nomad Server"
