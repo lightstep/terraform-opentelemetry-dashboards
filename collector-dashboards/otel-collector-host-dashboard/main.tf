@@ -12,6 +12,7 @@ resource "lightstep_dashboard" "otel_collector_host_dashboard" {
 
   project_name   = var.lightstep_project
   dashboard_name = "OpenTelemetry / Host"
+  dashboard_description = "Monitor Host with this metrics overview dashboard."
 
   chart {
     name = "Disk Read / Write bytes"
@@ -53,7 +54,7 @@ EOT
       display      = "bar"
       hidden       = false
       query_string = <<EOT
-metric system.filesystem.usage | last | group_by ["state"], sum
+metric system.filesystem.usage | latest | group_by ["state"], sum
 EOT
     }
   }
@@ -68,7 +69,7 @@ EOT
       display      = "bar"
       hidden       = false
       query_string = <<EOT
-metric system.filesystem.usage | last | group_by [], sum
+metric system.filesystem.usage | latest | group_by [], sum
 EOT
     }
   }
@@ -83,7 +84,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric system.filesystem.inodes.usage | last | group_by ["state"], sum
+metric system.filesystem.inodes.usage | latest | group_by ["state"], sum
 EOT
     }
   }
@@ -98,7 +99,7 @@ EOT
       display      = "bar"
       hidden       = false
       query_string = <<EOT
-metric system.memory.usage | last | group_by ["state"], sum
+metric system.memory.usage | latest | group_by ["state"], sum
 EOT
     }
   }
@@ -113,7 +114,7 @@ EOT
       display      = "bar"
       hidden       = false
       query_string = <<EOT
-metric system.paging.usage | last | group_by ["state"], sum
+metric system.paging.usage | latest | group_by ["state"], sum
 EOT
     }
   }

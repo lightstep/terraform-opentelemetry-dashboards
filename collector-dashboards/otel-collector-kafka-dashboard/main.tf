@@ -11,6 +11,7 @@ terraform {
 resource "lightstep_dashboard" "otel_collector_kafka_dashboard" {
   project_name   = var.lightstep_project
   dashboard_name = "OpenTelemetry Collector - Kafka Metrics"
+  dashboard_description = "Monitor Kafka with this metrics overview dashboard."
 
   chart {
     name = "Broker Count"
@@ -22,7 +23,7 @@ resource "lightstep_dashboard" "otel_collector_kafka_dashboard" {
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric kafka.brokers | last | group_by [], sum
+metric kafka.brokers | latest | group_by [], sum
 EOT
     }
   }
@@ -37,7 +38,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric kafka.topic.partitions | last | group_by ["topic"], sum
+metric kafka.topic.partitions | latest | group_by ["topic"], sum
 EOT
     }
   }
@@ -52,7 +53,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric kafka.partition.current_offset | last | group_by ["topic", "partition"], sum
+metric kafka.partition.current_offset | latest | group_by ["topic", "partition"], sum
 EOT
     }
   }
@@ -67,7 +68,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric kafka.partition.oldest_offset | last | group_by ["topic", "partition"], sum
+metric kafka.partition.oldest_offset | latest | group_by ["topic", "partition"], sum
 EOT
     }
   }
@@ -82,7 +83,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric kafka.partition.replicas | last | group_by ["topic", "partition"], sum
+metric kafka.partition.replicas | latest | group_by ["topic", "partition"], sum
 EOT
     }
   }
@@ -97,7 +98,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric kafka.partition.replicas_in_sync | last | group_by ["topic", "partition"], sum
+metric kafka.partition.replicas_in_sync | latest | group_by ["topic", "partition"], sum
 EOT
     }
   }
@@ -112,7 +113,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric kafka.consumer_group.members | last | group_by ["group"], sum
+metric kafka.consumer_group.members | latest | group_by ["group"], sum
 EOT
     }
   }
@@ -127,7 +128,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric kafka.consumer_group.offset | last | group_by ["group", "topic", "partition"], sum
+metric kafka.consumer_group.offset | latest | group_by ["group", "topic", "partition"], sum
 EOT
     }
   }
@@ -142,7 +143,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric kafka.consumer_group.offset_sum | last | group_by ["group", "topic"], sum
+metric kafka.consumer_group.offset_sum | latest | group_by ["group", "topic"], sum
 EOT
     }
   }
@@ -157,7 +158,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric kafka.consumer_group.lag | last | group_by ["group", "topic", "partition"], sum
+metric kafka.consumer_group.lag | latest | group_by ["group", "topic", "partition"], sum
 EOT
     }
   }
@@ -172,7 +173,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric kafka.consumer_group.lag_sum | last | group_by ["group", "topic"], sum
+metric kafka.consumer_group.lag_sum | latest | group_by ["group", "topic"], sum
 EOT
     }
   }

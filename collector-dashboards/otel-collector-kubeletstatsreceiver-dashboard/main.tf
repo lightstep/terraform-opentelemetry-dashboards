@@ -10,7 +10,8 @@ terraform {
 
 resource "lightstep_dashboard" "otel_collector_kubeletstatsreceiver_dashboard" {
   project_name   = var.lightstep_project
-  dashboard_name = "OpenTelemetry kubeletstats Receiver"
+  dashboard_name = "OpenTelemetry Kubeletstats Receiver"
+  dashboard_description = "Monitor Kubeletstats with this metrics overview dashboard."
 
   chart {
     name = "Container CPU Time"
@@ -40,7 +41,7 @@ EOT
       hidden     = false
 
       query_string = <<EOT
-metric container.cpu.utilization | last | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
+metric container.cpu.utilization | latest | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
 EOT
 
     }
@@ -57,7 +58,7 @@ EOT
       hidden     = false
 
       query_string = <<EOT
-metric container.filesystem.available | last | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
+metric container.filesystem.available | latest | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
 EOT
 
     }
@@ -74,7 +75,7 @@ EOT
       hidden     = false
 
       query_string = <<EOT
-metric container.filesystem.capacity | last | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
+metric container.filesystem.capacity | latest | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
 EOT
 
     }
@@ -91,7 +92,7 @@ EOT
       hidden     = false
 
       query_string = <<EOT
-metric container.filesystem.usage | last | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
+metric container.filesystem.usage | latest | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
 EOT
 
     }
@@ -108,7 +109,7 @@ EOT
       hidden     = false
 
       query_string = <<EOT
-metric container.memory.available | last | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
+metric container.memory.available | latest | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
 EOT
 
     }
@@ -125,7 +126,7 @@ EOT
       hidden     = false
 
       query_string = <<EOT
-metric container.memory.major_page_faults | last | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
+metric container.memory.major_page_faults | latest | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
 EOT
 
     }
@@ -142,7 +143,7 @@ EOT
       hidden     = false
 
       query_string = <<EOT
-metric container.memory.page_faults | last | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
+metric container.memory.page_faults | latest | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
 EOT
 
     }
@@ -159,7 +160,7 @@ EOT
       hidden     = false
 
       query_string = <<EOT
-metric container.memory.rss | last | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
+metric container.memory.rss | latest | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
 EOT
 
     }
@@ -176,7 +177,7 @@ EOT
       hidden     = false
 
       query_string = <<EOT
-metric container.memory.usage | last | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
+metric container.memory.usage | latest | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
 EOT
 
     }
@@ -193,7 +194,7 @@ EOT
       hidden     = false
 
       query_string = <<EOT
-metric container.memory.working_set | last | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
+metric container.memory.working_set | latest | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
 EOT
 
     }
@@ -244,7 +245,7 @@ EOT
       hidden     = false
 
       query_string = <<EOT
-metric k8s.volume.available | last | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
+metric k8s.volume.available | latest | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
 EOT
 
     }
@@ -261,7 +262,7 @@ EOT
       hidden     = false
 
       query_string = <<EOT
-metric k8s.volume.capacity | last | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
+metric k8s.volume.capacity | latest | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
 EOT
 
     }
@@ -278,7 +279,7 @@ EOT
       hidden     = false
 
       query_string = <<EOT
-metric k8s.volume.inodes | last | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
+metric k8s.volume.inodes | latest | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
 EOT
 
     }
@@ -295,7 +296,7 @@ EOT
       hidden     = false
 
       query_string = <<EOT
-metric k8s.volume.inodes.free | last | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
+metric k8s.volume.inodes.free | latest | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
 EOT
 
     }
@@ -312,7 +313,7 @@ EOT
       hidden     = false
 
       query_string = <<EOT
-metric k8s.volume.inodes.used | last | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
+metric k8s.volume.inodes.used | latest | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
 EOT
 
     }
