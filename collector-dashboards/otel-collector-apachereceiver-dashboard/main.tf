@@ -8,7 +8,7 @@ terraform {
   required_version = ">= v1.0.11"
 }
 
-resource "lightstep_dashboard" "otel_collector_apache_dashboard" {
+resource "lightstep_dashboard" "otel_collector_apachereceiver_dashboard" {
   project_name          = var.lightstep_project
   dashboard_name        = "OpenTelemetry / Apache Integration"
   dashboard_description = "Monitor Apache HTTP Server with this dashboard."
