@@ -89,6 +89,11 @@ module "lightstep_otel_collector_gunicorn_dashboard" {
   lightstep_project = var.lightstep_project
 }
 
+module "lightstep_otel_collector_hadoop_dashboard" {
+  source            = "./collector-dashboards/otel-collector-hadoop-dashboard"
+  lightstep_project = var.lightstep_project
+}
+
 module "lightstep_otel_collector_hbase_dashboard" {
   source            = "./collector-dashboards/otel-collector-hbase-dashboard"
   lightstep_project = var.lightstep_project

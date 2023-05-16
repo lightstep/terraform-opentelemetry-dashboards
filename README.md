@@ -31,6 +31,7 @@ Each resource has an associated module that will create Lightstep dashboards to 
 * __Flink - Overview__ (module: [`otel-collector-flink-dashboard`](https://github.com/lightstep/terraform-opentelemetry-dashboards/tree/main/collector-dashboards/otel-collector-flink-dashboard))
 * __Fluentd Records__ (module: [`otel-collector-fluentd-dashboard`](https://github.com/lightstep/terraform-opentelemetry-dashboards/tree/main/collector-dashboards/otel-collector-fluentd-dashboard))
 * __Gunicorn - Overview__ (module: [`otel-collector-gunicorn-dashboard`](https://github.com/lightstep/terraform-opentelemetry-dashboards/tree/main/collector-dashboards/otel-collector-gunicorn-dashboard))
+* __OpenTelemetry Hadoop Dashboard__ (module: [`otel-collector-hadoop-dashboard`](https://github.com/lightstep/terraform-opentelemetry-dashboards/tree/main/collector-dashboards/otel-collector-hadoop-dashboard))
 * __OpenTelemetry HBase Dashboard__ (module: [`otel-collector-hbase-dashboard`](https://github.com/lightstep/terraform-opentelemetry-dashboards/tree/main/collector-dashboards/otel-collector-hbase-dashboard))
 * __OpenTelemetry / Host__ (module: [`otel-collector-host-dashboard`](https://github.com/lightstep/terraform-opentelemetry-dashboards/tree/main/collector-dashboards/otel-collector-host-dashboard))
 * __OpenTelemetry / Host Metrics / CPU__ (module: [`otel-collector-hostmetrics-cpu-dashboard`](https://github.com/lightstep/terraform-opentelemetry-dashboards/tree/main/collector-dashboards/otel-collector-hostmetrics-cpu-dashboard))

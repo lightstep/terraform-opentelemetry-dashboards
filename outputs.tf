@@ -74,6 +74,11 @@ output "lightstep_otel_collector_gunicorn_dashboard_url" {
   description = "Lightstep OpenTelemetry Gunicorn - Overview Dashboard"
 }
 
+output "lightstep_otel_collector_hadoop_dashboard_url" {
+  value       = module.lightstep_otel_collector_hadoop_dashboard.dashboard_url
+  description = "Lightstep OpenTelemetry OpenTelemetry Hadoop Dashboard Dashboard"
+}
+
 output "lightstep_otel_collector_hbase_dashboard_url" {
   value       = module.lightstep_otel_collector_hbase_dashboard.dashboard_url
   description = "Lightstep OpenTelemetry OpenTelemetry HBase Dashboard Dashboard"
@@ -140,7 +145,7 @@ output "lightstep_otel_collector_kubeletstatsreceiver_dashboard_url" {
 }
 
 output "lightstep_otel_collector_kubernetes_dashboard_url" {
-  value       = module.lightstep_otel_collector_kubernetes_dashboard.dashboard_url
+  value       = module.lightstep_otel_collector_kubernetes_dashboard.cluster_dashboard_url
   description = "Lightstep OpenTelemetry  Dashboard"
 }
 

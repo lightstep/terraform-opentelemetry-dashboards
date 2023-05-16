@@ -92,7 +92,7 @@ EOT
     }
 
   }
-  
+
   /*
   // TODO: create big_number display
   chart {

@@ -9,8 +9,8 @@ terraform {
 }
 
 resource "lightstep_dashboard" "otel_collector_kubeletstatsreceiver_dashboard" {
-  project_name   = var.lightstep_project
-  dashboard_name = "OpenTelemetry Kubeletstats Receiver"
+  project_name          = var.lightstep_project
+  dashboard_name        = "OpenTelemetry Kubeletstats Receiver"
   dashboard_description = "Monitor Kubeletstats with this metrics overview dashboard."
 
   chart {

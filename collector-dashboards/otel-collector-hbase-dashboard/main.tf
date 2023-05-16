@@ -158,7 +158,7 @@ resource "lightstep_dashboard" "otel_collector_hbase_dashboard" {
       hidden       = false
       query_string = "metric hbase.region_server.operation.delete.latency.min | latest | group_by [], sum"
     }
-    
+
     query {
       query_name   = "e"
       display      = "area"

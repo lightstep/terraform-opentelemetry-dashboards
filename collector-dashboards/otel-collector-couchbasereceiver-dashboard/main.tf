@@ -9,8 +9,8 @@ terraform {
 }
 
 resource "lightstep_metric_dashboard" "otel_collector_couchbasereceiver_dashboard" {
-    project_name   = var.lightstep_project
-    dashboard_name = "OpenTelemetry couchbasereceiver Integration"
+  project_name   = var.lightstep_project
+  dashboard_name = "OpenTelemetry couchbasereceiver Integration"
 
-    
+
 }
