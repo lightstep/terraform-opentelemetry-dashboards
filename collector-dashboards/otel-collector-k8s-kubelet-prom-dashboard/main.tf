@@ -23,7 +23,7 @@ resource "lightstep_dashboard" "k8s_kubelet_dashboard" {
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric kubelet_node_name | latest | group_by [], sum
+metric kubelet_node_name | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | latest | group_by [], sum
 EOT
     }
 
@@ -39,7 +39,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric kubelet_running_pods | latest | group_by [], sum
+metric kubelet_running_pods | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | latest | group_by [], sum
 EOT
     }
 
@@ -55,7 +55,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric kubelet_running_containers | latest | group_by [], sum
+metric kubelet_running_containers | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | latest | group_by [], sum
 EOT
     }
 
@@ -71,7 +71,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric volume_manager_total_volumes | latest | group_by [], sum
+metric volume_manager_total_volumes | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | latest | group_by [], sum
 EOT
     }
 
@@ -87,7 +87,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric volume_manager_total_volumes | latest | group_by [], sum
+metric volume_manager_total_volumes | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | latest | group_by [], sum
 EOT
     }
 
@@ -103,7 +103,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric kubelet_runtime_operations_total | rate | group_by ["operation_type"], sum
+metric kubelet_runtime_operations_total | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | rate | group_by ["operation_type"], sum
 EOT
     }
 
@@ -119,14 +119,14 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric kubelet_runtime_operations_errors_total | rate | group_by [], sum
+metric kubelet_runtime_operations_errors_total | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | rate | group_by [], sum
 EOT
     }
 
   }
 
   chart {
-    name = "Operation duration (p99)"
+    name = "Operation Duration (p99)"
     rank = "7"
     type = "timeseries"
 
@@ -135,7 +135,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric kubelet_runtime_operations_duration_seconds | delta | group_by ["instance", "operation_type"], sum
+metric kubelet_runtime_operations_duration_seconds | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | delta | group_by ["instance", "operation_type"], sum | point percentile(value, 99.0)
 EOT
     }
 
@@ -151,7 +151,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric kubelet_pod_worker_duration_seconds | delta | group_by ["service"], sum
+metric kubelet_pod_worker_duration_seconds | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | delta | group_by ["service"], sum | point percentile(value, 95.0)
 EOT
     }
 
@@ -160,7 +160,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric kubelet_pod_start_duration_seconds | delta | group_by [], sum
+metric kubelet_pod_start_duration_seconds | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | delta | group_by [], sum | point percentile(value, 95.0)
 EOT
     }
 
@@ -176,14 +176,14 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric storage_operation_duration_seconds | delta | group_by ["instance", "operation_name", "volume_plugin"], sum
+metric storage_operation_duration_seconds | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | delta | group_by ["instance", "operation_name", "volume_plugin"], sum | point percentile(value, 99.0)
 EOT
     }
 
   }
 
   chart {
-    name = "Cgroup manager duration seconds (p99)"
+    name = "Cgroup Manager Duration Seconds (p99)"
     rank = "10"
     type = "timeseries"
 
@@ -192,14 +192,14 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric kubelet_cgroup_manager_duration_seconds | delta | group_by ["instance", "operation_type"], sum
+metric kubelet_cgroup_manager_duration_seconds | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | delta | group_by ["instance", "operation_type"], sum | point percentile(value, 99.0)
 EOT
     }
 
   }
 
   chart {
-    name = "PLEG relist interval (p99)"
+    name = "PLEG Relist Interval (p99)"
     rank = "11"
     type = "timeseries"
 
@@ -208,14 +208,14 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric kubelet_pleg_relist_interval_seconds | delta | group_by ["instance"], sum
+metric kubelet_pleg_relist_interval_seconds | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | delta | group_by ["instance"], sum | point percentile(value, 99.0)
 EOT
     }
 
   }
 
   chart {
-    name = "PLEG relist duration (p99)"
+    name = "PLEG Relist Duration (p99)"
     rank = "12"
     type = "timeseries"
 
@@ -224,7 +224,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric kubelet_pleg_relist_duration_seconds | delta | group_by ["instance"], sum
+metric kubelet_pleg_relist_duration_seconds | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | delta | group_by ["instance"], sum | point percentile(value, 99.0)
 EOT
     }
 
@@ -240,7 +240,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric rest_client_requests_total | rate | group_by [], sum
+metric rest_client_requests_total | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | rate | group_by [], sum
 EOT
     }
 
@@ -249,7 +249,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric rest_client_requests_total | rate | group_by [], sum
+metric rest_client_requests_total | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | rate | group_by [], sum
 EOT
     }
 
@@ -258,14 +258,14 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric rest_client_requests_total | rate | group_by [], sum
+metric rest_client_requests_total | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | rate | group_by [], sum
 EOT
     }
 
   }
 
   chart {
-    name = "Request duration (p99)"
+    name = "Request Duration (p99)"
     rank = "14"
     type = "timeseries"
 
@@ -274,7 +274,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric rest_client_request_duration_seconds | delta | group_by ["verb"], sum
+metric rest_client_request_duration_seconds | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | delta | group_by ["verb"], sum | point percentile(value, 99.0)
 EOT
     }
 
@@ -290,7 +290,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric process_resident_memory_bytes | latest | group_by [], sum
+metric process_resident_memory_bytes | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | latest | group_by [], sum
 EOT
     }
 
@@ -306,7 +306,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric process_cpu_seconds_total | rate | group_by ["instance"], mean
+metric process_cpu_seconds_total | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | rate | group_by ["instance"], mean
 EOT
     }
 
@@ -322,10 +322,20 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric go_goroutines | latest | group_by ["instance"], mean
+metric go_goroutines | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | latest | group_by ["instance"], mean
 EOT
     }
 
   }
 
+  template_variable {
+    name                     = "net_host_name"
+    default_values           = []
+    suggestion_attribute_key = "net.host.name"
+  }
+  template_variable {
+    name                     = "service_name"
+    default_values           = []
+    suggestion_attribute_key = "service.name"
+  }
 }

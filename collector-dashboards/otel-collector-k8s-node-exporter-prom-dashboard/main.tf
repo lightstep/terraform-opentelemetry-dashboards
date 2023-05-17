@@ -23,7 +23,7 @@ resource "lightstep_dashboard" "k8s_node_exporter_dashboard" {
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric node_load1 | reduce mean | group_by [], min
+metric node_load1 | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | reduce mean | group_by [], min
 EOT
     }
 
@@ -32,7 +32,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric node_load5 | reduce mean | group_by [], min
+metric node_load5 | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | reduce mean | group_by [], min
 EOT
     }
 
@@ -41,7 +41,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric node_load15 | reduce mean | group_by [], min
+metric node_load15 | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | reduce mean | group_by [], min
 EOT
     }
 
@@ -50,7 +50,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric node_cpu_seconds_total | rate | group_by [], sum
+metric node_cpu_seconds_total | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | rate | group_by [], sum
 EOT
     }
 
@@ -67,8 +67,8 @@ EOT
       hidden       = false
       query_string = <<EOT
 with
-  a = metric node_cpu_seconds_total | rate | group_by ["cpu"], sum;
-  b = metric node_cpu_seconds_total | delta | group_by ["cpu"], count;
+  a = metric node_cpu_seconds_total | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | rate | group_by ["cpu"], sum;
+  b = metric node_cpu_seconds_total | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | delta | group_by ["cpu"], count;
 join (1 - (a / b)), a=0, b=0
 EOT
     }
@@ -86,8 +86,8 @@ EOT
       hidden       = false
       query_string = <<EOT
 with
-  a = metric node_memory_MemAvailable_bytes | reduce mean | group_by [], sum;
-  b = metric node_memory_MemTotal_bytes | reduce mean | group_by [], sum;
+  a = metric node_memory_MemAvailable_bytes | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | reduce mean | group_by [], sum;
+  b = metric node_memory_MemTotal_bytes | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | reduce mean | group_by [], sum;
 join (100 - ((a / b) * 100)), a=0, b=0
 EOT
     }
@@ -105,9 +105,9 @@ EOT
       hidden       = false
       query_string = <<EOT
 with
-  a = metric node_memory_MemTotal_bytes | reduce mean | group_by [], sum;
-  b = metric node_memory_Cached_bytes | reduce mean | group_by [], sum;
-  c = metric node_memory_MemFree_bytes | reduce mean | group_by [], sum;
+  a = metric node_memory_MemTotal_bytes | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | reduce mean | group_by [], sum;
+  b = metric node_memory_Cached_bytes | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | reduce mean | group_by [], sum;
+  c = metric node_memory_MemFree_bytes | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | reduce mean | group_by [], sum;
 join ((a - c) - b), a=0, b=0, c=0
 EOT
     }
@@ -117,7 +117,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric node_memory_Buffers_bytes | reduce mean | group_by [], sum
+metric node_memory_Buffers_bytes | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | reduce mean | group_by [], sum
 
 EOT
     }
@@ -134,7 +134,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric node_disk_read_bytes_total | rate | group_by [], sum
+metric node_disk_read_bytes_total | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | rate | group_by [], sum
 
 EOT
     }
@@ -144,7 +144,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric node_disk_written_bytes_total | rate | group_by [], sum
+metric node_disk_written_bytes_total | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | rate | group_by [], sum
 
 EOT
     }
@@ -154,7 +154,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric node_disk_io_time_seconds_total | rate | group_by [], sum
+metric node_disk_io_time_seconds_total | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | rate | group_by [], sum
 
 EOT
     }
@@ -171,7 +171,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric node_disk_io_time_seconds_total | rate | group_by [], sum
+metric node_disk_io_time_seconds_total | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | rate | group_by [], sum
 
 EOT
     }
@@ -181,7 +181,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric node_disk_discard_time_seconds_total | rate | group_by [], sum
+metric node_disk_discard_time_seconds_total | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | rate | group_by [], sum
 
 EOT
     }
@@ -191,7 +191,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric node_disk_flush_requests_time_seconds_total | rate | group_by [], sum
+metric node_disk_flush_requests_time_seconds_total | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | rate | group_by [], sum
 
 EOT
     }
@@ -209,8 +209,8 @@ EOT
       hidden       = false
       query_string = <<EOT
 with
-  a = metric node_filesystem_size_bytes | latest | group_by ["mountpoint"], max;
-  b = metric node_filesystem_avail_bytes | latest | group_by ["mountpoint"], max;
+  a = metric node_filesystem_size_bytes | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | latest | group_by ["mountpoint"], max;
+  b = metric node_filesystem_avail_bytes | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | latest | group_by ["mountpoint"], max;
 join (1 - (b / a)), a=0, b=0
 EOT
     }
@@ -227,7 +227,7 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric node_network_receive_bytes_total | rate | group_by ["device"], mean
+metric node_network_receive_bytes_total | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | rate | group_by ["device"], mean
 EOT
     }
 
@@ -243,10 +243,20 @@ EOT
       display      = "line"
       hidden       = false
       query_string = <<EOT
-metric node_network_transmit_bytes_total | rate | group_by ["device"], mean
+metric node_network_transmit_bytes_total | filter ((service.name == $service_name) && (net.host.name == $net_host_name)) | rate | group_by ["device"], mean
 EOT
     }
 
   }
 
+  template_variable {
+    name                     = "net_host_name"
+    default_values           = []
+    suggestion_attribute_key = "net.host.name"
+  }
+  template_variable {
+    name                     = "service_name"
+    default_values           = []
+    suggestion_attribute_key = "service.name"
+  }
 }
