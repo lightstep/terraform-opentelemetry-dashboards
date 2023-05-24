@@ -13,388 +13,231 @@ locals {
   prometheus_addon = "prometheus"
 }
 
-
-resource "lightstep_metric_dashboard" "otel_collector_dashboard" {
-  project_name   = var.lightstep_project
-  dashboard_name = "OpenTelemetry Collector"
+resource "lightstep_dashboard" "otel_collector_dashboard" {
+  project_name          = var.lightstep_project
+  dashboard_name        = "OpenTelemetry Collector"
+  dashboard_description = "OTel Collector Dashboard"
 
   chart {
-    name = "Collector up"
-    rank = 1
+    name = "Collector Up"
+    rank = "1"
     type = "timeseries"
+
     query {
-      query_name      = "a"
-      exclude_filters = []
-      include_filters = []
-      display         = "bar"
-      hidden          = false
-      tql             = <<-EOT
-        metric otelcol_process_uptime
-        | rate
-        | group_by [collector_name,job,service_instance_id], sum
-        EOT
+      query_name   = "a"
+      display      = "bar"
+      hidden       = false
+      query_string = <<EOT
+metric otelcol_process_uptime
+| rate
+| group_by [collector_name,job,service_instance_id], sum
+EOT
     }
+
   }
 
   chart {
-    name = "Otel Cpu usage vs limits"
-    rank = 2
+    name = "Data Points Accepted & Rejected"
+    rank = "2"
     type = "timeseries"
-    query {
-      query_name      = "limits"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric kube_pod_container_resource_limits
-        | latest
-        | filter resource == "cpu"
-        | filter container == "otc-container"
-        | group_by [pod], sum
-      EOT
-    }
-    query {
-      query_name      = "request"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric kube_pod_container_resource_requests
-        | latest
-        | filter resource == "cpu"
-        | filter container == "otc-container"
-        | group_by [pod], sum
-      EOT
-    }
-    query {
-      query_name      = "usage"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-    metric container_cpu_usage_seconds_total
-    | rate
-    | filter container == "otc-container"
-    | group_by [pod], sum
-    EOT
-    }
-  }
 
-
-  chart {
-    name = "Otel Memory usage vs limits"
-    rank = 3
-    type = "timeseries"
     query {
-      query_name      = "limits"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric kube_pod_container_resource_limits
-        | latest
-        | filter resource == "memory"
-        | filter container == "otc-container"
-        | group_by [pod], sum
-      EOT
-    }
-    query {
-      query_name      = "requests"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric kube_pod_container_resource_requests
-        | latest
-        | filter resource == "memory"
-        | filter container == "otc-container"
-        | group_by [pod], sum
-      EOT
-    }
-    query {
-      query_name      = "usage"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-    metric container_memory_working_set_bytes
-    | latest
-    | filter container == "otc-container"
-    | group_by [pod], sum
-    EOT
-    }
-  }
-
-
-  chart {
-    name = "Otel collector receiver refused vs accepted"
-    rank = 4
-    type = "timeseries"
-    query {
-      query_name      = "accepted metrics"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric otelcol_receiver_accepted_metric_points
-        | delta
-        | group_by [receiver, collector_name], sum
-      EOT
-    }
-    query {
-      query_name      = "accepted spans"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric otelcol_receiver_accepted_spans
-        | delta
-        | group_by [receiver, collector_name], sum
-      EOT
-    }
-    query {
-      query_name      = "refused metrics"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric otelcol_receiver_refused_metric_points
-        | delta
-        | group_by [receiver, collector_name], sum
-      EOT
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric otelcol_receiver_accepted_metric_points
+| delta
+| group_by [receiver, collector_name], sum
+EOT
     }
 
     query {
-      query_name      = "refused spans"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric otelcol_receiver_refused_spans
-        | delta
-        | group_by [receiver, collector_name], sum
-      EOT
+      query_name   = "b"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric otelcol_receiver_accepted_spans
+| delta
+| group_by [receiver, collector_name], sum
+EOT
     }
-  }
 
+    query {
+      query_name   = "c"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric otelcol_receiver_refused_metric_points
+| delta
+| group_by [receiver, collector_name], sum
+EOT
+    }
 
-  chart {
-    name = "Otel collector processor refused & dropped"
-    rank = 5
-    type = "timeseries"
     query {
-      query_name      = "dropped metrics"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric otelcol_processor_dropped_metric_points
-        | delta
-        | group_by [processor, collector_name], sum
-      EOT
-    }
-    query {
-      query_name      = "dropped spans"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric otelcol_processor_dropped_spans
-        | delta
-        | group_by [exporter, collector_name], sum
-      EOT
-    }
-    query {
-      query_name      = "refused metrics"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric otelcol_processor_refused_metric_points
-        | delta
-        | group_by [processor, collector_name], sum
-      EOT
-    }
-    query {
-      query_name      = "refused spans"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric otelcol_processor_refused_spans
-        | delta
-        | group_by [exporter, collector_name], sum
-      EOT
-    }
-  }
-
-
-  chart {
-    name = "Otel collector exporter sent vs failed"
-    rank = 6
-    type = "timeseries"
-    query {
-      query_name      = "sent metrics"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric otelcol_exporter_sent_metric_points
-        | delta
-        | group_by [exporter, collector_name], sum
-      EOT
-    }
-    query {
-      query_name      = "sent spans"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric otelcol_exporter_sent_spans
-        | delta
-        | group_by [exporter, collector_name], sum
-      EOT
-    }
-    query {
-      query_name      = "failed metrics"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric otelcol_exporter_send_failed_metric_points
-        | delta
-        | group_by [exporter, collector_name], sum
-      EOT
-    }
-    query {
-      query_name      = "failed spans"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric otelcol_exporter_send_failed_spans
-        | delta
-        | group_by [exporter, collector_name], sum
-      EOT
-    }
-  }
-
-
-  chart {
-    name = "Otel batch send size"
-    rank = 7
-    type = "timeseries"
-    query {
-      query_name      = "a"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric otelcol_processor_batch_batch_send_size
-        | delta
-        | group_by [processor, collector_name], sum
-        | point percentile(value, 99)
-      EOT
+      query_name   = "d"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric otelcol_receiver_refused_spans
+| delta
+| group_by [receiver, collector_name], sum
+EOT
     }
   }
 
   chart {
-    name = "Collector exporter queue size"
-    rank = 8
+    name = "Processor Refused & Dropped"
+    rank = "3"
     type = "timeseries"
+
     query {
-      query_name      = "a"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric otelcol_exporter_queue_size
-        | latest
-        | group_by [exporter, collector_name], sum
-      EOT
+      query_name   = "dropped metrics"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric otelcol_processor_dropped_metric_points
+| delta
+| group_by [processor, collector_name], sum
+EOT
+    }
+
+    query {
+      query_name   = "dropped spans"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric otelcol_processor_dropped_spans
+| delta
+| group_by [exporter, collector_name], sum
+EOT
+    }
+
+    query {
+      query_name   = "refused metrics"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric otelcol_processor_refused_metric_points
+| delta
+| group_by [processor, collector_name], sum
+EOT
+    }
+
+    query {
+      query_name   = "refused spans"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric otelcol_processor_refused_spans
+| delta
+| group_by [exporter, collector_name], sum
+EOT
     }
   }
 
   chart {
-    name = "Hourly active time series by service"
-    rank = 9
+    name = "Exporter Sent & Failed"
+    rank = "4"
     type = "timeseries"
+
     query {
-      query_name      = "a"
-      exclude_filters = []
-      include_filters = []
-      display         = "bar"
-      hidden          = false
-      tql             = <<-EOT
-        metric lightstep.hourly_active_time_series
-        | delta 1h
-        | group_by [service.name], sum
-      EOT
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric otelcol_exporter_sent_metric_points
+| delta
+| group_by [exporter, collector_name], sum
+EOT
+    }
+
+    query {
+      query_name   = "b"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric otelcol_exporter_sent_spans
+| delta
+| group_by [exporter, collector_name], sum
+EOT
+    }
+
+    query {
+      query_name   = "c"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric otelcol_exporter_send_failed_metric_points
+| delta
+| group_by [exporter, collector_name], sum
+EOT
+    }
+
+    query {
+      query_name   = "d"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric otelcol_exporter_send_failed_spans
+| delta
+| group_by [exporter, collector_name], sum
+EOT
     }
   }
 
-  dynamic "chart" {
-    for_each = [for addon in var.dashboard_addons : addon if addon == local.prometheus_addon]
+  chart {
+    name = "Batch Send Size"
+    rank = "5"
+    type = "timeseries"
 
-    content {
-      name = "Prometheus targets by job, metrics_path"
-      rank = 10
-      type = "timeseries"
-      query {
-        query_name      = "a"
-        exclude_filters = []
-        include_filters = []
-        display         = "bar"
-        hidden          = false
-        tql             = <<-EOT
-          metric scrape_samples_scraped
-          | reduce 1m, count
-          | group_by [job, metrics_path], count
-        EOT
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric otelcol_processor_batch_batch_send_size
+| delta
+| group_by [processor, collector_name], sum
+| point percentile(value, 99)
+EOT
     }
+
   }
 
-  dynamic "chart" {
-    for_each = [for addon in var.dashboard_addons : addon if addon == local.prometheus_addon]
+  chart {
+    name = "Exporter Queue Size"
+    rank = "6"
+    type = "timeseries"
 
-    content {
-      name = "Receiver Scrape duration"
-      rank = 11
-      type = "timeseries"
-      query {
-        query_name      = "a"
-        exclude_filters = []
-        include_filters = []
-        display         = "line"
-        hidden          = false
-        tql             = <<-EOT
-          metric scrape_duration_seconds
-          | latest
-          | group_by [job], mean
-        EOT
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric otelcol_exporter_queue_size
+| latest
+| group_by [exporter, collector_name], sum
+
+EOT
     }
+
   }
 
+  chart {
+    name = "Hourly Active Time Series"
+    rank = "7"
+    type = "timeseries"
+
+    query {
+      query_name   = "a"
+      display      = "bar"
+      hidden       = false
+      query_string = <<EOT
+metric lightstep.hourly_active_time_series
+| delta 1h
+| group_by [service.name], sum
+EOT
+    }
+  }
 }
