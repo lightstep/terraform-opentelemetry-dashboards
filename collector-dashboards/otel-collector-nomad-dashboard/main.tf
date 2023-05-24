@@ -92,7 +92,7 @@ resource "lightstep_dashboard" "otel_collector_nomad_dashboard" {
       query_name   = "a"
       display      = "line"
       hidden       = false
-      query_string = "metric nomad_client_host_disk_available | latest | group_by [], sum"
+      query_string = "metric nomad_client_host_disk_available | latest | group_by [], sum
     }
 
   }
@@ -182,4 +182,3 @@ resource "lightstep_dashboard" "otel_collector_nomad_dashboard" {
   }
 
 }
-

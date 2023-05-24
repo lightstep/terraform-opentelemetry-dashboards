@@ -2,199 +2,133 @@ terraform {
   required_providers {
     lightstep = {
       source  = "lightstep/lightstep"
-      version = "~> 1.70.10"
+      version = "~> 1.76.0"
     }
   }
   required_version = ">= v1.0.11"
 }
 
-resource "lightstep_metric_dashboard" "otel_collector_couchdbreceiver_dashboard" {
-    project_name   = var.lightstep_project
-    dashboard_name = "OpenTelemetry couchdbreceiver Integration"
+resource "lightstep_dashboard" "otel_collector_couchdbreceiver_dashboard" {
+  project_name   = var.lightstep_project
+  dashboard_name = "OpenTelemetry CouchDB Receiver"
 
-    
-    
-    chart {
-      name = "couchdb.average_request_time"
-      rank = "0"
-      type = "timeseries"
+  chart {
+    name = "CouchDB Average Request Time"
+    rank = "0"
+    type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
-
-        metric              = "couchdb.average_request_time"
-        timeseries_operator = "last"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: The average duration of a served request.
-        # TODO: add unit: ms
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric couchdb.average_request_time | latest | group_by [], sum
+EOT
     }
-    
-    chart {
-      name = "couchdb.database.open"
-      rank = "1"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "CouchDB Database Open"
+    rank = "1"
+    type = "timeseries"
 
-        metric              = "couchdb.database.open"
-        timeseries_operator = "rate"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: The number of open databases.
-        # TODO: add unit: {databases}
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric couchdb.database.open | rate | group_by [], sum
+EOT
     }
-    
-    chart {
-      name = "couchdb.database.operations"
-      rank = "2"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "CouchDB Database Operations"
+    rank = "2"
+    type = "timeseries"
 
-        metric              = "couchdb.database.operations"
-        timeseries_operator = "rate"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "operation"]
-        }
-        
-        # TODO: add description: The number of database operations.
-        # TODO: add unit: {operations}
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric couchdb.database.operations | rate | group_by ["operation"], sum
+EOT
     }
-    
-    chart {
-      name = "couchdb.file_descriptor.open"
-      rank = "3"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "CouchDB File Descriptor Open"
+    rank = "3"
+    type = "timeseries"
 
-        metric              = "couchdb.file_descriptor.open"
-        timeseries_operator = "rate"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: The number of open file descriptors.
-        # TODO: add unit: {files}
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric couchdb.file_descriptor.open | rate | group_by [], sum
+EOT
     }
-    
-    chart {
-      name = "couchdb.httpd.bulk_requests"
-      rank = "4"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "CouchDB HTTP Bulk Requests"
+    rank = "4"
+    type = "timeseries"
 
-        metric              = "couchdb.httpd.bulk_requests"
-        timeseries_operator = "rate"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: The number of bulk requests.
-        # TODO: add unit: {requests}
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric couchdb.httpd.bulk_requests | rate | group_by [], sum
+EOT
     }
-    
-    chart {
-      name = "couchdb.httpd.requests"
-      rank = "5"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "CouchDB HTTP Requests"
+    rank = "5"
+    type = "timeseries"
 
-        metric              = "couchdb.httpd.requests"
-        timeseries_operator = "rate"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "http.method"]
-        }
-        
-        # TODO: add description: The number of HTTP requests by method.
-        # TODO: add unit: {requests}
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric couchdb.httpd.requests | rate | group_by ["http.method"], sum
+EOT
     }
-    
-    chart {
-      name = "couchdb.httpd.responses"
-      rank = "6"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "CouchDB HTTP Responses"
+    rank = "6"
+    type = "timeseries"
 
-        metric              = "couchdb.httpd.responses"
-        timeseries_operator = "rate"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "http.status_code"]
-        }
-        
-        # TODO: add description: The number of each HTTP status code.
-        # TODO: add unit: {responses}
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric couchdb.httpd.responses | rate | group_by ["http.status_code"], sum
+EOT
     }
-    
-    chart {
-      name = "couchdb.httpd.views"
-      rank = "7"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "CouchDB HTTP Views"
+    rank = "7"
+    type = "timeseries"
 
-        metric              = "couchdb.httpd.views"
-        timeseries_operator = "rate"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "view"]
-        }
-        
-        # TODO: add description: The number of views read.
-        # TODO: add unit: {views}
-      }
+    query {
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
+metric couchdb.httpd.views | rate | group_by ["view"], sum
+EOT
     }
+  }
 }
