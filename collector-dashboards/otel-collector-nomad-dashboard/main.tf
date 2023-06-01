@@ -8,13 +8,13 @@ terraform {
   required_version = ">= v1.0.11"
 }
 
-resource "lightstep_dashboard" "otel_collector_nomadreceiver_dashboard" {
+resource "lightstep_dashboard" "otel_collector_nomad_dashboard" {
   project_name          = var.lightstep_project
-  dashboard_name        = "Nomad"
-  dashboard_description = "Monitor Nomad with this overview dashboard."
+  dashboard_name        = "Hashcorp Nomad Server"
+  dashboard_description = "Monitor Hashcorp Nomad Server metrics with the OTel Collector's Prometheus receiver."
 
   chart {
-    name = "CPU"
+    name = "Client Allocated CPU"
     rank = "0"
     type = "timeseries"
 
@@ -22,13 +22,13 @@ resource "lightstep_dashboard" "otel_collector_nomadreceiver_dashboard" {
       query_name   = "a"
       display      = "line"
       hidden       = false
-      query_string = "metric nomad_client_allocated_cpu | delta | group_by [], sum"
+      query_string = "metric nomad_client_allocated_disk | latest | group_by [], sum"
     }
 
   }
 
   chart {
-    name = "Disk"
+    name = "Raft FSM Apply Count"
     rank = "1"
     type = "timeseries"
 
@@ -36,13 +36,13 @@ resource "lightstep_dashboard" "otel_collector_nomadreceiver_dashboard" {
       query_name   = "a"
       display      = "line"
       hidden       = false
-      query_string = "metric nomad_client_allocated_disk | delta | group_by [], sum"
+      query_string = "metric nomad_raft_barrier | rate | group_by [], sum"
     }
 
   }
 
   chart {
-    name = "IOPS"
+    name = "Client Allocated Memory"
     rank = "2"
     type = "timeseries"
 
@@ -50,13 +50,13 @@ resource "lightstep_dashboard" "otel_collector_nomadreceiver_dashboard" {
       query_name   = "a"
       display      = "line"
       hidden       = false
-      query_string = "metric nomad_client_allocated_iops | delta | group_by [], sum"
+      query_string = "metric nomad_client_allocated_memory | latest | group_by [], sum"
     }
 
   }
 
   chart {
-    name = "Memory"
+    name = "Client Host CPU IDLE"
     rank = "3"
     type = "timeseries"
 
@@ -64,13 +64,13 @@ resource "lightstep_dashboard" "otel_collector_nomadreceiver_dashboard" {
       query_name   = "a"
       display      = "line"
       hidden       = false
-      query_string = "metric nomad_client_allocated_memory | delta | group_by [], sum"
+      query_string = "metric nomad_client_host_cpu_idle | latest | group_by [], sum"
     }
 
   }
 
   chart {
-    name = "Network"
+    name = "Client Host CPU System"
     rank = "4"
     type = "timeseries"
 
@@ -78,13 +78,13 @@ resource "lightstep_dashboard" "otel_collector_nomadreceiver_dashboard" {
       query_name   = "a"
       display      = "line"
       hidden       = false
-      query_string = "metric nomad_client_allocated_network | delta | group_by [], sum"
+      query_string = "metric nomad_client_host_cpu_system | latest | group_by [], sum"
     }
 
   }
 
   chart {
-    name = "Allocations blocked"
+    name = "Client Host Disk Available"
     rank = "5"
     type = "timeseries"
 
@@ -92,13 +92,13 @@ resource "lightstep_dashboard" "otel_collector_nomadreceiver_dashboard" {
       query_name   = "a"
       display      = "line"
       hidden       = false
-      query_string = "metric nomad_client_allocations_blocked | delta | group_by [], sum"
+      query_string = "metric nomad_client_host_disk_available | latest | group_by [], sum"
     }
 
   }
 
   chart {
-    name = "Migrating Allocations"
+    name = "Client Allocated IOPS"
     rank = "6"
     type = "timeseries"
 
@@ -106,13 +106,13 @@ resource "lightstep_dashboard" "otel_collector_nomadreceiver_dashboard" {
       query_name   = "a"
       display      = "line"
       hidden       = false
-      query_string = "metric nomad_client_allocations_migrating | delta | group_by [], sum"
+      query_string = "metric nomad_client_allocated_iops | latest | group_by [], sum"
     }
 
   }
 
   chart {
-    name = "Pending Allocations"
+    name = "Client Allocated CPU"
     rank = "7"
     type = "timeseries"
 
@@ -120,27 +120,27 @@ resource "lightstep_dashboard" "otel_collector_nomadreceiver_dashboard" {
       query_name   = "a"
       display      = "line"
       hidden       = false
-      query_string = "metric nomad_client_allocations_pending | delta | group_by [], sum"
+      query_string = "metric nomad_client_allocated_cpu | latest | group_by [], sum"
     }
 
   }
 
   chart {
-    name = "Running Allocations"
+    name = "Client Uptime"
     rank = "8"
     type = "timeseries"
 
     query {
       query_name   = "a"
-      display      = "line"
+      display      = "big_number"
       hidden       = false
-      query_string = "metric nomad_client_allocations_running | delta | group_by [], sum"
+      query_string = "metric nomad_client_uptime | latest | group_by [], sum"
     }
 
   }
 
   chart {
-    name = "Starting Allocations"
+    name = "Client Allocations BLocked"
     rank = "9"
     type = "timeseries"
 
@@ -148,36 +148,38 @@ resource "lightstep_dashboard" "otel_collector_nomadreceiver_dashboard" {
       query_name   = "a"
       display      = "line"
       hidden       = false
-      query_string = "metric nomad_client_allocations_start | delta | group_by [], sum"
+      query_string = "metric nomad_client_allocations_blocked | latest | group_by [], sum"
     }
 
   }
 
   chart {
-    name = "Terminated Allocations"
+    name = "Runtime Heap Objects"
     rank = "10"
     type = "timeseries"
 
     query {
       query_name   = "a"
-      display      = "line"
+      display      = "bar"
       hidden       = false
-      query_string = "metric nomad_client_allocations_terminal | delta | group_by [], sum"
+      query_string = "metric nomad_runtime_heap_objects | latest | group_by [], sum"
     }
 
   }
 
   chart {
-    name = "Total CPU allocated"
+    name = "Eval ACK Sum"
     rank = "11"
     type = "timeseries"
 
     query {
       query_name   = "a"
-      display      = "line"
+      display      = "area"
       hidden       = false
-      query_string = "metric nomad_client_allocs_cpu_allocated | delta | group_by [], sum"
+      query_string = "metric nomad_nomad_eval_ack_sum | rate | group_by [], sum"
     }
 
   }
+
 }
+
