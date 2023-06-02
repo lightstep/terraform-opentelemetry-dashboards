@@ -19,7 +19,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
   dashboard_description = "OTel Collector Dashboard"
 
   chart {
-    name = "Collector Up"
+    name = "Collector Uptime %"
     rank = "1"
     type = "timeseries"
 
@@ -29,8 +29,9 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       hidden       = false
       query_string = <<EOT
 metric otelcol_process_uptime
-| rate
+| rate 1s
 | group_by [collector_name,job,service_instance_id], sum
+| * 100.00
 EOT
     }
 
