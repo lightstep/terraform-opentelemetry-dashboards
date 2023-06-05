@@ -74,6 +74,11 @@ module "lightstep_otel_collector_elasticsearchreceiver_dashboard" {
   lightstep_project = var.lightstep_project
 }
 
+module "lightstep_otel_collector_etcd_dashboard" {
+  source            = "./collector-dashboards/otel-collector-etcd-dashboard"
+  lightstep_project = var.lightstep_project
+}
+
 module "lightstep_otel_collector_flink_dashboard" {
   source            = "./collector-dashboards/otel-collector-flink-dashboard"
   lightstep_project = var.lightstep_project
@@ -86,6 +91,11 @@ module "lightstep_otel_collector_fluentd_dashboard" {
 
 module "lightstep_otel_collector_gunicorn_dashboard" {
   source            = "./collector-dashboards/otel-collector-gunicorn-dashboard"
+  lightstep_project = var.lightstep_project
+}
+
+module "lightstep_otel_collector_hadoop_dashboard" {
+  source            = "./collector-dashboards/otel-collector-hadoop-dashboard"
   lightstep_project = var.lightstep_project
 }
 
