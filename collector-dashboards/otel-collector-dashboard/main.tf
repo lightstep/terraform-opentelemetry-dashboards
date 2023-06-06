@@ -24,7 +24,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
     visibility_type = "implicit"
 
     chart {
-      name   = "Collector Up"
+      name   = "Collector Up %"
       type   = "timeseries"
       rank   = 1
       x_pos  = 0
@@ -36,7 +36,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
         query_name   = "a"
         display      = "bar"
         hidden       = false
-        query_string = "metric otelcol_process_uptime | filter ((collector_name == $collector_name) && (service_name == $service_name)) | rate | group_by [\"collector_name\", \"job\", \"service_instance_id\"], sum"
+        query_string = "metric otelcol_process_uptime | filter ((collector_name == $collector_name) && (service_name == $service_name)) | rate 1s | group_by [\"collector_name\", \"job\", \"service_instance_id\"], sum | * 100.00"
       }
     }
     chart {
