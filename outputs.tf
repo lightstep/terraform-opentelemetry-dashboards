@@ -54,9 +54,14 @@ output "lightstep_otel_collector_dashboard_url" {
   description = "Lightstep OpenTelemetry OpenTelemetry Collector Dashboard"
 }
 
+output "lightstep_otel_collector_dockerstats_dashboard_url" {
+  value       = module.lightstep_otel_collector_dockerstats_dashboard.dashboard_url
+  description = "Lightstep OpenTelemetry Dockerstats Metrics Dashboard"
+}
+
 output "lightstep_otel_collector_elasticsearchreceiver_dashboard_url" {
   value       = module.lightstep_otel_collector_elasticsearchreceiver_dashboard.dashboard_url
-  description = "Lightstep OpenTelemetry OpenTelemetry elasticsearchreceiver Integration Dashboard"
+  description = "Lightstep OpenTelemetry OpenTelemetry Elasticsearchreceiver Receiver Dashboard"
 }
 
 output "lightstep_otel_collector_etcd_dashboard_url" {
@@ -74,6 +79,11 @@ output "lightstep_otel_collector_fluentd_dashboard_url" {
   description = "Lightstep OpenTelemetry Fluentd Records Dashboard"
 }
 
+output "lightstep_otel_collector_grafana_dashboard_url" {
+  value       = module.lightstep_otel_collector_grafana_dashboard.dashboard_url
+  description = "Lightstep OpenTelemetry Grafana Dashboard"
+}
+
 output "lightstep_otel_collector_gunicorn_dashboard_url" {
   value       = module.lightstep_otel_collector_gunicorn_dashboard.dashboard_url
   description = "Lightstep OpenTelemetry Gunicorn - Overview Dashboard"
@@ -82,6 +92,11 @@ output "lightstep_otel_collector_gunicorn_dashboard_url" {
 output "lightstep_otel_collector_hadoop_dashboard_url" {
   value       = module.lightstep_otel_collector_hadoop_dashboard.dashboard_url
   description = "Lightstep OpenTelemetry OpenTelemetry Hadoop Dashboard Dashboard"
+}
+
+output "lightstep_otel_collector_haproxy_dashboard_url" {
+  value       = module.lightstep_otel_collector_haproxy_dashboard.dashboard_url
+  description = "Lightstep OpenTelemetry HAProxy - Overview Dashboard"
 }
 
 output "lightstep_otel_collector_hbase_dashboard_url" {
@@ -186,7 +201,7 @@ output "lightstep_otel_collector_nginxreceiver_dashboard_url" {
 
 output "lightstep_otel_collector_nomad_dashboard_url" {
   value       = module.lightstep_otel_collector_nomad_dashboard.dashboard_url
-  description = "Lightstep OpenTelemetry Nomad Dashboard"
+  description = "Lightstep OpenTelemetry Hashcorp Nomad Server Dashboard"
 }
 
 output "lightstep_otel_collector_postgresqlreceiver_dashboard_url" {
@@ -214,6 +229,16 @@ output "lightstep_otel_collector_riakreceiver_dashboard_url" {
   description = "Lightstep OpenTelemetry OpenTelemetry riakreceiver Integration Dashboard"
 }
 
+output "lightstep_otel_collector_snmp_dashboard_url" {
+  value       = module.lightstep_otel_collector_snmp_dashboard.dashboard_url
+  description = "Lightstep OpenTelemetry SNMP Metrics Dashboard"
+}
+
+output "lightstep_otel_collector_solr_dashboard_url" {
+  value       = module.lightstep_otel_collector_solr_dashboard.dashboard_url
+  description = "Lightstep OpenTelemetry Solr Overview Dashboard Dashboard"
+}
+
 output "lightstep_otel_collector_sqlserverreceiver_dashboard_url" {
   value       = module.lightstep_otel_collector_sqlserverreceiver_dashboard.dashboard_url
   description = "Lightstep OpenTelemetry OpenTelemetry sqlserverreceiver Integration Dashboard"
@@ -232,6 +257,11 @@ output "lightstep_otel_collector_tomcat_dashboard_url" {
 output "lightstep_otel_collector_varnish_dashboard_url" {
   value       = module.lightstep_otel_collector_varnish_dashboard.dashboard_url
   description = "Lightstep OpenTelemetry Varnish - Overview Dashboard"
+}
+
+output "lightstep_otel_collector_vault_dashboard_url" {
+  value       = module.lightstep_otel_collector_vault_dashboard.dashboard_url
+  description = "Lightstep OpenTelemetry Vault - Overview Dashboard"
 }
 
 output "lightstep_otel_collector_zookeeperreceiver_dashboard_url" {

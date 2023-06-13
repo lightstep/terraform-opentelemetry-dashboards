@@ -69,6 +69,11 @@ module "lightstep_otel_collector_dashboard" {
   lightstep_project = var.lightstep_project
 }
 
+module "lightstep_otel_collector_dockerstats_dashboard" {
+  source            = "./collector-dashboards/otel-collector-dockerstats-dashboard"
+  lightstep_project = var.lightstep_project
+}
+
 module "lightstep_otel_collector_elasticsearchreceiver_dashboard" {
   source            = "./collector-dashboards/otel-collector-elasticsearchreceiver-dashboard"
   lightstep_project = var.lightstep_project
@@ -89,6 +94,11 @@ module "lightstep_otel_collector_fluentd_dashboard" {
   lightstep_project = var.lightstep_project
 }
 
+module "lightstep_otel_collector_grafana_dashboard" {
+  source            = "./collector-dashboards/otel-collector-grafana-dashboard"
+  lightstep_project = var.lightstep_project
+}
+
 module "lightstep_otel_collector_gunicorn_dashboard" {
   source            = "./collector-dashboards/otel-collector-gunicorn-dashboard"
   lightstep_project = var.lightstep_project
@@ -96,6 +106,11 @@ module "lightstep_otel_collector_gunicorn_dashboard" {
 
 module "lightstep_otel_collector_hadoop_dashboard" {
   source            = "./collector-dashboards/otel-collector-hadoop-dashboard"
+  lightstep_project = var.lightstep_project
+}
+
+module "lightstep_otel_collector_haproxy_dashboard" {
+  source            = "./collector-dashboards/otel-collector-haproxy-dashboard"
   lightstep_project = var.lightstep_project
 }
 
@@ -229,6 +244,16 @@ module "lightstep_otel_collector_riakreceiver_dashboard" {
   lightstep_project = var.lightstep_project
 }
 
+module "lightstep_otel_collector_snmp_dashboard" {
+  source            = "./collector-dashboards/otel-collector-snmp-dashboard"
+  lightstep_project = var.lightstep_project
+}
+
+module "lightstep_otel_collector_solr_dashboard" {
+  source            = "./collector-dashboards/otel-collector-solr-dashboard"
+  lightstep_project = var.lightstep_project
+}
+
 module "lightstep_otel_collector_sqlserverreceiver_dashboard" {
   source            = "./collector-dashboards/otel-collector-sqlserverreceiver-dashboard"
   lightstep_project = var.lightstep_project
@@ -246,6 +271,11 @@ module "lightstep_otel_collector_tomcat_dashboard" {
 
 module "lightstep_otel_collector_varnish_dashboard" {
   source            = "./collector-dashboards/otel-collector-varnish-dashboard"
+  lightstep_project = var.lightstep_project
+}
+
+module "lightstep_otel_collector_vault_dashboard" {
+  source            = "./collector-dashboards/otel-collector-vault-dashboard"
   lightstep_project = var.lightstep_project
 }
 
