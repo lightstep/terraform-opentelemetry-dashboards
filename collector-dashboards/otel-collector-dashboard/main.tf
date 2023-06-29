@@ -2,7 +2,7 @@ terraform {
   required_providers {
     lightstep = {
       source  = "lightstep/lightstep"
-      version = "~> 1.70.10"
+      version = "~> 1.76.0"
     }
   }
   required_version = ">= v1.0.11"
@@ -13,388 +13,189 @@ locals {
   prometheus_addon = "prometheus"
 }
 
+resource "lightstep_dashboard" "otel_collector_dashboard" {
+  project_name          = var.lightstep_project
+  dashboard_name        = "OpenTelemetry Collector"
+  dashboard_description = "OTel Collector Dashboard"
 
-resource "lightstep_metric_dashboard" "otel_collector_dashboard" {
-  project_name   = var.lightstep_project
-  dashboard_name = "OpenTelemetry Collector"
+  group {
+    rank            = 0
+    title           = ""
+    visibility_type = "implicit"
 
-  chart {
-    name = "Collector up"
-    rank = 1
-    type = "timeseries"
-    query {
-      query_name      = "a"
-      exclude_filters = []
-      include_filters = []
-      display         = "bar"
-      hidden          = false
-      tql             = <<-EOT
-        metric otelcol_process_uptime
-        | rate
-        | group_by [collector_name,job,service_instance_id], sum
-        EOT
-    }
-  }
+    chart {
+      name   = "Collector Up %"
+      type   = "timeseries"
+      rank   = 1
+      x_pos  = 0
+      y_pos  = 0
+      width  = 16
+      height = 8
 
-  chart {
-    name = "Otel Cpu usage vs limits"
-    rank = 2
-    type = "timeseries"
-    query {
-      query_name      = "limits"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric kube_pod_container_resource_limits
-        | latest
-        | filter resource == "cpu"
-        | filter container == "otc-container"
-        | group_by [pod], sum
-      EOT
-    }
-    query {
-      query_name      = "request"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric kube_pod_container_resource_requests
-        | latest
-        | filter resource == "cpu"
-        | filter container == "otc-container"
-        | group_by [pod], sum
-      EOT
-    }
-    query {
-      query_name      = "usage"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-    metric container_cpu_usage_seconds_total
-    | rate
-    | filter container == "otc-container"
-    | group_by [pod], sum
-    EOT
-    }
-  }
-
-
-  chart {
-    name = "Otel Memory usage vs limits"
-    rank = 3
-    type = "timeseries"
-    query {
-      query_name      = "limits"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric kube_pod_container_resource_limits
-        | latest
-        | filter resource == "memory"
-        | filter container == "otc-container"
-        | group_by [pod], sum
-      EOT
-    }
-    query {
-      query_name      = "requests"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric kube_pod_container_resource_requests
-        | latest
-        | filter resource == "memory"
-        | filter container == "otc-container"
-        | group_by [pod], sum
-      EOT
-    }
-    query {
-      query_name      = "usage"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-    metric container_memory_working_set_bytes
-    | latest
-    | filter container == "otc-container"
-    | group_by [pod], sum
-    EOT
-    }
-  }
-
-
-  chart {
-    name = "Otel collector receiver refused vs accepted"
-    rank = 4
-    type = "timeseries"
-    query {
-      query_name      = "accepted metrics"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric otelcol_receiver_accepted_metric_points
-        | delta
-        | group_by [receiver, collector_name], sum
-      EOT
-    }
-    query {
-      query_name      = "accepted spans"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric otelcol_receiver_accepted_spans
-        | delta
-        | group_by [receiver, collector_name], sum
-      EOT
-    }
-    query {
-      query_name      = "refused metrics"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric otelcol_receiver_refused_metric_points
-        | delta
-        | group_by [receiver, collector_name], sum
-      EOT
-    }
-
-    query {
-      query_name      = "refused spans"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric otelcol_receiver_refused_spans
-        | delta
-        | group_by [receiver, collector_name], sum
-      EOT
-    }
-  }
-
-
-  chart {
-    name = "Otel collector processor refused & dropped"
-    rank = 5
-    type = "timeseries"
-    query {
-      query_name      = "dropped metrics"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric otelcol_processor_dropped_metric_points
-        | delta
-        | group_by [processor, collector_name], sum
-      EOT
-    }
-    query {
-      query_name      = "dropped spans"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric otelcol_processor_dropped_spans
-        | delta
-        | group_by [exporter, collector_name], sum
-      EOT
-    }
-    query {
-      query_name      = "refused metrics"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric otelcol_processor_refused_metric_points
-        | delta
-        | group_by [processor, collector_name], sum
-      EOT
-    }
-    query {
-      query_name      = "refused spans"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric otelcol_processor_refused_spans
-        | delta
-        | group_by [exporter, collector_name], sum
-      EOT
-    }
-  }
-
-
-  chart {
-    name = "Otel collector exporter sent vs failed"
-    rank = 6
-    type = "timeseries"
-    query {
-      query_name      = "sent metrics"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric otelcol_exporter_sent_metric_points
-        | delta
-        | group_by [exporter, collector_name], sum
-      EOT
-    }
-    query {
-      query_name      = "sent spans"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric otelcol_exporter_sent_spans
-        | delta
-        | group_by [exporter, collector_name], sum
-      EOT
-    }
-    query {
-      query_name      = "failed metrics"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric otelcol_exporter_send_failed_metric_points
-        | delta
-        | group_by [exporter, collector_name], sum
-      EOT
-    }
-    query {
-      query_name      = "failed spans"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric otelcol_exporter_send_failed_spans
-        | delta
-        | group_by [exporter, collector_name], sum
-      EOT
-    }
-  }
-
-
-  chart {
-    name = "Otel batch send size"
-    rank = 7
-    type = "timeseries"
-    query {
-      query_name      = "a"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric otelcol_processor_batch_batch_send_size
-        | delta
-        | group_by [processor, collector_name], sum
-        | point percentile(value, 99)
-      EOT
-    }
-  }
-
-  chart {
-    name = "Collector exporter queue size"
-    rank = 8
-    type = "timeseries"
-    query {
-      query_name      = "a"
-      exclude_filters = []
-      include_filters = []
-      display         = "line"
-      hidden          = false
-      tql             = <<-EOT
-        metric otelcol_exporter_queue_size
-        | latest
-        | group_by [exporter, collector_name], sum
-      EOT
-    }
-  }
-
-  chart {
-    name = "Hourly active time series by service"
-    rank = 9
-    type = "timeseries"
-    query {
-      query_name      = "a"
-      exclude_filters = []
-      include_filters = []
-      display         = "bar"
-      hidden          = false
-      tql             = <<-EOT
-        metric lightstep.hourly_active_time_series
-        | delta 1h
-        | group_by [service.name], sum
-      EOT
-    }
-  }
-
-  dynamic "chart" {
-    for_each = [for addon in var.dashboard_addons : addon if addon == local.prometheus_addon]
-
-    content {
-      name = "Prometheus targets by job, metrics_path"
-      rank = 10
-      type = "timeseries"
       query {
-        query_name      = "a"
-        exclude_filters = []
-        include_filters = []
-        display         = "bar"
-        hidden          = false
-        tql             = <<-EOT
-          metric scrape_samples_scraped
-          | reduce 1m, count
-          | group_by [job, metrics_path], count
-        EOT
+        query_name   = "a"
+        display      = "bar"
+        hidden       = false
+        query_string = "metric otelcol_process_uptime | filter ((collector_name == $collector_name) && (service_name == $service_name)) | rate 1s | group_by [\"collector_name\", \"job\", \"service_instance_id\"], sum | * 100.00"
+      }
+    }
+    chart {
+      name   = "Data Points Accepted & Rejected"
+      type   = "timeseries"
+      rank   = 2
+      x_pos  = 16
+      y_pos  = 0
+      width  = 16
+      height = 8
+
+      query {
+        query_name   = "a"
+        display      = "line"
+        hidden       = false
+        query_string = "metric otelcol_receiver_accepted_metric_points | filter (((receiver == $receiver) && (collector_name == $collector_name)) && (service_name == $service_name)) | delta | group_by [\"receiver\", \"collector_name\"], sum"
+      }
+      query {
+        query_name   = "b"
+        display      = "line"
+        hidden       = false
+        query_string = "metric otelcol_receiver_accepted_spans | filter (((receiver == $receiver) && (collector_name == $collector_name)) && (service_name == $service_name)) | delta | group_by [\"receiver\", \"collector_name\"], sum"
+      }
+      query {
+        query_name   = "c"
+        display      = "line"
+        hidden       = false
+        query_string = "metric otelcol_receiver_refused_metric_points | filter (((receiver == $receiver) && (collector_name == $collector_name)) && (service_name == $service_name)) | delta | group_by [\"receiver\", \"collector_name\"], sum"
+      }
+      query {
+        query_name   = "d"
+        display      = "line"
+        hidden       = false
+        query_string = "metric otelcol_receiver_refused_spans | filter (((receiver == $receiver) && (collector_name == $collector_name)) && (service_name == $service_name)) | delta | group_by [\"receiver\", \"collector_name\"], sum"
+      }
+    }
+    chart {
+      name   = "Processor Refused & Dropped"
+      type   = "timeseries"
+      rank   = 3
+      x_pos  = 32
+      y_pos  = 0
+      width  = 16
+      height = 8
+
+      query {
+        query_name   = "a"
+        display      = "line"
+        hidden       = false
+        query_string = "metric otelcol_processor_dropped_metric_points | filter (((processor == $processor) && (collector_name == $collector_name)) && (service_name == $service_name)) | delta | group_by [\"processor\", \"collector_name\"], sum"
+      }
+    }
+    chart {
+      name   = "Exporter Sent & Failed"
+      type   = "timeseries"
+      rank   = 4
+      x_pos  = 0
+      y_pos  = 8
+      width  = 16
+      height = 8
+
+      query {
+        query_name   = "a"
+        display      = "line"
+        hidden       = false
+        query_string = "metric otelcol_exporter_sent_metric_points | filter (((exporter == $exporter) && (collector_name == $collector_name)) && (service_name == $service_name)) | delta | group_by [\"exporter\", \"collector_name\"], sum"
+      }
+      query {
+        query_name   = "b"
+        display      = "line"
+        hidden       = false
+        query_string = "metric otelcol_exporter_sent_spans | filter (((exporter == $exporter) && (collector_name == $collector_name)) && (service_name == $service_name)) | delta | group_by [\"exporter\", \"collector_name\"], sum"
+      }
+      query {
+        query_name   = "c"
+        display      = "line"
+        hidden       = false
+        query_string = "metric otelcol_exporter_send_failed_metric_points | filter (((exporter == $exporter) && (collector_name == $collector_name)) && (service_name == $service_name)) | delta | group_by [\"exporter\", \"collector_name\"], sum"
+      }
+      query {
+        query_name   = "d"
+        display      = "line"
+        hidden       = false
+        query_string = "metric otelcol_exporter_send_failed_spans | filter (((exporter == $exporter) && (collector_name == $collector_name)) && (service_name == $service_name)) | delta | group_by [\"exporter\", \"collector_name\"], sum"
+      }
+    }
+    chart {
+      name   = "Batch Send Size"
+      type   = "timeseries"
+      rank   = 5
+      x_pos  = 16
+      y_pos  = 8
+      width  = 16
+      height = 8
+
+      query {
+        query_name   = "a"
+        display      = "line"
+        hidden       = false
+        query_string = "metric otelcol_processor_batch_batch_send_size | filter (((processor == $processor) && (collector_name == $collector_name)) && (service_name == $service_name)) | delta | group_by [\"processor\", \"collector_name\"], sum | point percentile(value, 99.0)"
+      }
+    }
+    chart {
+      name   = "Exporter Queue Size"
+      type   = "timeseries"
+      rank   = 6
+      x_pos  = 32
+      y_pos  = 8
+      width  = 16
+      height = 8
+
+      query {
+        query_name   = "a"
+        display      = "line"
+        hidden       = false
+        query_string = "metric otelcol_exporter_queue_size | filter (((exporter == $exporter) && (collector_name == $collector_name)) && (service_name == $service_name)) | latest | group_by [\"exporter\", \"collector_name\"], sum"
+      }
+    }
+    chart {
+      name   = "Hourly Active Time Series"
+      type   = "timeseries"
+      rank   = 7
+      x_pos  = 0
+      y_pos  = 16
+      width  = 16
+      height = 8
+
+      query {
+        query_name   = "a"
+        display      = "bar"
+        hidden       = false
+        query_string = "metric lightstep.hourly_active_time_series\n| delta 1h\n| group_by [service.name], sum\n"
       }
     }
   }
 
-  dynamic "chart" {
-    for_each = [for addon in var.dashboard_addons : addon if addon == local.prometheus_addon]
-
-    content {
-      name = "Receiver Scrape duration"
-      rank = 11
-      type = "timeseries"
-      query {
-        query_name      = "a"
-        exclude_filters = []
-        include_filters = []
-        display         = "line"
-        hidden          = false
-        tql             = <<-EOT
-          metric scrape_duration_seconds
-          | latest
-          | group_by [job], mean
-        EOT
-      }
-    }
+  template_variable {
+    name                     = "service_name"
+    default_values           = []
+    suggestion_attribute_key = "service_name"
   }
-
+  template_variable {
+    name                     = "collector_name"
+    default_values           = []
+    suggestion_attribute_key = "collector_name"
+  }
+  template_variable {
+    name                     = "processor"
+    default_values           = []
+    suggestion_attribute_key = "processor"
+  }
+  template_variable {
+    name                     = "receiver"
+    default_values           = []
+    suggestion_attribute_key = "receiver"
+  }
+  template_variable {
+    name                     = "exporter"
+    default_values           = []
+    suggestion_attribute_key = "exporter"
+  }
 }

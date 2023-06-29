@@ -2,429 +2,320 @@ terraform {
   required_providers {
     lightstep = {
       source  = "lightstep/lightstep"
-      version = "~> 1.70.10"
+      version = "~> 1.76.0"
     }
   }
   required_version = ">= v1.0.11"
 }
 
-resource "lightstep_metric_dashboard" "otel_collector_kubeletstatsreceiver_dashboard" {
-    project_name   = var.lightstep_project
-    dashboard_name = "OpenTelemetry kubeletstatsreceiver Integration"
+resource "lightstep_dashboard" "otel_collector_kubeletstatsreceiver_dashboard" {
+  project_name   = var.lightstep_project
+  dashboard_name = "OpenTelemetry Kubeletstats Receiver"
+  dashboard_description = "Monitor Kubeletstats with this metrics overview dashboard."
 
-    
-    
-    chart {
-      name = "container.cpu.time"
-      rank = "0"
-      type = "timeseries"
+  chart {
+    name = "Container CPU Time"
+    rank = "0"
+    type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+    query {
+      query_name = "a"
+      display    = "line"
+      hidden     = false
 
-        metric              = "container.cpu.time"
-        timeseries_operator = "rate"
+      query_string = <<EOT
+metric container.cpu.time | rate | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
+EOT
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = ["k8s.pod.name", "k8s.namespace.name"]
-        }
-        
-        # TODO: add description: CPU time
-        # TODO: add unit: s
-      }
     }
-    
-    chart {
-      name = "container.cpu.utilization"
-      rank = "1"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "Container CPU Utilization"
+    rank = "1"
+    type = "timeseries"
 
-        metric              = "container.cpu.utilization"
-        timeseries_operator = "last"
+    query {
+      query_name = "a"
+      display    = "line"
+      hidden     = false
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = ["k8s.pod.name", "k8s.namespace.name"]
-        }
-        
-        # TODO: add description: CPU utilization
-        # TODO: add unit: 1
-      }
+      query_string = <<EOT
+metric container.cpu.utilization | latest | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
+EOT
+
     }
-    
-    chart {
-      name = "container.filesystem.available"
-      rank = "2"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "Container Filesystem Available"
+    rank = "2"
+    type = "timeseries"
 
-        metric              = "container.filesystem.available"
-        timeseries_operator = "last"
+    query {
+      query_name = "a"
+      display    = "line"
+      hidden     = false
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = ["k8s.pod.name", "k8s.namespace.name"]
-        }
-        
-        # TODO: add description: Filesystem available
-        # TODO: add unit: By
-      }
+      query_string = <<EOT
+metric container.filesystem.available | latest | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
+EOT
+
     }
-    
-    chart {
-      name = "container.filesystem.capacity"
-      rank = "3"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "Container Filesystem Capacity"
+    rank = "3"
+    type = "timeseries"
 
-        metric              = "container.filesystem.capacity"
-        timeseries_operator = "last"
+    query {
+      query_name = "a"
+      display    = "line"
+      hidden     = false
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = ["k8s.pod.name", "k8s.namespace.name"]
-        }
-        
-        # TODO: add description: Filesystem capacity
-        # TODO: add unit: By
-      }
+      query_string = <<EOT
+metric container.filesystem.capacity | latest | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
+EOT
+
     }
-    
-    chart {
-      name = "container.filesystem.usage"
-      rank = "4"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "Container Filesystem Usage"
+    rank = "4"
+    type = "timeseries"
 
-        metric              = "container.filesystem.usage"
-        timeseries_operator = "last"
+    query {
+      query_name = "a"
+      display    = "line"
+      hidden     = false
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = ["k8s.pod.name", "k8s.namespace.name"]
-        }
-        
-        # TODO: add description: Filesystem usage
-        # TODO: add unit: By
-      }
+      query_string = <<EOT
+metric container.filesystem.usage | latest | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
+EOT
+
     }
-    
-    chart {
-      name = "container.memory.available"
-      rank = "5"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "Container Memory Available"
+    rank = "5"
+    type = "timeseries"
 
-        metric              = "container.memory.available"
-        timeseries_operator = "last"
+    query {
+      query_name = "a"
+      display    = "line"
+      hidden     = false
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = ["k8s.pod.name", "k8s.namespace.name"]
-        }
-        
-        # TODO: add description: Memory available
-        # TODO: add unit: By
-      }
+      query_string = <<EOT
+metric container.memory.available | latest | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
+EOT
+
     }
-    
-    chart {
-      name = "container.memory.major_page_faults"
-      rank = "6"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "Container Memory Major Page Faults"
+    rank = "6"
+    type = "timeseries"
 
-        metric              = "container.memory.major_page_faults"
-        timeseries_operator = "last"
+    query {
+      query_name = "a"
+      display    = "line"
+      hidden     = false
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = ["k8s.pod.name", "k8s.namespace.name"]
-        }
-        
-        # TODO: add description: Memory major_page_faults
-        # TODO: add unit: 1
-      }
+      query_string = <<EOT
+metric container.memory.major_page_faults | latest | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
+EOT
+
     }
-    
-    chart {
-      name = "container.memory.page_faults"
-      rank = "7"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "Container Memory Page Faults"
+    rank = "7"
+    type = "timeseries"
 
-        metric              = "container.memory.page_faults"
-        timeseries_operator = "last"
+    query {
+      query_name = "a"
+      display    = "line"
+      hidden     = false
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = ["k8s.pod.name", "k8s.namespace.name"]
-        }
-        
-        # TODO: add description: Memory page_faults
-        # TODO: add unit: 1
-      }
+      query_string = <<EOT
+metric container.memory.page_faults | latest | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
+EOT
+
     }
-    
-    chart {
-      name = "container.memory.rss"
-      rank = "8"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "Container Memory RSS"
+    rank = "8"
+    type = "timeseries"
 
-        metric              = "container.memory.rss"
-        timeseries_operator = "last"
+    query {
+      query_name = "a"
+      display    = "line"
+      hidden     = false
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = ["k8s.pod.name", "k8s.namespace.name"]
-        }
-        
-        # TODO: add description: Memory rss
-        # TODO: add unit: By
-      }
+      query_string = <<EOT
+metric container.memory.rss | latest | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
+EOT
+
     }
-    
-    chart {
-      name = "container.memory.usage"
-      rank = "9"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "Container Memory Usage"
+    rank = "9"
+    type = "timeseries"
 
-        metric              = "container.memory.usage"
-        timeseries_operator = "last"
+    query {
+      query_name = "a"
+      display    = "line"
+      hidden     = false
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = ["k8s.pod.name", "k8s.namespace.name"]
-        }
-        
-        # TODO: add description: Memory usage
-        # TODO: add unit: By
-      }
+      query_string = <<EOT
+metric container.memory.usage | latest | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
+EOT
+
     }
-    
-    chart {
-      name = "container.memory.working_set"
-      rank = "10"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "Container Memory Working Set"
+    rank = "10"
+    type = "timeseries"
 
-        metric              = "container.memory.working_set"
-        timeseries_operator = "last"
+    query {
+      query_name = "a"
+      display    = "line"
+      hidden     = false
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = ["k8s.pod.name", "k8s.namespace.name"]
-        }
-        
-        # TODO: add description: Memory working_set
-        # TODO: add unit: By
-      }
+      query_string = <<EOT
+metric container.memory.working_set | latest | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
+EOT
+
     }
-    
-    chart {
-      name = "k8s.pod.network.errors"
-      rank = "11"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "K8S Pod Network Errors"
+    rank = "11"
+    type = "timeseries"
 
-        metric              = "k8s.pod.network.errors"
-        timeseries_operator = "rate"
+    query {
+      query_name = "a"
+      display    = "line"
+      hidden     = false
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "interface", "direction"]
-        }
-        
-        # TODO: add description: Network errors
-        # TODO: add unit: 1
-      }
+      query_string = <<EOT
+metric k8s.pod.network.errors | rate | group_by ["interface", "direction"], sum
+EOT
+
     }
-    
-    chart {
-      name = "k8s.pod.network.io"
-      rank = "12"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "K8S Pod Network IO"
+    rank = "12"
+    type = "timeseries"
 
-        metric              = "k8s.pod.network.io"
-        timeseries_operator = "rate"
+    query {
+      query_name = "a"
+      display    = "line"
+      hidden     = false
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "interface", "direction"]
-        }
-        
-        # TODO: add description: Network IO
-        # TODO: add unit: By
-      }
+      query_string = <<EOT
+metric k8s.pod.network.io | rate | group_by ["interface", "direction"], sum
+EOT
+
     }
-    
-    chart {
-      name = "k8s.volume.available"
-      rank = "13"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "K8S Volume Available"
+    rank = "13"
+    type = "timeseries"
 
-        metric              = "k8s.volume.available"
-        timeseries_operator = "last"
+    query {
+      query_name = "a"
+      display    = "line"
+      hidden     = false
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = ["k8s.pod.name", "k8s.namespace.name"]
-        }
-        
-        # TODO: add description: The number of available bytes in the volume.
-        # TODO: add unit: By
-      }
+      query_string = <<EOT
+metric k8s.volume.available | latest | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
+EOT
+
     }
-    
-    chart {
-      name = "k8s.volume.capacity"
-      rank = "14"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "K8S Volume Capacity"
+    rank = "14"
+    type = "timeseries"
 
-        metric              = "k8s.volume.capacity"
-        timeseries_operator = "last"
+    query {
+      query_name = "a"
+      display    = "line"
+      hidden     = false
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = ["k8s.pod.name", "k8s.namespace.name"]
-        }
-        
-        # TODO: add description: The total capacity in bytes of the volume.
-        # TODO: add unit: By
-      }
+      query_string = <<EOT
+metric k8s.volume.capacity | latest | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
+EOT
+
     }
-    
-    chart {
-      name = "k8s.volume.inodes"
-      rank = "15"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "K8S Volume Inodes"
+    rank = "15"
+    type = "timeseries"
 
-        metric              = "k8s.volume.inodes"
-        timeseries_operator = "last"
+    query {
+      query_name = "a"
+      display    = "line"
+      hidden     = false
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = ["k8s.pod.name", "k8s.namespace.name"]
-        }
-        
-        # TODO: add description: The total inodes in the filesystem.
-        # TODO: add unit: 1
-      }
+      query_string = <<EOT
+metric k8s.volume.inodes | latest | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
+EOT
+
     }
-    
-    chart {
-      name = "k8s.volume.inodes.free"
-      rank = "16"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "K8S Volume Inodes Free"
+    rank = "16"
+    type = "timeseries"
 
-        metric              = "k8s.volume.inodes.free"
-        timeseries_operator = "last"
+    query {
+      query_name = "a"
+      display    = "line"
+      hidden     = false
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = ["k8s.pod.name", "k8s.namespace.name"]
-        }
-        
-        # TODO: add description: The free inodes in the filesystem.
-        # TODO: add unit: 1
-      }
+      query_string = <<EOT
+metric k8s.volume.inodes.free | latest | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
+EOT
+
     }
-    
-    chart {
-      name = "k8s.volume.inodes.used"
-      rank = "17"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "K8S Volume Inodes Used"
+    rank = "17"
+    type = "timeseries"
 
-        metric              = "k8s.volume.inodes.used"
-        timeseries_operator = "last"
+    query {
+      query_name = "a"
+      display    = "line"
+      hidden     = false
 
-        group_by {
-          aggregation_method = "sum"
-          keys               = ["k8s.pod.name", "k8s.namespace.name"]
-        }
-        
-        # TODO: add description: The inodes used by the filesystem. This may not equal inodes - free because filesystem may share inodes with other filesystems.
-        # TODO: add unit: 1
-      }
+      query_string = <<EOT
+metric k8s.volume.inodes.used | latest | group_by ["k8s.pod.name", "k8s.namespace.name"], sum
+EOT
+
     }
+  }
 }
