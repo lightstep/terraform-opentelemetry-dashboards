@@ -12,7 +12,7 @@ terraform {
 resource "lightstep_dashboard" "otel_collector_ibmmq_dashboard" {
   project_name = var.lightstep_project
   dashboard_name = "OpenTelemetry IBMMQ Integration"
-  dashboard_description = ""
+  dashboard_description = "Monitoring OpenTelemetry Collector - IBMMQ Metrics"
 
   chart {
     name = "Manager Commit"
@@ -37,7 +37,9 @@ resource "lightstep_dashboard" "otel_collector_ibmmq_dashboard" {
       query_name          = "a"
       display             = "line"
       hidden              = false
-      query_string        = "metric ibmmq_qmgr_cpu_load_fifteen_minute_average_percentage | latest | group_by [], sum"
+      query_string =  <<EOT
+metric ibmmq_qmgr_cpu_load_fifteen_minute_average_percentage | latest | group_by [], sum
+EOT 
     }
 
   }
@@ -211,7 +213,7 @@ resource "lightstep_dashboard" "otel_collector_ibmmq_dashboard" {
   }
 
   chart {
-    name = "IBM MQ Queue Manager Ram Free Percentage"
+    name = "Queue Manager Ram Free Percentage"
     rank = "14"
     type = "timeseries"
 
@@ -225,7 +227,7 @@ resource "lightstep_dashboard" "otel_collector_ibmmq_dashboard" {
   }
 
   chart {
-    name = "IBM MQ Queue Manager Managed File System Free Space Percentage"
+    name = "Queue Manager Managed File System Free Space Percentage"
     rank = "15"
     type = "timeseries"
 
@@ -239,7 +241,7 @@ resource "lightstep_dashboard" "otel_collector_ibmmq_dashboard" {
   }
 
   chart {
-    name = "IBM MQ  Queue Manager Purged Queue Count"
+    name = "Queue Manager Purged Queue Count"
     rank = "16"
     type = "timeseries"
 
@@ -253,7 +255,7 @@ resource "lightstep_dashboard" "otel_collector_ibmmq_dashboard" {
   }
 
   chart {
-    name = "IBM MQ  Queue Manager Purged Queue Count"
+    name = "Queue Manager Purged Queue Count"
     rank = "17"
     type = "timeseries"
 
