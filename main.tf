@@ -94,6 +94,11 @@ module "lightstep_otel_collector_fluentd_dashboard" {
   lightstep_project = var.lightstep_project
 }
 
+module "lightstep_otel_collector_grafana_dashboard" {
+  source            = "./collector-dashboards/otel-collector-grafana-dashboard"
+  lightstep_project = var.lightstep_project
+}
+
 module "lightstep_otel_collector_gunicorn_dashboard" {
   source            = "./collector-dashboards/otel-collector-gunicorn-dashboard"
   lightstep_project = var.lightstep_project

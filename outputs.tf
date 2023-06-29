@@ -79,6 +79,11 @@ output "lightstep_otel_collector_fluentd_dashboard_url" {
   description = "Lightstep OpenTelemetry Fluentd Records Dashboard"
 }
 
+output "lightstep_otel_collector_grafana_dashboard_url" {
+  value       = module.lightstep_otel_collector_grafana_dashboard.dashboard_url
+  description = "Lightstep OpenTelemetry Grafana Dashboard"
+}
+
 output "lightstep_otel_collector_gunicorn_dashboard_url" {
   value       = module.lightstep_otel_collector_gunicorn_dashboard.dashboard_url
   description = "Lightstep OpenTelemetry Gunicorn - Overview Dashboard"

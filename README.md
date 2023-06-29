@@ -32,6 +32,7 @@ Each resource has an associated module that will create Lightstep dashboards to 
 * __ETCD v3 - Overview__ (module: [`otel-collector-etcd-dashboard`](https://github.com/lightstep/terraform-opentelemetry-dashboards/tree/main/collector-dashboards/otel-collector-etcd-dashboard))
 * __Flink - Overview__ (module: [`otel-collector-flink-dashboard`](https://github.com/lightstep/terraform-opentelemetry-dashboards/tree/main/collector-dashboards/otel-collector-flink-dashboard))
 * __Fluentd Records__ (module: [`otel-collector-fluentd-dashboard`](https://github.com/lightstep/terraform-opentelemetry-dashboards/tree/main/collector-dashboards/otel-collector-fluentd-dashboard))
+* __Grafana__ (module: [`otel-collector-grafana-dashboard`](https://github.com/lightstep/terraform-opentelemetry-dashboards/tree/main/collector-dashboards/otel-collector-grafana-dashboard))
 * __Gunicorn - Overview__ (module: [`otel-collector-gunicorn-dashboard`](https://github.com/lightstep/terraform-opentelemetry-dashboards/tree/main/collector-dashboards/otel-collector-gunicorn-dashboard))
 * __OpenTelemetry Hadoop Dashboard__ (module: [`otel-collector-hadoop-dashboard`](https://github.com/lightstep/terraform-opentelemetry-dashboards/tree/main/collector-dashboards/otel-collector-hadoop-dashboard))
 * __HAProxy - Overview__ (module: [`otel-collector-haproxy-dashboard`](https://github.com/lightstep/terraform-opentelemetry-dashboards/tree/main/collector-dashboards/otel-collector-haproxy-dashboard))
