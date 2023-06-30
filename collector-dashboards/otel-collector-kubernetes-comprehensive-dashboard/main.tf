@@ -622,10 +622,10 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
         query_name = "a"
         display    = "table"
 
-        display_type_options {
-          sort_by        = "value"
-          sort_direction = "desc"
-        }
+        # display_type_options {
+        #   sort_by        = "value"
+        #   sort_direction = "desc"
+        # }
         hidden       = false
         query_string = "metric kube_pod_info | filter ((namespace == $namespace) && (node == $node)) | latest | group_by [\"namespace\"], sum"
       }
@@ -821,10 +821,10 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
         query_name = "a"
         display    = "table"
 
-        display_type_options {
-          sort_by        = "value"
-          sort_direction = "desc"
-        }
+        # display_type_options {
+        #   sort_by        = "value"
+        #   sort_direction = "desc"
+        # }
         hidden       = false
         query_string = "metric kube_pod_container_info | filter ((namespace == $namespace) && (pod == $pod)) | latest | group_by [\"namespace\"], sum"
       }
