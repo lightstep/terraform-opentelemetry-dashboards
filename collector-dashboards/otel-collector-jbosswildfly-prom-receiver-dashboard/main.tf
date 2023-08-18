@@ -10,7 +10,7 @@ terraform {
 
 resource "lightstep_dashboard" "otel_collector_wildfly_dashboard" {
   project_name          = var.lightstep_project
-  dashboard_name        = "Oteltelemetry JBoss Wildfly Dashboard"
+  dashboard_name        = "OpenTelemetry JBoss Wildfly Dashboard"
   dashboard_description = "Monitor JBoss Wildfly metrics with this summary dashboard."
 
   chart {
@@ -66,7 +66,7 @@ resource "lightstep_dashboard" "otel_collector_wildfly_dashboard" {
   }
 
   chart {
-    name = "Processing CPU Seconds Total"
+    name = "Process CPU Seconds Total"
     rank = "4"
     type = "timeseries"
 
@@ -79,7 +79,7 @@ resource "lightstep_dashboard" "otel_collector_wildfly_dashboard" {
   }
 
   chart {
-    name = "Processing Resident Memory Bytes"
+    name = "Process Resident Memory Bytes"
     rank = "6"
     type = "timeseries"
 
@@ -92,7 +92,7 @@ resource "lightstep_dashboard" "otel_collector_wildfly_dashboard" {
   }
 
   chart {
-    name = "Transaction Committed"
+    name = "Committed Transactions"
     rank = "7"
     type = "timeseries"
 
@@ -105,7 +105,7 @@ resource "lightstep_dashboard" "otel_collector_wildfly_dashboard" {
   }
 
   chart {
-    name = "Transaction Abosted"
+    name = "Aborted Transactions"
     rank = "8"
     type = "timeseries"
 
