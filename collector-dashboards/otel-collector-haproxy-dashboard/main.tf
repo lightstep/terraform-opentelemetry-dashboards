@@ -9,7 +9,7 @@ terraform {
 }
 
 resource "lightstep_dashboard" "otel_collector_haproxy_dashboard" {
-  project_name          = var.lightstep_project
+  project_name          = var.cloud_observability_project
   dashboard_name        = "HAProxy - Overview"
   dashboard_description = "An overview of your HAProxy frontend and backend servers, helping you spot issues like rising error rates or disparities between your frontend and backend traffic."
 

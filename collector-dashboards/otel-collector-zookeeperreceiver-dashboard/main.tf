@@ -9,7 +9,7 @@ terraform {
 }
 
 resource "lightstep_dashboard" "otel_collector_zookeeperreceiver_dashboard" {
-  project_name          = var.lightstep_project
+  project_name          = var.cloud_observability_project
   dashboard_name        = "OpenTelemetry zookeeperreceiver Integration"
   dashboard_description = "Monitor Zookeeper with this overview dashboard."
 

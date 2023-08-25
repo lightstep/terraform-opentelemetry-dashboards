@@ -9,7 +9,7 @@ terraform {
 }
 
 resource "lightstep_dashboard" "k8s_kubelet_dashboard" {
-  project_name          = var.lightstep_project
+  project_name          = var.cloud_observability_project
   dashboard_name        = "K8S Kubelet"
   dashboard_description = "Monitor your K8S Kubelets with this overview dashboard."
 

@@ -9,8 +9,8 @@ terraform {
 }
 
 resource "lightstep_dashboard" "otel_collector_dockerstats_dashboard" {
-  project_name   = var.lightstep_project
-  dashboard_name = "Dockerstats Metrics"
+  project_name          = var.cloud_observability_project
+  dashboard_name        = "Dockerstats Metrics"
   dashboard_description = "Monitor Docker with this metrics overview dashboard."
 
   chart {

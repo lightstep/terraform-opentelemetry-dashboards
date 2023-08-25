@@ -9,7 +9,7 @@ terraform {
 }
 
 resource "lightstep_dashboard" "otel_collector_clickhouse_dashboard" {
-  project_name          = var.lightstep_project
+  project_name          = var.cloud_observability_project
   dashboard_name        = "ClickHouse - Overview"
   dashboard_description = "The ClickHouse overview metrics dashboard provides real-time visibility into the health and performance of a ClickHouse cluster."
 
