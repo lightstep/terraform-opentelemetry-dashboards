@@ -9,8 +9,8 @@ terraform {
 }
 
 resource "lightstep_dashboard" "otel_collector_snmp_dashboard" {
-  project_name   = var.lightstep_project
-  dashboard_name = "SNMP Metrics"
+  project_name          = var.cloud_observability_project
+  dashboard_name        = "SNMP Metrics"
   dashboard_description = "Monitor SNMP with this metrics overview dashboard."
 
   chart {

@@ -9,7 +9,7 @@ terraform {
 }
 
 resource "lightstep_dashboard" "otel_collector_nomad_dashboard" {
-  project_name          = var.lightstep_project
+  project_name          = var.cloud_observability_project
   dashboard_name        = "Hashcorp Nomad Server"
   dashboard_description = "Monitor Hashcorp Nomad Server metrics with the OTel Collector's Prometheus receiver."
 

@@ -9,7 +9,7 @@ terraform {
 }
 
 resource "lightstep_dashboard" "k8s_node_exporter_dashboard" {
-  project_name          = var.lightstep_project
+  project_name          = var.cloud_observability_project
   dashboard_name        = "Node Exporter"
   dashboard_description = "Monitor your K8S nodes using this overview dashboard with Node Exporter."
 

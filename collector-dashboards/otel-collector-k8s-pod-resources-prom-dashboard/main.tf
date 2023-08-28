@@ -9,7 +9,7 @@ terraform {
 }
 
 resource "lightstep_dashboard" "k8s_resources_pod_dashboard" {
-  project_name          = var.lightstep_project
+  project_name          = var.cloud_observability_project
   dashboard_name        = "Kubernetes Resources - Pod"
   dashboard_description = "Monitor K8S Pod Resources with this overview dashboard."
 

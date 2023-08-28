@@ -9,7 +9,7 @@ terraform {
 }
 
 resource "lightstep_dashboard" "otel_operator_dashboard" {
-  project_name          = var.lightstep_project
+  project_name          = var.cloud_observability_project
   dashboard_name        = "OpenTelemetry Operator"
   dashboard_description = "Monitor your OpenTelemetry operator with this overview dashboard."
 

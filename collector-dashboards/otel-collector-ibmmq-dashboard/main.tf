@@ -10,8 +10,8 @@ terraform {
 
 
 resource "lightstep_dashboard" "otel_collector_ibmmq_dashboard" {
-  project_name = var.lightstep_project
-  dashboard_name = "OpenTelemetry IBMMQ Integration"
+  project_name          = var.cloud_observability_project
+  dashboard_name        = "OpenTelemetry IBMMQ Integration"
   dashboard_description = "Monitoring OpenTelemetry Collector - IBMMQ Metrics"
 
   chart {
@@ -20,10 +20,10 @@ resource "lightstep_dashboard" "otel_collector_ibmmq_dashboard" {
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "line"
-      hidden              = false
-      query_string        = "metric ibmmq_qmgr_commit | rate | group_by [], sum"
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = "metric ibmmq_qmgr_commit | rate | group_by [], sum"
     }
 
   }
@@ -34,10 +34,10 @@ resource "lightstep_dashboard" "otel_collector_ibmmq_dashboard" {
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "line"
-      hidden              = false
-      query_string =  <<EOT
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = <<EOT
 metric ibmmq_qmgr_cpu_load_fifteen_minute_average_percentage | latest | group_by [], sum
 EOT 
     }
@@ -50,10 +50,10 @@ EOT
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "line"
-      hidden              = false
-      query_string        = "metric ibmmq_qmgr_cpu_load_five_minute_average_percentage | rate | group_by [], sum"
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = "metric ibmmq_qmgr_cpu_load_five_minute_average_percentage | rate | group_by [], sum"
     }
 
   }
@@ -64,10 +64,10 @@ EOT
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "line"
-      hidden              = false
-      query_string        = "metric ibmmq_qmgr_cpu_load_one_minute_average_percentage | rate | group_by [], sum"
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = "metric ibmmq_qmgr_cpu_load_one_minute_average_percentage | rate | group_by [], sum"
     }
 
   }
@@ -78,10 +78,10 @@ EOT
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "line"
-      hidden              = false
-      query_string        = "metric ibmmq_qmgr_user_cpu_time_percentage | rate | group_by [], sum"
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = "metric ibmmq_qmgr_user_cpu_time_percentage | rate | group_by [], sum"
     }
 
   }
@@ -92,10 +92,10 @@ EOT
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "line"
-      hidden              = false
-      query_string        = "metric ibmmq_qmgr_user_cpu_time_estimate_for_queue_manager_percentage | rate | group_by [], sum"
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = "metric ibmmq_qmgr_user_cpu_time_estimate_for_queue_manager_percentage | rate | group_by [], sum"
     }
 
   }
@@ -106,10 +106,10 @@ EOT
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "line"
-      hidden              = false
-      query_string        = "metric ibmmq_qmgr_trace_file_system_in_use_bytes | rate | group_by [], sum"
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = "metric ibmmq_qmgr_trace_file_system_in_use_bytes | rate | group_by [], sum"
     }
 
   }
@@ -120,10 +120,10 @@ EOT
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "line"
-      hidden              = false
-      query_string        = "metric ibmmq_qmgr_trace_file_system_free_space_percentage | rate | group_by [], sum"
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = "metric ibmmq_qmgr_trace_file_system_free_space_percentage | rate | group_by [], sum"
     }
 
   }
@@ -134,10 +134,10 @@ EOT
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "line"
-      hidden              = false
-      query_string        = "metric ibmmq_qmgr_topic_put_bytes | rate | group_by [], sum"
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = "metric ibmmq_qmgr_topic_put_bytes | rate | group_by [], sum"
     }
 
   }
@@ -148,10 +148,10 @@ EOT
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "line"
-      hidden              = false
-      query_string        = "metric ibmmq_qmgr_topic_mqput_mqput1 | rate | group_by [], sum"
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = "metric ibmmq_qmgr_topic_mqput_mqput1 | rate | group_by [], sum"
     }
 
   }
@@ -162,10 +162,10 @@ EOT
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "line"
-      hidden              = false
-      query_string        = "metric ibmmq_qmgr_system_cpu_time_percentage | rate | group_by [], sum"
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = "metric ibmmq_qmgr_system_cpu_time_percentage | rate | group_by [], sum"
     }
 
   }
@@ -176,10 +176,10 @@ EOT
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "line"
-      hidden              = false
-      query_string        = "metric ibmmq_qmgr_system_cpu_time_estimate_for_queue_manager_percentage | rate | group_by [], sum"
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = "metric ibmmq_qmgr_system_cpu_time_estimate_for_queue_manager_percentage | rate | group_by [], sum"
     }
 
   }
@@ -190,10 +190,10 @@ EOT
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "line"
-      hidden              = false
-      query_string        = "metric ibmmq_qmgr_rollback | rate | group_by [], sum"
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = "metric ibmmq_qmgr_rollback | rate | group_by [], sum"
     }
 
   }
@@ -204,10 +204,10 @@ EOT
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "line"
-      hidden              = false
-      query_string        = "metric ibmmq_qmgr_ram_usage_estimate_for_queue_manager_bytes | rate | group_by [], sum"
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = "metric ibmmq_qmgr_ram_usage_estimate_for_queue_manager_bytes | rate | group_by [], sum"
     }
 
   }
@@ -218,10 +218,10 @@ EOT
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "line"
-      hidden              = false
-      query_string        = "metric ibmmq_qmgr_ram_free_percentage | rate | group_by [], sum"
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = "metric ibmmq_qmgr_ram_free_percentage | rate | group_by [], sum"
     }
 
   }
@@ -232,10 +232,10 @@ EOT
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "line"
-      hidden              = false
-      query_string        = "metric ibmmq_qmgr_queue_manager_file_system_in_use_bytes | rate | group_by [], sum"
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = "metric ibmmq_qmgr_queue_manager_file_system_in_use_bytes | rate | group_by [], sum"
     }
 
   }
@@ -246,10 +246,10 @@ EOT
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "line"
-      hidden              = false
-      query_string        = "metric ibmmq_qmgr_purged_queue | rate | group_by [], sum"
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = "metric ibmmq_qmgr_purged_queue | rate | group_by [], sum"
     }
 
   }
@@ -260,10 +260,10 @@ EOT
     type = "timeseries"
 
     query {
-      query_name          = "a"
-      display             = "line"
-      hidden              = false
-      query_string        = "metric ibmmq_qmgr_purged_queue | rate | group_by [], sum"
+      query_name   = "a"
+      display      = "line"
+      hidden       = false
+      query_string = "metric ibmmq_qmgr_purged_queue | rate | group_by [], sum"
     }
 
   }

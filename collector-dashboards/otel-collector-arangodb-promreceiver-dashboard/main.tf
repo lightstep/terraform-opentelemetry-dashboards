@@ -2,14 +2,14 @@ terraform {
   required_providers {
     lightstep = {
       source  = "lightstep/lightstep"
-      version = "~> 1.70.10"
+      version = "~> 1.79.0"
     }
   }
   required_version = ">= v1.0.11"
 }
 
 resource "lightstep_dashboard" "otel_collector_arangodb_dashboard" {
-  project_name          = var.lightstep_project
+  project_name          = var.cloud_observability_project
   dashboard_name        = "OpenTelemetry ArangoDB Dashboard"
   dashboard_description = "Monitor ArangoDB metrics with this summary dashboard."
 
@@ -64,7 +64,7 @@ resource "lightstep_dashboard" "otel_collector_arangodb_dashboard" {
       query_string = "metric arangodb_server_statistics_physical_memory | rate | group_by [], sum"
     }
   }
-  
+
   chart {
     name = "Process Statistics Resident Memory"
     rank = "4"

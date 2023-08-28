@@ -10,7 +10,7 @@ terraform {
 
 
 resource "lightstep_dashboard" "otel_collector_hbase_dashboard" {
-  project_name          = var.lightstep_project
+  project_name          = var.cloud_observability_project
   dashboard_name        = "OpenTelemetry HBase Dashboard"
   dashboard_description = "Monitor OpenTelemetry HBase metrics"
 
@@ -158,7 +158,7 @@ resource "lightstep_dashboard" "otel_collector_hbase_dashboard" {
       hidden       = false
       query_string = "metric hbase.region_server.operation.delete.latency.min | latest | group_by [], sum"
     }
-    
+
     query {
       query_name   = "e"
       display      = "area"
