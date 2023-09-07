@@ -10,7 +10,7 @@ terraform {
 
 resource "lightstep_dashboard" "otel_collector_hikaricp_dashboard" {
   project_name          = var.lightstep_project
-  dashboard_name        = "HikariCP Dashboard"
+  dashboard_name        = "OpenTelemetry HikariCP Dashboard"
   dashboard_description = "Monitor HikariCP with this connection pool metrics summary."
 
   chart {
