@@ -2,682 +2,448 @@ terraform {
   required_providers {
     lightstep = {
       source  = "lightstep/lightstep"
-      version = "~> 1.76.0"
+      version = "~> 1.79.0"
     }
   }
   required_version = ">= v1.0.11"
 }
 
-resource "lightstep_metric_dashboard" "otel_collector_elasticsearchreceiver_dashboard" {
-    project_name   = var.lightstep_project
-    dashboard_name = "OpenTelemetry elasticsearchreceiver Integration"
+resource "lightstep_dashboard" "otel_collector_elasticsearchreceiver_dashboard" {
+  project_name   = var.cloud_observability_project
+  dashboard_name = "OpenTelemetry Elasticsearchreceiver Receiver"
 
-    
-    
-    chart {
-      name = "elasticsearch.cluster.data_nodes"
-      rank = "0"
-      type = "timeseries"
+  chart {
+    name = "Elasticsearch Cluster Data Nodes"
+    rank = "0"
+    type = "timeseries"
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
-
-        metric              = "elasticsearch.cluster.data_nodes"
-        timeseries_operator = "rate"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: The number of data nodes in the cluster.
-        # TODO: add unit: {nodes}
-      }
+    query {
+      query_name   = "a"
+      hidden       = false
+      display      = "line"
+      query_string = <<EOT
+metric elasticsearch.cluster.data_nodes | rate | group_by [], sum
+EOT
     }
-    
-    chart {
-      name = "elasticsearch.cluster.health"
-      rank = "1"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "Elasticsearch Cluster Health"
+    rank = "1"
+    type = "timeseries"
 
-        metric              = "elasticsearch.cluster.health"
-        timeseries_operator = "rate"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "health_status"]
-        }
-        
-        # TODO: add description: The health status of the cluster.
-        # TODO: add unit: {status}
-      }
+    query {
+      query_name   = "a"
+      hidden       = false
+      display      = "line"
+      query_string = <<EOT
+metric elasticsearch.cluster.health | rate | group_by ["health_status"], sum
+EOT
     }
-    
-    chart {
-      name = "elasticsearch.cluster.nodes"
-      rank = "2"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "Elasticsearch Cluster Nodes"
+    rank = "2"
+    type = "timeseries"
 
-        metric              = "elasticsearch.cluster.nodes"
-        timeseries_operator = "rate"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: The total number of nodes in the cluster.
-        # TODO: add unit: {nodes}
-      }
+    query {
+      query_name   = "a"
+      hidden       = false
+      display      = "line"
+      query_string = <<EOT
+metric elasticsearch.cluster.nodes | rate | group_by [], sum
+EOT
     }
-    
-    chart {
-      name = "elasticsearch.cluster.shards"
-      rank = "3"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "Elasticsearch Cluster Shards"
+    rank = "3"
+    type = "timeseries"
 
-        metric              = "elasticsearch.cluster.shards"
-        timeseries_operator = "rate"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "shard_state"]
-        }
-        
-        # TODO: add description: The number of shards in the cluster.
-        # TODO: add unit: {shards}
-      }
+    query {
+      query_name   = "a"
+      hidden       = false
+      display      = "line"
+      query_string = <<EOT
+metric elasticsearch.cluster.shards | rate | group_by ["shard_state"], sum
+EOT
     }
-    
-    chart {
-      name = "elasticsearch.node.cache.evictions"
-      rank = "4"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "Elasticsearch Node Cache Evictions"
+    rank = "4"
+    type = "timeseries"
 
-        metric              = "elasticsearch.node.cache.evictions"
-        timeseries_operator = "rate"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "cache_name"]
-        }
-        
-        # TODO: add description: The number of evictions from the cache.
-        # TODO: add unit: {evictions}
-      }
+    query {
+      query_name   = "a"
+      hidden       = false
+      display      = "line"
+      query_string = <<EOT
+metric elasticsearch.node.cache.evictions | rate | group_by ["cache_name"], sum
+EOT
     }
-    
-    chart {
-      name = "elasticsearch.node.cache.memory.usage"
-      rank = "5"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "Elasticsearch Node Cache Memory Usage"
+    rank = "5"
+    type = "timeseries"
 
-        metric              = "elasticsearch.node.cache.memory.usage"
-        timeseries_operator = "rate"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "cache_name"]
-        }
-        
-        # TODO: add description: The size in bytes of the cache.
-        # TODO: add unit: By
-      }
+    query {
+      query_name   = "a"
+      hidden       = false
+      display      = "line"
+      query_string = <<EOT
+metric elasticsearch.node.cache.memory.usage | rate | group_by ["cache_name"], sum
+EOT
     }
-    
-    chart {
-      name = "elasticsearch.node.cluster.connections"
-      rank = "6"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "Elasticsearch Node Cluster Connections"
+    rank = "6"
+    type = "timeseries"
 
-        metric              = "elasticsearch.node.cluster.connections"
-        timeseries_operator = "rate"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: The number of open tcp connections for internal cluster communication.
-        # TODO: add unit: {connections}
-      }
+    query {
+      query_name   = "a"
+      hidden       = false
+      display      = "line"
+      query_string = <<EOT
+metric elasticsearch.node.cluster.connections | rate | group_by [], sum
+EOT
     }
-    
-    chart {
-      name = "elasticsearch.node.cluster.io"
-      rank = "7"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "Elasticsearch Node Cluster IO"
+    rank = "7"
+    type = "timeseries"
 
-        metric              = "elasticsearch.node.cluster.io"
-        timeseries_operator = "rate"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "direction"]
-        }
-        
-        # TODO: add description: The number of bytes sent and received on the network for internal cluster communication.
-        # TODO: add unit: By
-      }
+    query {
+      query_name   = "a"
+      hidden       = false
+      display      = "line"
+      query_string = <<EOT
+metric elasticsearch.node.cluster.io | rate | group_by ["direction"], sum
+EOT
     }
-    
-    chart {
-      name = "elasticsearch.node.documents"
-      rank = "8"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "Elasticsearch Node Documents"
+    rank = "8"
+    type = "timeseries"
 
-        metric              = "elasticsearch.node.documents"
-        timeseries_operator = "rate"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "document_state"]
-        }
-        
-        # TODO: add description: The number of documents on the node.
-        # TODO: add unit: {documents}
-      }
+    query {
+      query_name   = "a"
+      hidden       = false
+      display      = "line"
+      query_string = <<EOT
+metric elasticsearch.node.documents | rate | group_by ["document_state"], sum
+EOT
     }
-    
-    chart {
-      name = "elasticsearch.node.fs.disk.available"
-      rank = "9"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "Elasticsearch Node FS Disk Available"
+    rank = "9"
+    type = "timeseries"
 
-        metric              = "elasticsearch.node.fs.disk.available"
-        timeseries_operator = "rate"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: The amount of disk space available across all file stores for this node.
-        # TODO: add unit: By
-      }
+    query {
+      query_name   = "a"
+      hidden       = false
+      display      = "line"
+      query_string = <<EOT
+metric elasticsearch.node.fs.disk.available | rate | group_by [], sum
+EOT
     }
-    
-    chart {
-      name = "elasticsearch.node.http.connections"
-      rank = "10"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "Elasticsearch Node HTTP Connections"
+    rank = "10"
+    type = "timeseries"
 
-        metric              = "elasticsearch.node.http.connections"
-        timeseries_operator = "rate"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: The number of HTTP connections to the node.
-        # TODO: add unit: {connections}
-      }
+    query {
+      query_name   = "a"
+      hidden       = false
+      display      = "line"
+      query_string = <<EOT
+metric elasticsearch.node.http.connections | rate | group_by [], sum
+EOT
     }
-    
-    chart {
-      name = "elasticsearch.node.open_files"
-      rank = "11"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "Elasticsearch Node Open Files"
+    rank = "11"
+    type = "timeseries"
 
-        metric              = "elasticsearch.node.open_files"
-        timeseries_operator = "rate"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: The number of open file descriptors held by the node.
-        # TODO: add unit: {files}
-      }
+    query {
+      query_name   = "a"
+      hidden       = false
+      display      = "line"
+      query_string = <<EOT
+metric elasticsearch.node.open_files | rate | group_by [], sum
+EOT
     }
-    
-    chart {
-      name = "elasticsearch.node.operations.completed"
-      rank = "12"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "Elasticsearch Node Operations Completed"
+    rank = "12"
+    type = "timeseries"
 
-        metric              = "elasticsearch.node.operations.completed"
-        timeseries_operator = "rate"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "operation"]
-        }
-        
-        # TODO: add description: The number of operations completed.
-        # TODO: add unit: {operations}
-      }
+    query {
+      query_name   = "a"
+      hidden       = false
+      display      = "line"
+      query_string = <<EOT
+metric elasticsearch.node.operations.completed | rate | group_by ["operation"], sum
+EOT
     }
-    
-    chart {
-      name = "elasticsearch.node.operations.time"
-      rank = "13"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "Elasticsearch Node Operations Time"
+    rank = "13"
+    type = "timeseries"
 
-        metric              = "elasticsearch.node.operations.time"
-        timeseries_operator = "rate"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "operation"]
-        }
-        
-        # TODO: add description: Time spent on operations.
-        # TODO: add unit: ms
-      }
+    query {
+      query_name   = "a"
+      hidden       = false
+      display      = "line"
+      query_string = <<EOT
+metric elasticsearch.node.operations.time | rate | group_by ["operation"], sum
+EOT
     }
-    
-    chart {
-      name = "elasticsearch.node.shards.size"
-      rank = "14"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "Elasticsearch Node Shards Size"
+    rank = "14"
+    type = "timeseries"
 
-        metric              = "elasticsearch.node.shards.size"
-        timeseries_operator = "rate"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: The size of the shards assigned to this node.
-        # TODO: add unit: By
-      }
+    query {
+      query_name   = "a"
+      hidden       = false
+      display      = "line"
+      query_string = <<EOT
+metric elasticsearch.node.shards.size | rate | group_by [], sum
+EOT
     }
-    
-    chart {
-      name = "elasticsearch.node.thread_pool.tasks.finished"
-      rank = "15"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "Elasticsearch Node Thread Pool Tasks Finished"
+    rank = "15"
+    type = "timeseries"
 
-        metric              = "elasticsearch.node.thread_pool.tasks.finished"
-        timeseries_operator = "rate"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "thread_pool_name", "task_state"]
-        }
-        
-        # TODO: add description: The number of tasks finished by the thread pool.
-        # TODO: add unit: {tasks}
-      }
+    query {
+      query_name   = "a"
+      hidden       = false
+      display      = "line"
+      query_string = <<EOT
+metric elasticsearch.node.thread_pool.tasks.finished | rate | group_by ["thread_pool_name", "task_state"], sum
+EOT
     }
-    
-    chart {
-      name = "elasticsearch.node.thread_pool.tasks.queued"
-      rank = "16"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "Elasticsearch Node Thread Pool Tasks Queued"
+    rank = "16"
+    type = "timeseries"
 
-        metric              = "elasticsearch.node.thread_pool.tasks.queued"
-        timeseries_operator = "rate"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "thread_pool_name"]
-        }
-        
-        # TODO: add description: The number of queued tasks in the thread pool.
-        # TODO: add unit: {tasks}
-      }
+    query {
+      query_name   = "a"
+      hidden       = false
+      display      = "line"
+      query_string = <<EOT
+metric elasticsearch.node.thread_pool.tasks.queued | rate | group_by ["thread_pool_name"], sum
+EOT
     }
-    
-    chart {
-      name = "elasticsearch.node.thread_pool.threads"
-      rank = "17"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "Elasticsearch Node Thread Pool Threads"
+    rank = "17"
+    type = "timeseries"
 
-        metric              = "elasticsearch.node.thread_pool.threads"
-        timeseries_operator = "rate"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "thread_pool_name", "thread_state"]
-        }
-        
-        # TODO: add description: The number of threads in the thread pool.
-        # TODO: add unit: {threads}
-      }
+    query {
+      query_name   = "a"
+      hidden       = false
+      display      = "line"
+      query_string = <<EOT
+metric elasticsearch.node.thread_pool.threads | rate | group_by ["thread_pool_name", "thread_state"], sum
+EOT
     }
-    
-    chart {
-      name = "jvm.classes.loaded"
-      rank = "18"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "JVM Classes Loaded"
+    rank = "18"
+    type = "timeseries"
 
-        metric              = "jvm.classes.loaded"
-        timeseries_operator = "last"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: The number of loaded classes
-        # TODO: add unit: 1
-      }
+    query {
+      query_name   = "a"
+      hidden       = false
+      display      = "line"
+      query_string = <<EOT
+metric jvm.classes.loaded | latest | group_by [], sum
+EOT
     }
-    
-    chart {
-      name = "jvm.gc.collections.count"
-      rank = "19"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "JVM GC Collections Count"
+    rank = "19"
+    type = "timeseries"
 
-        metric              = "jvm.gc.collections.count"
-        timeseries_operator = "rate"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "collector_name"]
-        }
-        
-        # TODO: add description: The total number of garbage collections that have occurred
-        # TODO: add unit: 1
-      }
+    query {
+      query_name   = "a"
+      hidden       = false
+      display      = "line"
+      query_string = <<EOT
+metric jvm.gc.collections.count | rate | group_by ["collector_name"], sum
+EOT
     }
-    
-    chart {
-      name = "jvm.gc.collections.elapsed"
-      rank = "20"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "JVM GC Collections Elapsed"
+    rank = "20"
+    type = "timeseries"
 
-        metric              = "jvm.gc.collections.elapsed"
-        timeseries_operator = "rate"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "collector_name"]
-        }
-        
-        # TODO: add description: The approximate accumulated collection elapsed time
-        # TODO: add unit: ms
-      }
+    query {
+      query_name   = "a"
+      hidden       = false
+      display      = "line"
+      query_string = <<EOT
+metric jvm.gc.collections.elapsed | rate | group_by ["collector_name"], sum
+EOT
     }
-    
-    chart {
-      name = "jvm.memory.heap.committed"
-      rank = "21"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "JVM Memory Heap Committed"
+    rank = "21"
+    type = "timeseries"
 
-        metric              = "jvm.memory.heap.committed"
-        timeseries_operator = "last"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: The amount of memory that is guaranteed to be available for the heap
-        # TODO: add unit: By
-      }
+    query {
+      query_name   = "a"
+      hidden       = false
+      display      = "line"
+      query_string = <<EOT
+metric jvm.memory.heap.committed | latest | group_by [], sum
+EOT
     }
-    
-    chart {
-      name = "jvm.memory.heap.max"
-      rank = "22"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "JVM Memory Heap Max"
+    rank = "22"
+    type = "timeseries"
 
-        metric              = "jvm.memory.heap.max"
-        timeseries_operator = "last"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: The maximum amount of memory can be used for the heap
-        # TODO: add unit: By
-      }
+    query {
+      query_name   = "a"
+      hidden       = false
+      display      = "line"
+      query_string = <<EOT
+metric jvm.memory.heap.max | latest | group_by [], sum
+EOT
     }
-    
-    chart {
-      name = "jvm.memory.heap.used"
-      rank = "23"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "JVM Memory Heap Used"
+    rank = "23"
+    type = "timeseries"
 
-        metric              = "jvm.memory.heap.used"
-        timeseries_operator = "last"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: The current heap memory usage
-        # TODO: add unit: By
-      }
+    query {
+      query_name   = "a"
+      hidden       = false
+      display      = "line"
+      query_string = <<EOT
+metric jvm.memory.heap.used | latest | group_by [], sum
+EOT
     }
-    
-    chart {
-      name = "jvm.memory.nonheap.committed"
-      rank = "24"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "JVM Memory Nonheap Committed"
+    rank = "24"
+    type = "timeseries"
 
-        metric              = "jvm.memory.nonheap.committed"
-        timeseries_operator = "last"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: The amount of memory that is guaranteed to be available for non-heap purposes
-        # TODO: add unit: By
-      }
+    query {
+      query_name   = "a"
+      hidden       = false
+      display      = "line"
+      query_string = <<EOT
+metric jvm.memory.nonheap.committed | latest | group_by [], sum
+EOT
     }
-    
-    chart {
-      name = "jvm.memory.nonheap.used"
-      rank = "25"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "JVM Memory Nonheap Used"
+    rank = "25"
+    type = "timeseries"
 
-        metric              = "jvm.memory.nonheap.used"
-        timeseries_operator = "last"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: The current non-heap memory usage
-        # TODO: add unit: By
-      }
+    query {
+      query_name   = "a"
+      hidden       = false
+      display      = "line"
+      query_string = <<EOT
+metric jvm.memory.nonheap.used | latest | group_by [], sum
+EOT
     }
-    
-    chart {
-      name = "jvm.memory.pool.max"
-      rank = "26"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "JVM Memory Pool Max"
+    rank = "26"
+    type = "timeseries"
 
-        metric              = "jvm.memory.pool.max"
-        timeseries_operator = "last"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "memory_pool_name"]
-        }
-        
-        # TODO: add description: The maximum amount of memory can be used for the memory pool
-        # TODO: add unit: By
-      }
+    query {
+      query_name   = "a"
+      hidden       = false
+      display      = "line"
+      query_string = <<EOT
+metric jvm.memory.pool.max | latest | group_by ["memory_pool_name"], sum
+EOT
     }
-    
-    chart {
-      name = "jvm.memory.pool.used"
-      rank = "27"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "JVM Memory Pool Used"
+    rank = "27"
+    type = "timeseries"
 
-        metric              = "jvm.memory.pool.used"
-        timeseries_operator = "last"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = [ "memory_pool_name"]
-        }
-        
-        # TODO: add description: The current memory pool memory usage
-        # TODO: add unit: By
-      }
+    query {
+      query_name   = "a"
+      hidden       = false
+      display      = "line"
+      query_string = <<EOT
+metric jvm.memory.pool.used | latest | group_by ["memory_pool_name"], sum
+EOT
     }
-    
-    chart {
-      name = "jvm.threads.count"
-      rank = "28"
-      type = "timeseries"
+  }
 
-      query {
-        query_name = "a"
-        display    = "line"
-        hidden     = false
+  chart {
+    name = "JVM Threads Count"
+    rank = "28"
+    type = "timeseries"
 
-        metric              = "jvm.threads.count"
-        timeseries_operator = "last"
-
-        group_by {
-          aggregation_method = "sum"
-          keys               = []
-        }
-        
-        # TODO: add description: The current number of threads
-        # TODO: add unit: 1
-      }
+    query {
+      query_name   = "a"
+      hidden       = false
+      display      = "line"
+      query_string = <<EOT
+metric jvm.threads.count | latest | group_by [], sum
+EOT
     }
+  }
 }

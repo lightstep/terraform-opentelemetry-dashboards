@@ -1,6 +1,6 @@
 
 resource "lightstep_dashboard" "k8s_compute_resources_cluster" {
-  project_name   = var.lightstep_project
+  project_name   = var.cloud_observability_project
   dashboard_name = "Kubernetes / Compute Resources / Cluster"
 
 

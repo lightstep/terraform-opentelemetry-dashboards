@@ -2,14 +2,14 @@ terraform {
   required_providers {
     lightstep = {
       source  = "lightstep/lightstep"
-      version = "~> 1.76.0"
+      version = "~> 1.79.0"
     }
   }
   required_version = ">= v1.0.11"
 }
 
 resource "lightstep_dashboard" "otel_collector_redis_dashboard" {
-  project_name          = var.lightstep_project
+  project_name          = var.cloud_observability_project
   dashboard_name        = "Redis"
   dashboard_description = "Monitor Redis with this overview dashboard."
 

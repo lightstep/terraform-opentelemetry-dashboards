@@ -2,14 +2,14 @@ terraform {
   required_providers {
     lightstep = {
       source  = "lightstep/lightstep"
-      version = "~> 1.76.0"
+      version = "~> 1.79.0"
     }
   }
   required_version = ">= v1.0.11"
 }
 
 resource "lightstep_dashboard" "otel_collector_ceph_dashboard" {
-  project_name          = var.lightstep_project
+  project_name          = var.cloud_observability_project
   dashboard_name        = "Ceph - Overview"
   dashboard_description = "Track Ceph throughput, latency metrics and identify bottlenecks with the performance monitoring dashboard."
 

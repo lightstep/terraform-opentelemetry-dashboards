@@ -2,15 +2,15 @@ terraform {
   required_providers {
     lightstep = {
       source  = "lightstep/lightstep"
-      version = "~> 1.76.0"
+      version = "~> 1.79.0"
     }
   }
   required_version = ">= v1.0.11"
 }
 
 resource "lightstep_dashboard" "otel_collector_kubeletstatsreceiver_dashboard" {
-  project_name   = var.lightstep_project
-  dashboard_name = "OpenTelemetry Kubeletstats Receiver"
+  project_name          = var.cloud_observability_project
+  dashboard_name        = "OpenTelemetry Kubeletstats Receiver"
   dashboard_description = "Monitor Kubeletstats with this metrics overview dashboard."
 
   chart {
