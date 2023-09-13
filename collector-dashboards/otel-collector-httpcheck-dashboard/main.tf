@@ -10,12 +10,12 @@ terraform {
 
 
 resource "lightstep_dashboard" "otel_collector_httpcheck_dashboard" {
-  project_name          = var.lightstep_project
+  project_name          = var.cloud_observability_project
   dashboard_name        = "OpenTelemetry HttpCheck Dashboard"
   dashboard_description = "Monitor the HTTPCheck of your OpenTelemetry Collector instances"
 
   chart {
-    name = "HttpCheck Duration"
+    name = "HTTPCheck Duration"
     rank = "0"
     type = "timeseries"
 
@@ -29,7 +29,7 @@ resource "lightstep_dashboard" "otel_collector_httpcheck_dashboard" {
   }
 
   chart {
-    name = "Httpcheck Status Code"
+    name = "HTTPCheck Status Code"
     rank = "1"
     type = "timeseries"
 
