@@ -66,19 +66,6 @@ resource "lightstep_dashboard" "otel_collector_scylladb_dashboard" {
   }
 
   chart {
-    name = "Total Incoming Bytes"
-    rank = "3"
-    type = "timeseries"
-
-    query {
-      query_name   = "a"
-      display      = "line"
-      hidden       = false
-      query_string = "metric scylla_streaming_total_incoming_bytes | rate | group_by [], sum"
-    }
-  }
-
-  chart {
     name = "Total Outgoing Bytes"
     rank = "4"
     type = "timeseries"
