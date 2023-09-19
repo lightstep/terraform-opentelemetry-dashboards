@@ -84,6 +84,11 @@ module "cloud_observability_otel_collector_elasticsearchreceiver_dashboard" {
   cloud_observability_project = var.cloud_observability_project
 }
 
+module "cloud_observability_otel_collector_envoy_dashboard" {
+  source                      = "./collector-dashboards/otel-collector-envoy-dashboard"
+  cloud_observability_project = var.cloud_observability_project
+}
+
 module "cloud_observability_otel_collector_etcd_dashboard" {
   source                      = "./collector-dashboards/otel-collector-etcd-dashboard"
   cloud_observability_project = var.cloud_observability_project
@@ -156,6 +161,11 @@ module "cloud_observability_otel_collector_ibmmq_dashboard" {
 
 module "cloud_observability_otel_collector_iisreceiver_dashboard" {
   source                      = "./collector-dashboards/otel-collector-iisreceiver-dashboard"
+  cloud_observability_project = var.cloud_observability_project
+}
+
+module "cloud_observability_otel_collector_jbosswildfly_prom_receiver_dashboard" {
+  source                      = "./collector-dashboards/otel-collector-jbosswildfly-prom-receiver-dashboard"
   cloud_observability_project = var.cloud_observability_project
 }
 

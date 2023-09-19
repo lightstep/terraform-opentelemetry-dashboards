@@ -69,6 +69,11 @@ output "cloud_observability_otel_collector_elasticsearchreceiver_dashboard_url" 
   description = "Cloud Observability OpenTelemetry OpenTelemetry Elasticsearchreceiver Receiver Dashboard"
 }
 
+output "cloud_observability_otel_collector_envoy_dashboard_url" {
+  value       = module.cloud_observability_otel_collector_envoy_dashboard.dashboard_url
+  description = "Cloud Observability OpenTelemetry Envoy - Overview Dashboard"
+}
+
 output "cloud_observability_otel_collector_etcd_dashboard_url" {
   value       = module.cloud_observability_otel_collector_etcd_dashboard.dashboard_url
   description = "Cloud Observability OpenTelemetry ETCD v3 - Overview Dashboard"
@@ -144,6 +149,11 @@ output "cloud_observability_otel_collector_iisreceiver_dashboard_url" {
   description = "Cloud Observability OpenTelemetry OpenTelemetry iisreceiver Integration Dashboard"
 }
 
+output "cloud_observability_otel_collector_jbosswildfly_prom_receiver_dashboard_url" {
+  value       = module.cloud_observability_otel_collector_jbosswildfly_prom_receiver_dashboard.dashboard_url
+  description = "Cloud Observability OpenTelemetry OpenTelemetry JBoss Wildfly Dashboard Dashboard"
+}
+
 output "cloud_observability_otel_collector_k8s_kubelet_prom_dashboard_url" {
   value       = module.cloud_observability_otel_collector_k8s_kubelet_prom_dashboard.dashboard_url
   description = "Cloud Observability OpenTelemetry K8S Kubelet Dashboard"
@@ -175,12 +185,12 @@ output "cloud_observability_otel_collector_kubeletstatsreceiver_dashboard_url" {
 }
 
 output "cloud_observability_otel_collector_kubernetes_comprehensive_dashboard_url" {
-  value       = module.cloud_observability_otel_collector_kubernetes_comprehensive_dashboard.dashboard_url
+  value       = module.cloud_observability_otel_collector_kubernetes_comprehensive_dashboard.cluster_dashboard_url
   description = "Cloud Observability OpenTelemetry OpenTelemetry Collector Comprehensive Kubernetes Dashboard Dashboard"
 }
 
 output "cloud_observability_otel_collector_kubernetes_dashboard_url" {
-  value       = module.cloud_observability_otel_collector_kubernetes_dashboard.dashboard_url
+  value       = module.cloud_observability_otel_collector_kubernetes_dashboard.cluster_dashboard_url
   description = "Cloud Observability OpenTelemetry  Dashboard"
 }
 
