@@ -10,7 +10,7 @@ terraform {
 
 resource "lightstep_dashboard" "otel_collector_pulsar_dashboard" {
   project_name          = var.lightstep_project
-  dashboard_name        = "OpenTelemetry Pulsar & Dashboard"
+  dashboard_name        = "OpenTelemetry Pulsar Dashboard"
   dashboard_description = "Monitor Pulsar and metrics with this summary dashboard."
   
   chart {
@@ -51,7 +51,7 @@ resource "lightstep_dashboard" "otel_collector_pulsar_dashboard" {
 
   chart {
     name = "Process Max FDS"
-    rank = "2"
+    rank = "3"
     type = "timeseries"
     query {
       query_name   = "a"
@@ -63,7 +63,7 @@ resource "lightstep_dashboard" "otel_collector_pulsar_dashboard" {
 
   chart {
     name = "Process Open FDS"
-    rank = "2"
+    rank = "4"
     type = "timeseries"
     query {
       query_name   = "a"
@@ -75,7 +75,7 @@ resource "lightstep_dashboard" "otel_collector_pulsar_dashboard" {
 
   chart {
     name = "UP"
-    rank = "2"
+    rank = "5"
     type = "timeseries"
     query {
       query_name   = "a"
@@ -87,7 +87,7 @@ resource "lightstep_dashboard" "otel_collector_pulsar_dashboard" {
 
   chart {
     name = "Active Connections"
-    rank = "10"
+    rank = "6"
     type = "timeseries"
     query {
       query_name   = "a"
@@ -99,7 +99,7 @@ resource "lightstep_dashboard" "otel_collector_pulsar_dashboard" {
 
   chart {
     name = "Broker Message Backlog"
-    rank = "10"
+    rank = "7"
     type = "timeseries"
     query {
       query_name   = "a"
@@ -111,7 +111,7 @@ resource "lightstep_dashboard" "otel_collector_pulsar_dashboard" {
 
   chart {
     name = "Broker Incoming Message Rate"
-    rank = "11"
+    rank = "8"
     type = "timeseries"
     query {
       query_name   = "a"
@@ -123,7 +123,7 @@ resource "lightstep_dashboard" "otel_collector_pulsar_dashboard" {
 
   chart {
     name = "Broker Outgoing Message Rate"
-    rank = "12"
+    rank = "9"
     type = "timeseries"
     query {
       query_name   = "a"
@@ -135,7 +135,7 @@ resource "lightstep_dashboard" "otel_collector_pulsar_dashboard" {
 
   chart {
     name = "Broker Storage Size"
-    rank = "13"
+    rank = "10"
     type = "timeseries"
     query {
       query_name   = "a"
@@ -147,7 +147,7 @@ resource "lightstep_dashboard" "otel_collector_pulsar_dashboard" {
 
   chart {
     name = "Broker Topics Count"
-    rank = "14"
+    rank = "11"
     type = "timeseries"
     query {
       query_name   = "a"
@@ -159,7 +159,7 @@ resource "lightstep_dashboard" "otel_collector_pulsar_dashboard" {
 
   chart {
     name = "Message Backlog Across Topics"
-    rank = "15"
+    rank = "12"
     type = "timeseries"
     query {
       query_name   = "a"
@@ -171,7 +171,7 @@ resource "lightstep_dashboard" "otel_collector_pulsar_dashboard" {
 
   chart {
     name = "Producers Count"
-    rank = "16"
+    rank = "13"
     type = "timeseries"
     query {
       query_name   = "a"
@@ -183,7 +183,7 @@ resource "lightstep_dashboard" "otel_collector_pulsar_dashboard" {
 
   chart {
     name = "Consumers Count"
-    rank = "17"
+    rank = "14"
     type = "timeseries"
     query {
       query_name   = "a"
@@ -195,7 +195,7 @@ resource "lightstep_dashboard" "otel_collector_pulsar_dashboard" {
 
   chart {
     name = "Total Incoming Bytes"
-    rank = "18"
+    rank = "15"
     type = "timeseries"
     query {
       query_name   = "a"
@@ -207,7 +207,7 @@ resource "lightstep_dashboard" "otel_collector_pulsar_dashboard" {
 
   chart {
     name = "Total Outgoing Bytes"
-    rank = "19"
+    rank = "16"
     type = "timeseries"
     query {
       query_name   = "a"
@@ -219,7 +219,7 @@ resource "lightstep_dashboard" "otel_collector_pulsar_dashboard" {
 
   chart {
     name = "Storage Read Rate"
-    rank = "20"
+    rank = "17"
     type = "timeseries"
     query {
       query_name   = "a"
@@ -231,7 +231,7 @@ resource "lightstep_dashboard" "otel_collector_pulsar_dashboard" {
 
   chart {
     name = "Storage Write Rate"
-    rank = "21"
+    rank = "18"
     type = "timeseries"
     query {
       query_name   = "a"
@@ -243,7 +243,7 @@ resource "lightstep_dashboard" "otel_collector_pulsar_dashboard" {
 
   chart {
     name = "Total Storage Size"
-    rank = "22"
+    rank = "19"
     type = "timeseries"
     query {
       query_name   = "a"
@@ -255,7 +255,7 @@ resource "lightstep_dashboard" "otel_collector_pulsar_dashboard" {
 
   chart {
     name = "Total Storage Size"
-    rank = "22"
+    rank = "20"
     type = "timeseries"
     query {
       query_name   = "a"
@@ -267,7 +267,7 @@ resource "lightstep_dashboard" "otel_collector_pulsar_dashboard" {
 
   chart {
     name = "Subscription Backlog"
-    rank = "30"
+    rank = "21"
     type = "timeseries"
     query {
       query_name   = "a"
@@ -279,7 +279,7 @@ resource "lightstep_dashboard" "otel_collector_pulsar_dashboard" {
 
   chart {
     name = "Subscription Consumers Count"
-    rank = "31"
+    rank = "22"
     type = "timeseries"
     query {
       query_name   = "a"
@@ -291,7 +291,7 @@ resource "lightstep_dashboard" "otel_collector_pulsar_dashboard" {
 
   chart {
     name = "Subscription Message Rate Out"
-    rank = "32"
+    rank = "23"
     type = "timeseries"
     query {
       query_name   = "a"
