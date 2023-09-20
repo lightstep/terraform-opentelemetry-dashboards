@@ -9,7 +9,7 @@ terraform {
 }
 
 resource "lightstep_dashboard" "otel_collector_hostmetrics_disk_dashboard" {
-  project_name          = var.cloud_observability_project
+  project_name          = var.lightstep_project
   dashboard_name        = "OpenTelemetry / Host Metrics / Disk"
   dashboard_description = "Hostmetrics-Disk Metrics"
 

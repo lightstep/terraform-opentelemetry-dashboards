@@ -17,7 +17,7 @@ The dashboard can be used to observe allocation performance, target distribution
     ## Example: Create OpenTelemetry Collector Dashboard
     module "otel-target-allocator-dashboard" {
       source            = "./terraform-opentelemetry-dashboards/collector-dashboards/otel-target-allocator-dashboard"
-      cloud_observability_project = "dev-jkart"
+      lightstep_project = "dev-jkart"
     }
 
     ## Example: expose your module outputs

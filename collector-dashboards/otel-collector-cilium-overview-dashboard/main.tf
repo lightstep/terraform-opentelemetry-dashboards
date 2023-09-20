@@ -9,7 +9,7 @@ terraform {
 }
 
 resource "lightstep_dashboard" "otel_collector_cilium_overview_dashboard" {
-  project_name          = var.cloud_observability_project
+  project_name          = var.lightstep_project
   dashboard_name        = "Cilium Overview"
   dashboard_description = "Monitor Cilium with this metrics overview dashboard."
 

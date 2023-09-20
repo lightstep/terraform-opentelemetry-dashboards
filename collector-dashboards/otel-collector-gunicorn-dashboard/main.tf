@@ -9,7 +9,7 @@ terraform {
 }
 
 resource "lightstep_dashboard" "otel_collector_gunicorn_dashboard" {
-  project_name          = var.cloud_observability_project
+  project_name          = var.lightstep_project
   dashboard_name        = "Gunicorn - Overview"
   dashboard_description = "Track request count, duration, and status codes to monitor the performance and availability of Gunicorn web server."
 
