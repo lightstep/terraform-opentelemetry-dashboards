@@ -10,7 +10,7 @@ terraform {
 
 resource "lightstep_dashboard" "otel_collector_kubernetes_application_dashboard" {
   dashboard_name        = "Kubernetes Application"
-  project_name          = "OpenTelemetry Kubernetes Application"
+  project_name          = var.cloud_observability_project
   dashboard_description = "This dashboard is a generic kubernetes application and machine dashboard, which uses OTEL receivers (k8scluster, hostmetrics, kubeletstats) to generate infrastructure metrics."
 
   group {
