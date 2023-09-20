@@ -23,18 +23,18 @@ init:
 
 apply:
 	terraform apply \
-		-var="cloud_observability_organization=LightStep" \
-		-var="cloud_observability_env=staging" \
-		-var="cloud_observability_project=dev-integrations" \
-		-var="cloud_observability_api_key_env_var=LIGHTSTEP_API_KEY"
+		-var="lightstep_organization=LightStep" \
+		-var="lightstep_env=staging" \
+		-var="lightstep_project=dev-integrations" \
+		-var="lightstep_api_key_env_var=LIGHTSTEP_API_KEY"
 
 fresh: destroy clean init apply
 
 destroy:
 	terraform destroy \
-		-var="cloud_observability_organization=LightStep" \
-		-var="cloud_observability_env=staging" \
-		-var="cloud_observability_project=dev-integrations" \
-		-var="cloud_observability_api_key_env_var=LIGHTSTEP_API_KEY"
+		-var="lightstep_organization=LightStep" \
+		-var="lightstep_env=staging" \
+		-var="lightstep_project=dev-integrations" \
+		-var="lightstep_api_key_env_var=LIGHTSTEP_API_KEY"
 
 
