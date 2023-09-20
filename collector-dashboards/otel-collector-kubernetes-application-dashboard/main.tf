@@ -82,7 +82,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_application_dashboard"
     }
     chart {
       name        = "CPU Usage % of Requests (mean, 1m)"
-      description = "Uses pod CPU utilization and CPU requests mean and max"
+      description = "Displays pod CPU utilization and CPU requests mean and max in percentages"
       type        = "timeseries"
       rank        = 3
       x_pos       = 32
@@ -105,7 +105,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_application_dashboard"
 
     chart {
       name        = "Memory Used (working set vs. requests)"
-      description = "Displays Working Set and Requests of Memory"
+      description = "Displays working set memory of pods and memory requests of containers"
       type        = "timeseries"
       rank        = 0
       x_pos       = 0
@@ -128,7 +128,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_application_dashboard"
     }
     chart {
       name        = "Memory Used % (working set vs. requests)"
-      description = "Uses Working Set Memory and Requests to find percentage of a resource"
+      description = "Displays a percentage of working set memory of pods over memory requests of containers"
       type        = "timeseries"
       rank        = 1
       x_pos       = 16
@@ -202,7 +202,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_application_dashboard"
     }
     chart {
       name        = "Pods Running"
-      description = "Number of Pods running, filtered by instance and namespace"
+      description = "Number of pods running, filtered by instance and namespace"
       type        = "timeseries"
       rank        = 1
       x_pos       = 16
@@ -219,7 +219,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_application_dashboard"
     }
     chart {
       name        = "Pods by Phase and Version"
-      description = "Number of Pods running, pending, and other non-running, non-pending pods"
+      description = "Number of pods that are running, pending, and other non-running, non-pending pods"
       type        = "timeseries"
       rank        = 2
       x_pos       = 32
@@ -254,7 +254,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_application_dashboard"
 
     chart {
       name        = "Network IO Receive by Pod"
-      description = "Displays Pod Network IO Received per pod"
+      description = "Amount of bytes received (incoming) per pod"
       type        = "timeseries"
       rank        = 0
       x_pos       = 0
@@ -271,7 +271,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_application_dashboard"
     }
     chart {
       name        = "Network IO Transmit by Pod"
-      description = "Displays Pod Network IO Transmitted per pod"
+      description = "Amount of bytes transmitted (outgoing) per pod"
       type        = "timeseries"
       rank        = 1
       x_pos       = 16
@@ -288,7 +288,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_application_dashboard"
     }
     chart {
       name        = "Network Errors by Pod"
-      description = "Displays Pod Network Errors occured"
+      description = "Displays number of pod network errors occured"
       type        = "timeseries"
       rank        = 2
       x_pos       = 32
@@ -305,7 +305,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_application_dashboard"
     }
     chart {
       name        = "Network IO Receive (all pods)"
-      description = "Displays Pod Network IO Received for all pod"
+      description = "Amount of bytes received (incoming) for all pods"
       type        = "timeseries"
       rank        = 3
       x_pos       = 0
@@ -322,7 +322,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_application_dashboard"
     }
     chart {
       name        = "Network IO Transmit (all pods)"
-      description = "Displays Pod Network IO Transmitted for all pods"
+      description = "Amount of bytes transmitted (outgoing) for all pods"
       type        = "timeseries"
       rank        = 4
       x_pos       = 16
@@ -345,7 +345,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_application_dashboard"
 
     chart {
       name        = "Operation Latency"
-      description = "Latency of Operations"
+      description = "The amount of time it takes for an operation to complete"
       type        = "timeseries"
       rank        = 0
       x_pos       = 0
@@ -362,7 +362,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_application_dashboard"
     }
     chart {
       name        = "Operation Rate"
-      description = "Rate of operations"
+      description = "The rate of time it takes for an operation to complete"
       type        = "timeseries"
       rank        = 1
       x_pos       = 16
@@ -379,7 +379,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_application_dashboard"
     }
     chart {
       name        = "Operation Errors"
-      description = "Errors in Operation"
+      description = "The number of errors in completing an operation "
       type        = "timeseries"
       rank        = 2
       x_pos       = 32
@@ -402,7 +402,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_application_dashboard"
 
     chart {
       name        = "PVC FS Disk Usage %"
-      description = "Percentage of Disk Usage of Persistent Volume"
+      description = "Percentage of filesystem disk usage in PersistentVolume"
       type        = "timeseries"
       rank        = 0
       x_pos       = 0
@@ -419,7 +419,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_application_dashboard"
     }
     chart {
       name        = "PVC FS Disk Usage (bytes)"
-      description = "Disk Usage of Persistent Volume in bytes"
+      description = "Amount of bytes of filesystem disk usage in PersistentVolume"
       type        = "timeseries"
       rank        = 1
       x_pos       = 16
@@ -442,7 +442,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_application_dashboard"
     }
     chart {
       name        = "PVC FS inode Usage %"
-      description = "Percentage of inode Usage of Persistent Volume"
+      description = "Percentage of filesystem inode usage in PersistentVolume"
       type        = "timeseries"
       rank        = 2
       x_pos       = 32
@@ -459,7 +459,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_application_dashboard"
     }
     chart {
       name        = "Throughput ceiling: Balanced PD"
-      description = "Throughput ceiling of balanced persistent disks"
+      description = "Throughput ceiling (max throughput) of balanced persistent disks"
       type        = "timeseries"
       rank        = 3
       x_pos       = 0
@@ -476,7 +476,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_application_dashboard"
     }
     chart {
       name        = "Throughput ceiling: SSD PD"
-      description = "Throughput ceiling of SSD persistent disks"
+      description = "Throughput ceiling (max throughput) of SSD persistent disks"
       type        = "timeseries"
       rank        = 3
       x_pos       = 16
@@ -499,7 +499,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_application_dashboard"
 
     chart {
       name        = "Hourly Active Time Series"
-      description = "Lightstep Active Time Series by Hour"
+      description = "Lightstep Active Time Series (sequence of timestamped measurements) by hour"
       type        = "timeseries"
       rank        = 0
       x_pos       = 0
@@ -516,7 +516,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_application_dashboard"
     }
     chart {
       name        = "HPA Current & Desired"
-      description = "Current and Desired replicas for horizontal pod autoscaling"
+      description = "Number of current and desired replicas for horizontal pod autoscaling"
       type        = "timeseries"
       rank        = 1
       x_pos       = 16
