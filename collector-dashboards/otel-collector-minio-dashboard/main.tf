@@ -425,7 +425,7 @@ EOT
       display      = "bar"
       hidden       = false
       query_string = <<EOT
-metric minio_heal_objects_error_total | rate | group_by ["service.instanice.id"], sum
+metric minio_heal_objects_error_total | rate | group_by ["service.instance.id"], sum
 EOT
     }
 
