@@ -34,7 +34,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
         query_name   = "a"
         display      = "bar"
         hidden       = false
-        query_string = "metric otelcol_process_uptime | filter ((collector_name == $collector_name) && (service_name == $service_name)) | rate 1s | group_by [\"collector_name\", \"job\", \"service_instance_id\"], sum"
+        query_string = "metric otelcol_process_uptime | filter ((collector_name == $collector_name) && (service_name == $service_name)) | rate 1s | group_by [\"collector_name\", \"job\", \"service_instance_id\"], sum | * 100.00"
       }
     }
     chart {
@@ -50,7 +50,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
         query_name   = "a"
         display      = "line"
         hidden       = false
-        query_string = "metric otelcol_receiver_accepted_metric_points | filter ((receiver == $receiver) && (collector_name == $collector_name) && (service_name == $service_name)) | delta | group_by [\"receiver\", \"collector_name\"], sum"
+        query_string = "metric otelcol_receiver_accepted_metric_points | filter (((receiver == $receiver) && (collector_name == $collector_name)) && (service_name == $service_name)) | delta | group_by [\"receiver\", \"collector_name\"], sum"
       }
       query {
         query_name   = "b"

@@ -19,7 +19,7 @@ For a more in-depth recommendation on how to monitor and alert on the OpenTeleme
     ## Example: Create OpenTelemetry Collector Dashboard
     module "otel-collector-dashboard" {
       source            = "./terraform-opentelemetry-dashboards/collector-dashboards/otel-collector-dashboard"
-      lightstep_project = "dev-jkart"
+      cloud_observability_project = "dev-jkart"
     }
 
     ## Example: expose your module outputs
@@ -37,4 +37,4 @@ OpenTelemetry Collector is a very extensible system in which one can define a sp
 ### Prometheus Receiver
 Name: `prometheus`
 
-Purpose: charts for monitoring [prometheus-receiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/prometheusreceiver) performance.
+Purpose: charts for monitoring [prometheus-receiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/prometheusreceiver) performance. 
