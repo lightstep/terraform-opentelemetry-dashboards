@@ -24,9 +24,9 @@ func writeMainHead(w io.Writer) {
 }
 
 provider "lightstep" {
-  api_key_env_var = var.cloud_observability_api_key_env_var
-  organization    = var.cloud_observability_organization
-  environment     = var.cloud_observability_env
+  api_key_env_var = var.lightstep_api_key_env_var
+  organization    = var.lightstep_organization
+  environment     = var.lightstep_env
 }
 `)
 }
@@ -40,9 +40,9 @@ func writeMainModuleBlocks(w io.Writer, dirPath string) error {
 	for _, file := range files {
 		if file.IsDir() {
 			dirSnake := strings.ReplaceAll(file.Name(), "-", "_")
-			fmt.Fprintf(w, "\nmodule \"cloud_observability_%s\" {\n", dirSnake)
+			fmt.Fprintf(w, "\nmodule \"lightstep_%s\" {\n", dirSnake)
 			fmt.Fprintf(w, "  source            = \"./collector-dashboards/%s\"\n", file.Name())
-			fmt.Fprint(w, "  cloud_observability_project = var.cloud_observability_project\n")
+			fmt.Fprint(w, "  lightstep_project = var.lightstep_project\n")
 			fmt.Fprint(w, "}\n")
 		}
 	}
@@ -91,8 +91,8 @@ func writeOutputsBlocks(w io.Writer, dirPath string) error {
 			if err != nil {
 				return err
 			}
-			fmt.Fprintf(w, "\noutput \"cloud_observability_%s_url\" {\n", dirSnake)
-			fmt.Fprintf(w, "  value       = module.cloud_observability_%s.dashboard_url\n", dirSnake)
+			fmt.Fprintf(w, "\noutput \"lightstep_%s_url\" {\n", dirSnake)
+			fmt.Fprintf(w, "  value       = module.lightstep_%s.dashboard_url\n", dirSnake)
 			fmt.Fprintf(w, "  description = \"Cloud Observability OpenTelemetry %s Dashboard\"\n", appName)
 			fmt.Fprint(w, "}\n")
 		}
