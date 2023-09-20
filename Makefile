@@ -37,4 +37,3 @@ destroy:
 		-var="lightstep_project=dev-integrations" \
 		-var="lightstep_api_key_env_var=LIGHTSTEP_API_KEY"
 
-
