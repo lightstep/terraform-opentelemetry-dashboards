@@ -1,4 +1,4 @@
-variable "cloud_observability_project" {
-  description = "Name of Cloud Observability project"
+variable "lightstep_project" {
+  description = "Name of Lightstep project"
   type        = string
 }
