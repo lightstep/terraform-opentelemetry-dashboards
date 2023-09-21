@@ -9,7 +9,7 @@ terraform {
 }
 
 resource "lightstep_dashboard" "otel_collector_squid_dashboard" {
-  project_name          = var.cloud_observability_project
+  project_name          = var.lightstep_project
   dashboard_name        = "Squid - Overview"
   dashboard_description = "A squid overview dashboard displays real-time metrics including bytes hit rate, cache hit rate, error rate, client requests, and client traffic, providing insights into the performance and usage of the proxy server."
 

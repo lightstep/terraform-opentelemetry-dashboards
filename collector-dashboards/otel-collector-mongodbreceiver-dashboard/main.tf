@@ -9,7 +9,7 @@ terraform {
 }
 
 resource "lightstep_dashboard" "otel_collector_mongodb_summary_dashboard" {
-  project_name          = var.cloud_observability_project
+  project_name          = var.lightstep_project
   dashboard_name        = "MongoDB Summary"
   dashboard_description = "Monitor MongoDB metrics with the OTel Collector's MongoDB receiver."
 

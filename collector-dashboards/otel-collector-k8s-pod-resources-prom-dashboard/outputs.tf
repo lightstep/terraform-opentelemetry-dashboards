@@ -1,4 +1,4 @@
 output "dashboard_url" {
-  value       = "https://app.lightstep.com/${var.cloud_observability_project}/dashboard/${lightstep_dashboard.k8s_resources_pod_dashboard.id}"
+  value       = "https://app.lightstep.com/${var.lightstep_project}/dashboard/${lightstep_dashboard.k8s_resources_pod_dashboard.id}"
   description = "k8s resources"
 }

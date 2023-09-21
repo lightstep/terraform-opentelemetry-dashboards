@@ -9,7 +9,7 @@ terraform {
 }
 
 resource "lightstep_dashboard" "otel_collector_postgresql_dashboard" {
-  project_name          = var.cloud_observability_project
+  project_name          = var.lightstep_project
   dashboard_name        = "PostgreSQL"
   dashboard_description = "PostgreSQL Dashboard"
 

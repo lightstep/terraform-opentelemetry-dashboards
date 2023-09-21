@@ -9,7 +9,7 @@ terraform {
 }
 
 resource "lightstep_dashboard" "otel_collector_varnish_dashboard" {
-  project_name          = var.cloud_observability_project
+  project_name          = var.lightstep_project
   dashboard_name        = "Varnish - Overview"
   dashboard_description = "An overview of Varnish caches, so you can monitor cache performance and resource utilization, as well as the health of connections to backend servers."
 

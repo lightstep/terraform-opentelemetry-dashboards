@@ -21,7 +21,7 @@ Visit Lightstep to [Learn how to send telemetry from an OpenTelemetry Collector 
     ## Example: Create OpenTelemetry Kubernetes Dashboard
     module "kube-dashboards" {
       source            = "./terraform-opentelemetry-dashboards/collector-dashboards/otel-collector-kubernetes-dashboard"
-      cloud_observability_project = "dev-jkart"
+      lightstep_project = "dev-jkart"
 
       workloads = [
         {

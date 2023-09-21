@@ -9,7 +9,7 @@ terraform {
 }
 
 resource "lightstep_dashboard" "otel_target_allocator_dashboard" {
-  project_name          = var.cloud_observability_project
+  project_name          = var.lightstep_project
   dashboard_name        = "OpenTelemetry Target Allocator"
   dashboard_description = "Monitor OpenTelemetry Target Allocator with this overview dashboard."
 

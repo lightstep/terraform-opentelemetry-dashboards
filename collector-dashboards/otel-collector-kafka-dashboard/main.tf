@@ -9,7 +9,7 @@ terraform {
 }
 
 resource "lightstep_dashboard" "otel_collector_kafka_dashboard" {
-  project_name          = var.cloud_observability_project
+  project_name          = var.lightstep_project
   dashboard_name        = "OpenTelemetry Collector - Kafka Metrics"
   dashboard_description = "Monitor Kafka with this metrics overview dashboard."
 

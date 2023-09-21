@@ -17,7 +17,7 @@ The dashboard can be used to visualize operator resource metrics and reconciliat
     ## Example: Create OpenTelemetry Operator Dashboard
     module "otel-operator-dashboard" {
       source            = "./terraform-opentelemetry-dashboards/collector-dashboards/otel-operator-dashboard"
-      cloud_observability_project = "dev-jkart"
+      lightstep_project = "dev-jkart"
     }
 
     ## Example: expose your module outputs

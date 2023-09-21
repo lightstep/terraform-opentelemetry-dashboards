@@ -4,7 +4,7 @@ locals {
 
 
 resource "lightstep_dashboard" "k8s_compute_resources_workload" {
-  project_name   = var.cloud_observability_project
+  project_name   = var.lightstep_project
   count          = length(var.workloads)
   dashboard_name = "Kubernetes / Compute Resources / Workload / ${var.workloads[count.index].workload}"
 
