@@ -1204,7 +1204,6 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
           sort_direction = "desc"
           y_axis_min     = 0
           y_axis_max     = 0
-          y_axis_scale   = ""
         }
         hidden       = false
         query_string = "metric otelcol_process_uptime | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | delta | group_by [\"k8s.pod.name\"], max"
@@ -1307,7 +1306,6 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
           sort_direction = "desc"
           y_axis_min     = 0
           y_axis_max     = 0
-          y_axis_scale   = ""
         }
         hidden       = false
         query_string = "metric k8s.pod.phase | filter k8s.pod.uid == $pod_uid | filter k8s.pod.name == $pod | filter k8s.cluster.name == $cluster | filter k8s.namespace.name == $namespace | filter service.name == $service_name | filter service.name =~ \".*collector\" | latest | point_filter value == 2 | group_by [\"k8s.pod.start_time\", \"k8s.pod.name\"], count_nonzero"
