@@ -1129,7 +1129,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
     visibility_type = "explicit"
 
     chart {
-      name        = "Uptime per pod [seconds]"
+      name        = "Uptime Per Pod [seconds]"
       description = "The uptime of each collector pod, represented in seconds"
       type        = "timeseries"
       rank        = 0
@@ -1278,7 +1278,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       subtitle = ""
     }
     chart {
-      name        = "Collectors by pod phase"
+      name        = "Collectors by Pod Phase"
       description = "The overall breakdown in percent of collector pods in terms of phase"
       type        = "timeseries"
       rank        = 7
@@ -1321,7 +1321,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       subtitle = ""
     }
     chart {
-      name        = "Container Restarts per pool"
+      name        = "Container Restarts Per Pool"
       description = "Container restarts per collector pool"
       type        = "timeseries"
       rank        = 8
@@ -1340,7 +1340,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       subtitle = ""
     }
     chart {
-      name        = "Container Restarts per pod"
+      name        = "Container Restarts Per Pod"
       description = "Restarts by pod and container"
       type        = "timeseries"
       rank        = 9
@@ -1360,7 +1360,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
     }
 
     text_panel {
-      name   = "Kubernetes pod phases"
+      name   = "Kubernetes Pod Phases"
       x_pos  = 0
       y_pos  = 0
       width  = 48
