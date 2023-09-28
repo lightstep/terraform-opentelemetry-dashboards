@@ -370,7 +370,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       y_pos  = 0
       width  = 48
       height = 6
-      text   = "This dashboard monitors the health of your OpenTelemetry Collectors that are running in Kubernetes. For more on Collectors, see https://docs.lightstep.com/docs/collector-home-page\n\nUse template variables to filter to collector pools and individual collector instances. Filter to a specific collector pool with the `$service.name` template variable. Collector pools running in k8s have a service name that ends with \"collector\"\n\nIf the charts indicate \"No Data Reported\" you may not be sending metrics for that chart."
+      text   = "This dashboard monitors the health of your [OpenTelemetry Collectors](https://opentelemetry.io/docs/collector/) that are running in Kubernetes. For more on Collectors, see https://docs.lightstep.com/docs/collector-home-page\n\nUse template variables to filter to collector pools and individual collector instances. Filter to a specific collector pool with the `$service.name` template variable. Collector pools running in k8s have a service name that ends with \"collector\"\n\nIf the charts indicate \"No Data Reported\" you may not be sending metrics for that chart."
     }
   }
   group {
@@ -556,7 +556,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       y_pos  = 0
       width  = 48
       height = 6
-      text   = "Monitor the state of your OpenTelemetry Receivers (https://github.com/open-telemetry/opentelemetry-collector/blob/main/receiver/README.md)\n\nSome receivers like the _hostmetrics_ and _prometheus_ receivers actively obtain telemetry data to place in the collection pipeline. The prometheus receiver can hit scaling issues if there are, say, thousands of prometheus endpoints to scrape. For guidance on scaling and sharding scrapers, see https://opentelemetry.io/docs/collector/scaling/#scaling-the-scrapers\n\nFor all other information on scaling the receiver, see https://opentelemetry.io/docs/collector/scaling/#how-to-scale"
+      text   = "Monitor the state of your Collector [Receivers](https://github.com/open-telemetry/opentelemetry-collector/blob/main/receiver/README.md) that accept or scrape telemetry data for collection.\n\nSome receivers like the [_hostmetrics_](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/hostmetricsreceiver/README.md) and [_prometheus_](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/prometheusreceiver/README.md) receivers actively obtain telemetry data to place in the collection pipeline. The prometheus receiver can hit scaling issues if there are, say, thousands of prometheus endpoints to scrape. For guidance on scaling and sharding scrapers, see https://opentelemetry.io/docs/collector/scaling/#scaling-the-scrapers\n\nFor all other information on scaling the receiver, see https://opentelemetry.io/docs/collector/scaling/#how-to-scale"
     }
   }
   group {
@@ -622,69 +622,12 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       subtitle = ""
     }
     chart {
-      name        = "Rate of Accepted Metric Points"
-      description = "Number of metric points successfully pushed into the next component in the pipeline."
+      name        = "Rate of Refused Metric Points"
+      description = "Number of metric points that were rejected by the next component in the pipeline"
       type        = "timeseries"
       rank        = 3
       x_pos       = 0
       y_pos       = 14
-      width       = 16
-      height      = 8
-
-      query {
-        query_name   = "a"
-        display      = "line"
-        hidden       = false
-        query_string = "metric otelcol_processor_accepted_metric_points | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [\"service.name\", \"processor\"], sum"
-      }
-
-      subtitle = ""
-    }
-    chart {
-      name        = "Rate of Accepted Spans"
-      description = "Number of spans successfully pushed into the next component in the pipeline"
-      type        = "timeseries"
-      rank        = 4
-      x_pos       = 16
-      y_pos       = 14
-      width       = 16
-      height      = 8
-
-      query {
-        query_name   = "a"
-        display      = "line"
-        hidden       = false
-        query_string = "metric otelcol_processor_accepted_spans | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [\"service.name\", \"processor\"], sum"
-      }
-
-      subtitle = ""
-    }
-    chart {
-      name        = "Rate of Accepted Log Records"
-      description = "Number of logs successfully pushed into the next component in the pipeline."
-      type        = "timeseries"
-      rank        = 5
-      x_pos       = 32
-      y_pos       = 14
-      width       = 16
-      height      = 8
-
-      query {
-        query_name   = "a"
-        display      = "line"
-        hidden       = false
-        query_string = "metric otelcol_processor_accepted_log_records | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [\"service.name\", \"processor\"], sum"
-      }
-
-      subtitle = ""
-    }
-    chart {
-      name        = "Rate of Refused Metric Points"
-      description = "Number of metric points that were rejected by the next component in the pipeline"
-      type        = "timeseries"
-      rank        = 6
-      x_pos       = 0
-      y_pos       = 22
       width       = 16
       height      = 8
 
@@ -701,9 +644,9 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       name        = "Rate of Refused Spans"
       description = "Number of Spans that were rejected by the next component in the pipeline."
       type        = "timeseries"
-      rank        = 7
+      rank        = 4
       x_pos       = 16
-      y_pos       = 22
+      y_pos       = 14
       width       = 16
       height      = 8
 
@@ -717,10 +660,86 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       subtitle = ""
     }
     chart {
-      name        = "99% Processor Batch Send Size"
-      description = "Distribution of batch send queue size per processor and collector pool in the 99th percentile"
+      name        = "Rate of Refused Log Records"
+      description = "Number of log records that were rejected by the next component in the pipeline."
+      type        = "timeseries"
+      rank        = 5
+      x_pos       = 32
+      y_pos       = 14
+      width       = 16
+      height      = 8
+
+      query {
+        query_name   = "a"
+        display      = "line"
+        hidden       = false
+        query_string = "metric otelcol_processor_refused_log_records | filter (((((\"service.name\" == $service_name) && (\"k8s.pod.uid\" == $pod_uid)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"k8s.pod.name\" == $pod)) | rate | group_by [\"service.name\"], sum"
+      }
+
+      subtitle = ""
+    }
+    chart {
+      name        = "Rate of Accepted Metric Points"
+      description = "Number of metric points successfully pushed into the next component in the pipeline."
+      type        = "timeseries"
+      rank        = 6
+      x_pos       = 0
+      y_pos       = 22
+      width       = 16
+      height      = 8
+
+      query {
+        query_name   = "a"
+        display      = "line"
+        hidden       = false
+        query_string = "metric otelcol_processor_accepted_metric_points | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [\"service.name\", \"processor\"], sum"
+      }
+
+      subtitle = ""
+    }
+    chart {
+      name        = "Rate of Accepted Spans"
+      description = "Number of spans successfully pushed into the next component in the pipeline"
+      type        = "timeseries"
+      rank        = 7
+      x_pos       = 16
+      y_pos       = 22
+      width       = 16
+      height      = 8
+
+      query {
+        query_name   = "a"
+        display      = "line"
+        hidden       = false
+        query_string = "metric otelcol_processor_accepted_spans | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [\"service.name\", \"processor\"], sum"
+      }
+
+      subtitle = ""
+    }
+    chart {
+      name        = "Rate of Accepted Log Records"
+      description = "Number of logs successfully pushed into the next component in the pipeline."
       type        = "timeseries"
       rank        = 8
+      x_pos       = 32
+      y_pos       = 22
+      width       = 16
+      height      = 8
+
+      query {
+        query_name   = "a"
+        display      = "line"
+        hidden       = false
+        query_string = "metric otelcol_processor_accepted_log_records | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [\"service.name\", \"processor\"], sum"
+      }
+
+      subtitle = ""
+    }
+    chart {
+      name        = "99% Processor Batch Send Size"
+      description = " 99th percentile of the size of batches (in count of metric points, spans, or logs) in the [batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md). This shows the upper end of batch payloads in count of items that will be exported. The batch processor accepts spans, metrics, or logs to better compress the data and send it over fewer outgoing connections."
+      type        = "timeseries"
+      rank        = 9
       x_pos       = 0
       y_pos       = 30
       width       = 16
@@ -736,12 +755,12 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       subtitle = ""
     }
     chart {
-      name        = "Rate of Refused Log Records"
-      description = "Number of log records that were rejected by the next component in the pipeline."
+      name        = "99% Processor Batch Send Size in Bytes"
+      description = "99th percentile of the size of batches (in bytes) in the [batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md). This shows the upper end of batch payloads in byte size that will be exported. The batch processor accepts spans, metrics, or logs to better compress the data and send it over fewer outgoing connections."
       type        = "timeseries"
       rank        = 10
-      x_pos       = 32
-      y_pos       = 22
+      x_pos       = 16
+      y_pos       = 30
       width       = 16
       height      = 8
 
@@ -749,7 +768,32 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
         query_name   = "a"
         display      = "line"
         hidden       = false
-        query_string = "metric otelcol_processor_refused_log_records | filter (((((\"service.name\" == $service_name) && (\"k8s.pod.uid\" == $pod_uid)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"k8s.pod.name\" == $pod)) | rate | group_by [\"service.name\"], sum"
+        query_string = "metric otelcol_processor_batch_batch_send_size_bytes | filter k8s.pod.uid == $pod_uid | filter k8s.pod.name == $pod | filter k8s.cluster.name == $cluster | filter k8s.namespace.name == $namespace | filter \"service.name\" == $service_name | delta | group_by [\"processor\", \"service.name\"], distribution | point percentile(value, 99.0)"
+      }
+
+      subtitle = ""
+    }
+    chart {
+      name        = "Batch Processor Triggers"
+      description = "The [batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md) is triggered to send a batch when it exceeds their target size or after a timeout, whichever happens first. This chart shows the balance between size and timeout triggers. Adjust the batch processor by configuring `send_batch_size`, `send_batch_max_size`, and `timeout`."
+      type        = "timeseries"
+      rank        = 12
+      x_pos       = 32
+      y_pos       = 30
+      width       = 16
+      height      = 8
+
+      query {
+        query_name   = "a"
+        display      = "line"
+        hidden       = false
+        query_string = "metric otelcol_processor_batch_timeout_trigger_send | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | delta | group_by [\"processor\", \"service.name\"], sum"
+      }
+      query {
+        query_name   = "b"
+        display      = "line"
+        hidden       = false
+        query_string = "metric otelcol_processor_batch_batch_size_trigger_send | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | delta | group_by [\"processor\", \"service.name\"], sum"
       }
 
       subtitle = ""
@@ -761,7 +805,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       y_pos  = 0
       width  = 48
       height = 6
-      text   = "Processors are optional components that run on data between being received and being exported. If your collectors do not include any processors, these charts will be empty.\n\nIn the case of memory_limiter implementations, new data will be blocked from passing through the pipeline by the memory_limiter, and show up in the Refused Spans chart. For more information:  https://opentelemetry.io/docs/collector/scaling/#when-to-scale \n\nFor more information on processors: https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/README.md"
+      text   = "Monitor the state of your Collector [Processors](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/README.md) that operate on received telemetry before it is exported. Processors are optional components, and if your collectors do not include any processors, these charts will be empty.\n\nIn the case of the [_memory_limiter_](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/memorylimiterprocessor/README.md) processor, new telemetry data will be blocked from passing through the pipeline by the _memory_limiter_, and show up in the Refused Metric Points, Spans, or Log Records charts. If telemetry is regularly refused due to memory limits, you likely need to scale up your cluster.\n\nFor more information, see https://opentelemetry.io/docs/collector/scaling/#when-to-scale "
     }
   }
   group {
@@ -789,12 +833,12 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       subtitle = ""
     }
     chart {
-      name        = "Failed Spans"
-      description = "Number of spans in failed attempts to send to destination, including Cloud Observability"
+      name        = "Sent Spans"
+      description = "Number of spans successfully sent to destination, including Cloud Observability"
       type        = "timeseries"
       rank        = 1
       x_pos       = 16
-      y_pos       = 15
+      y_pos       = 7
       width       = 16
       height      = 8
 
@@ -802,7 +846,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
         query_name   = "a"
         display      = "line"
         hidden       = false
-        query_string = "metric otelcol_exporter_enqueue_failed_spans | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [\"service.name\", \"exporter\"], sum"
+        query_string = "metric otelcol_exporter_sent_spans | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [\"service.name\", \"exporter\"], sum"
       }
 
       subtitle = ""
@@ -846,12 +890,12 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       subtitle = ""
     }
     chart {
-      name        = "Sent Spans"
-      description = "Number of spans successfully sent to destination, including Cloud Observability"
+      name        = "Failed Spans"
+      description = "Number of spans in failed attempts to send to destination, including Cloud Observability"
       type        = "timeseries"
       rank        = 4
       x_pos       = 16
-      y_pos       = 7
+      y_pos       = 15
       width       = 16
       height      = 8
 
@@ -859,7 +903,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
         query_name   = "a"
         display      = "line"
         hidden       = false
-        query_string = "metric otelcol_exporter_sent_spans | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [\"service.name\", \"exporter\"], sum"
+        query_string = "metric otelcol_exporter_enqueue_failed_spans | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [\"service.name\", \"exporter\"], sum"
       }
 
       subtitle = ""
@@ -947,7 +991,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       y_pos  = 0
       width  = 48
       height = 7
-      text   = "Monitor the Queue Usage chart to ensure data isn't piling up. The Collector will queue data in memory while waiting for a worker to become available to send the data. If there aren’t enough workers or the backend is too slow, data starts piling up in the queue. \n\nAn increase in the Failed Spans chart indicates that sending data to the backend failed permanently and further triage is needed.\n\nFor more information on scaling refer to the OpenTelemetry documentation: https://opentelemetry.io/docs/collector/scaling/#how-to-scale\n\nFor more information on exporters: https://github.com/open-telemetry/opentelemetry-collector/blob/main/exporter/README.md"
+      text   = "Monitor the state of your Collector [Exporters](https://github.com/open-telemetry/opentelemetry-collector/blob/main/exporter/README.md) that send telemetry to CloudObs and any other configured destinations.\n\nCheck the Queue Usage chart to ensure data isn't piling up. The collector will queue data in memory while waiting for a worker to become available to send the data. If there aren’t enough workers or the backend is too slow, data starts piling up in the queue. Increasing the queue size might alleviate pressure on the backend destination in this case.\n\nAn increase in the Failed Spans chart indicates that sending data to the backend failed permanently and further triage is needed.\n"
     }
   }
   group {
@@ -988,7 +1032,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
         query_name   = "a"
         display      = "line"
         hidden       = false
-        query_string = "with\n  usage = metric k8s.pod.memory.usage | filter k8s.pod.uid == $pod_uid | filter k8s.pod.name == $pod | filter k8s.cluster.name == $cluster | filter k8s.namespace.name == $namespace | filter service.name == $service_name | filter service.name =~ \".*collector\" | latest | group_by [\"service.name\"], sum;\n  available = metric k8s.pod.memory.available | filter k8s.pod.uid == $pod_uid | filter k8s.pod.name == $pod | filter k8s.cluster.name == $cluster | filter k8s.namespace.name == $namespace | filter service.name == $service_name | filter service.name =~ \".*collector\" | latest | group_by [\"service.name\"], sum;\njoin usage / available * 100, usage=0, available=1"
+        query_string = "with\n  usage = metric k8s.pod.memory.usage | filter k8s.pod.uid == $pod_uid | filter k8s.pod.name == $pod | filter k8s.cluster.name == $cluster | filter k8s.namespace.name == $namespace | filter service.name == $service_name | filter service.name =~ \".*collector\" | latest | group_by [\"service.name\"], sum;\n  available = metric k8s.pod.memory.available | filter k8s.pod.uid == $pod_uid | filter k8s.pod.name == $pod | filter k8s.cluster.name == $cluster | filter k8s.namespace.name == $namespace | filter service.name == $service_name | filter service.name =~ \".*collector\" | latest | group_by [\"service.name\"], sum;\njoin usage / available * 100.0, usage=0, available=1"
       }
 
       subtitle = ""
@@ -1032,8 +1076,8 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       subtitle = ""
     }
     chart {
-      name        = "Memory Used Per Pool"
-      description = "Distribution of memory used by the pods in each Collector pool"
+      name        = "99% Memory Used Per Pool"
+      description = "99th percentile of memory used by the pods in each collector pool. This shows the upper end of memory usage across the collector pods in a pool in absolute terms."
       type        = "timeseries"
       rank        = 4
       x_pos       = 16
@@ -1043,9 +1087,9 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
 
       query {
         query_name   = "a"
-        display      = "heatmap"
+        display      = "line"
         hidden       = false
-        query_string = "metric k8s.pod.memory.usage | filter k8s.pod.uid == $pod_uid | filter k8s.pod.name == $pod | filter k8s.cluster.name == $cluster | filter k8s.namespace.name == $namespace | filter service.name == $service_name | filter service.name =~ \".*collector\" | latest 1m | group_by [\"service.name\"], distribution"
+        query_string = "metric k8s.pod.memory.usage | filter k8s.pod.uid == $pod_uid | filter k8s.pod.name == $pod | filter k8s.cluster.name == $cluster | filter k8s.namespace.name == $namespace | filter service.name == $service_name | filter service.name =~ \".*collector\" | latest 1m | group_by [\"service.name\"], distribution | point percentile(value, 99.0)"
       }
 
       subtitle = ""
@@ -1076,7 +1120,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       y_pos  = 0
       width  = 48
       height = 5
-      text   = "Examine CPU and memory utilization, if you see extended CPU or memory utilization coinciding with container restarts it may indicate a scaling issue. Other symptoms may include dropped telemetry. \n\nIf data is frequently refused due to memory limits, consider scaling up. For more information on scaling see: https://docs.lightstep.com/docs/kubernetes-collector-tracing-scaling "
+      text   = "Examine CPU and memory utilization. CPU or memory utilization approaching their capacity limits or coinciding with container restarts may indicate a scaling issue. Other symptoms may include dropped telemetry. \n\nIf data is frequently refused due to memory limits, consider scaling up. For more information on scaling see: https://docs.lightstep.com/docs/kubernetes-collector-tracing-scaling "
     }
   }
   group {
