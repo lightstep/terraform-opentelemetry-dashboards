@@ -1403,4 +1403,8 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
     key   = ""
     value = "otel"
   }
+  label {
+    key   = ""
+    value = "recommended"
+  }
 }
