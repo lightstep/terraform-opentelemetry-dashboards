@@ -621,7 +621,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
     }
     chart {
       name        = "Dropped Log Records"
-      description = "Number of Logs that were dropped"
+      description = "Number of logs that were dropped"
       type        = "timeseries"
       rank        = 2
       x_pos       = 32
