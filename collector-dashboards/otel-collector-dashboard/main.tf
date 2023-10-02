@@ -307,7 +307,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       subtitle = ""
     }
     chart {
-      name        = "Total Pods Per Pool"
+      name        = "Number Of Pods Per Pool"
       description = "Count Of total Kubernetes pods per pool"
       type        = "timeseries"
       rank        = 6
