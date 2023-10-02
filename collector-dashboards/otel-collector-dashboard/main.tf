@@ -265,7 +265,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
     }
     chart {
       name        = "Telemetry Failures By Exporter"
-      description = "The rate in which metric points, spans, and log records failed to be added to the collector queues for sending to a destination including CloudObs"
+      description = "The rate in which metric points, spans, and log records failed to be sent to a destination including CloudObs"
       type        = "timeseries"
       rank        = 5
       x_pos       = 32
@@ -303,12 +303,29 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
         hidden       = false
         query_string = "metric otelcol_exporter_enqueue_failed_log_records | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [\"exporter\"], sum"
       }
-
+      query {
+        query_name   = "f"
+        display      = "line"
+        hidden       = false
+        query_string = "metric otelcol_exporter_send_failed_spans | filter (((((\"k8s.pod.name\" == $pod) && (\"k8s.pod.uid\" == $pod_uid)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [], sum"
+      }
+      query {
+        query_name   = "g"
+        display      = "line"
+        hidden       = false
+        query_string = "metric otelcol_exporter_send_failed_metric_points | filter (((((\"k8s.pod.name\" == $pod) && (\"k8s.pod.uid\" == $pod_uid)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [], sum"
+      }
+      query {
+        query_name   = "h"
+        display      = "line"
+        hidden       = false
+        query_string = "metric otelcol_exporter_send_failed_log_records | filter (((((\"k8s.pod.name\" == $pod) && (\"k8s.pod.uid\" == $pod_uid)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [], sum"
+      }
       subtitle = ""
     }
     chart {
-      name        = "Number Of Pods Per Pool"
-      description = "Count Of total Kubernetes pods per pool"
+      name        = "Number of Pods Per Pool"
+      description = "Count of total Kubernetes pods per pool"
       type        = "timeseries"
       rank        = 6
       x_pos       = 0
@@ -327,7 +344,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
     }
     chart {
       name        = "Total Pods Per Pool"
-      description = "Count Of total Kubernetes pods per pool"
+      description = "Count of total Kubernetes pods per pool"
       type        = "timeseries"
       rank        = 7
       x_pos       = 16
@@ -346,7 +363,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
     }
     chart {
       name        = "Pods In An Unhealthy Phase"
-      description = "Count Of pods in the Failed or Unknown phase. If the chart has \"No data reported\", this likely means there has not been a pod in an unhealthy phase so far."
+      description = "Count of pods in the Failed or Unknown phase. If the chart has \"No data reported\", this likely means there has not been a pod in an unhealthy phase so far."
       type        = "timeseries"
       rank        = 8
       x_pos       = 32
@@ -370,7 +387,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       y_pos  = 0
       width  = 48
       height = 6
-      text   = "This dashboard monitors the health Of your [OpenTelemetry Collectors](https://opentelemetry.io/docs/collector/) that are running in Kubernetes. For more on Collectors, see https://docs.lightstep.com/docs/collector-home-page\n\nUse template variables to filter to collector pools and individual collector instances. Filter to a specific collector pool with the `$service.name` template variable. Collector pools running in k8s have a service name that ends with \"collector\"\n\nIf the charts indicate \"No Data Reported\" you may not be sending metrics for that chart."
+      text   = "This dashboard monitors the health of your [OpenTelemetry Collectors](https://opentelemetry.io/docs/collector/) that are running in Kubernetes. For more on Collectors, see https://docs.lightstep.com/docs/collector-home-page\n\nUse template variables to filter to collector pools and individual collector instances. Filter to a specific collector pool with the `$service.name` template variable. Collector pools running in k8s have a service name that ends with \"collector\"\n\nIf the charts indicate \"No Data Reported\" you may not be sending metrics for that chart."
     }
   }
   group {
@@ -379,8 +396,8 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
     visibility_type = "explicit"
 
     chart {
-      name        = "Rate Of Accepted Metric Points"
-      description = "Rate Of metrics that were successfully reported to collectors vs refused by the collector"
+      name        = "Rate of Accepted Metric Points"
+      description = "Rate of metrics that were successfully reported to collectors vs refused by the collector"
       type        = "timeseries"
       rank        = 0
       x_pos       = 0
@@ -398,8 +415,8 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       subtitle = ""
     }
     chart {
-      name        = "Rate Of Accepted Spans"
-      description = "Rate Of spans successfully pushed into the pipeline"
+      name        = "Rate of Accepted Spans"
+      description = "Rate of spans successfully pushed into the pipeline"
       type        = "timeseries"
       rank        = 1
       x_pos       = 16
@@ -417,8 +434,8 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       subtitle = ""
     }
     chart {
-      name        = "Rate Of Accepted Log Records"
-      description = "Rate Of log records successfully pushed into the pipeline"
+      name        = "Rate of Accepted Log Records"
+      description = "Rate of log records successfully pushed into the pipeline"
       type        = "timeseries"
       rank        = 2
       x_pos       = 32
@@ -436,8 +453,8 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       subtitle = ""
     }
     chart {
-      name        = "Rate Of Refused Metric Points"
-      description = "Rate Of metric points that were not pushed into the pipeline"
+      name        = "Rate of Refused Metric Points"
+      description = "Rate of metric points that were not pushed into the pipeline"
       type        = "timeseries"
       rank        = 3
       x_pos       = 0
@@ -455,8 +472,8 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       subtitle = ""
     }
     chart {
-      name        = "Rate Of Refused Spans"
-      description = "Rate Of spans that could not be pushed into the pipeline"
+      name        = "Rate of Refused Spans"
+      description = "Rate of spans that could not be pushed into the pipeline"
       type        = "timeseries"
       rank        = 4
       x_pos       = 16
@@ -474,8 +491,8 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       subtitle = ""
     }
     chart {
-      name        = "Rate Of Log Records Refused"
-      description = "Rate Of log records that could not be pushed into the pipeline"
+      name        = "Rate of Refused Log Records"
+      description = "Rate of log records that could not be pushed into the pipeline"
       type        = "timeseries"
       rank        = 5
       x_pos       = 32
@@ -493,8 +510,8 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       subtitle = ""
     }
     chart {
-      name        = "Rate Of Scraped Metric Points"
-      description = "Rate Of Metric Points Successfully Scraped. These may include prometheus scraped metrics: https://opentelemetry.io/docs/collector/scaling/#scaling-the-scrapers"
+      name        = "Rate of Scraped Metric Points"
+      description = "Rate of Metric Points Successfully Scraped. These may include prometheus scraped metrics: https://opentelemetry.io/docs/collector/scaling/#scaling-the-scrapers"
       type        = "timeseries"
       rank        = 6
       x_pos       = 0
@@ -512,8 +529,8 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       subtitle = ""
     }
     chart {
-      name        = "Rate Of Errored Scraper Metric Points"
-      description = "Rate Of metric points that were unable to be scraped. These may include prometheus scraped metrics: https://opentelemetry.io/docs/collector/scaling/#scaling-the-scrapers"
+      name        = "Rate of Errored Scraper Metric Points"
+      description = "Rate of metric points that were unable to be scraped. These may include prometheus scraped metrics: https://opentelemetry.io/docs/collector/scaling/#scaling-the-scrapers"
       type        = "timeseries"
       rank        = 7
       x_pos       = 16
@@ -532,7 +549,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
     }
     chart {
       name        = "Metric Points Scrape Error Rate [%]"
-      description = "The error rate Of scraping metric points per collector pool. These may include prometheus scraped metrics: https://opentelemetry.io/docs/collector/scaling/#scaling-the-scrapers"
+      description = "The error rate of scraping metric points per collector pool. These may include prometheus scraped metrics: https://opentelemetry.io/docs/collector/scaling/#scaling-the-scrapers"
       type        = "timeseries"
       rank        = 8
       x_pos       = 32
@@ -556,7 +573,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       y_pos  = 0
       width  = 48
       height = 6
-      text   = "Monitor the state Of your Collector [Receivers](https://github.com/open-telemetry/opentelemetry-collector/blob/main/receiver/README.md) that accept or scrape telemetry data for collection.\n\nSome receivers like the [_hostmetrics_](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/hostmetricsreceiver/README.md) and [_prometheus_](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/prometheusreceiver/README.md) receivers actively obtain telemetry data to place in the collection pipeline. The prometheus receiver can hit scaling issues if there are, say, thousands Of prometheus endpoints to scrape. For guidance on scaling and sharding scrapers, see https://opentelemetry.io/docs/collector/scaling/#scaling-the-scrapers\n\nFor all other information on scaling the receiver, see https://opentelemetry.io/docs/collector/scaling/#how-to-scale"
+      text   = "Monitor the state of your Collector [Receivers](https://github.com/open-telemetry/opentelemetry-collector/blob/main/receiver/README.md) that accept or scrape telemetry data for collection.\n\nSome receivers like the [_hostmetrics_](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/hostmetricsreceiver/README.md) and [_prometheus_](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/prometheusreceiver/README.md) receivers actively obtain telemetry data to place in the collection pipeline. The prometheus receiver can hit scaling issues if there are, say, thousands of prometheus endpoints to scrape. For guidance on scaling and sharding scrapers, see https://opentelemetry.io/docs/collector/scaling/#scaling-the-scrapers\n\nFor all other information on scaling the receiver, see https://opentelemetry.io/docs/collector/scaling/#how-to-scale"
     }
   }
   group {
@@ -566,7 +583,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
 
     chart {
       name        = "Dropped Metric Points"
-      description = "Number Of metric points that were dropped"
+      description = "Number of metric points that were dropped"
       type        = "timeseries"
       rank        = 0
       x_pos       = 0
@@ -585,7 +602,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
     }
     chart {
       name        = "Dropped Spans"
-      description = "Number Of metric points that were dropped"
+      description = "Number of spans that were dropped"
       type        = "timeseries"
       rank        = 1
       x_pos       = 16
@@ -603,8 +620,8 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       subtitle = ""
     }
     chart {
-      name        = "Dropped Logs Records"
-      description = "Number Of Logs that were dropped"
+      name        = "Dropped Log Records"
+      description = "Number of logs that were dropped"
       type        = "timeseries"
       rank        = 2
       x_pos       = 32
@@ -622,8 +639,8 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       subtitle = ""
     }
     chart {
-      name        = "Rate Of Refused Metric Points"
-      description = "Number Of metric points that were rejected by the next component in the pipeline"
+      name        = "Rate of Refused Metric Points"
+      description = "Number of metric points that were rejected by the next component in the pipeline"
       type        = "timeseries"
       rank        = 3
       x_pos       = 0
@@ -641,8 +658,8 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       subtitle = ""
     }
     chart {
-      name        = "Rate Of Refused Spans"
-      description = "Number Of Spans that were rejected by the next component in the pipeline."
+      name        = "Rate of Refused Spans"
+      description = "Number of Spans that were rejected by the next component in the pipeline."
       type        = "timeseries"
       rank        = 4
       x_pos       = 16
@@ -660,8 +677,8 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       subtitle = ""
     }
     chart {
-      name        = "Rate Of Refused Log Records"
-      description = "Number Of log records that were rejected by the next component in the pipeline."
+      name        = "Rate of Refused Log Records"
+      description = "Number of log records that were rejected by the next component in the pipeline."
       type        = "timeseries"
       rank        = 5
       x_pos       = 32
@@ -679,8 +696,8 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       subtitle = ""
     }
     chart {
-      name        = "Rate Of Accepted Metric Points"
-      description = "Number Of metric points successfully pushed into the next component in the pipeline."
+      name        = "Rate of Accepted Metric Points"
+      description = "Number of metric points successfully pushed into the next component in the pipeline."
       type        = "timeseries"
       rank        = 6
       x_pos       = 0
@@ -698,8 +715,8 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       subtitle = ""
     }
     chart {
-      name        = "Rate Of Accepted Spans"
-      description = "Number Of spans successfully pushed into the next component in the pipeline"
+      name        = "Rate of Accepted Spans"
+      description = "Number of spans successfully pushed into the next component in the pipeline"
       type        = "timeseries"
       rank        = 7
       x_pos       = 16
@@ -717,8 +734,8 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       subtitle = ""
     }
     chart {
-      name        = "Rate Of Accepted Log Records"
-      description = "Number Of logs successfully pushed into the next component in the pipeline."
+      name        = "Rate of Accepted Log Records"
+      description = "Number of logs successfully pushed into the next component in the pipeline."
       type        = "timeseries"
       rank        = 8
       x_pos       = 32
@@ -737,7 +754,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
     }
     chart {
       name        = "99% Processor Batch Send Size"
-      description = " 99th percentile Of the size Of batches (in count Of metric points, spans, or logs) in the [batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md). This shows the upper end Of batch payloads in count Of items that will be exported. The batch processor accepts spans, metrics, or logs to better compress the data and send it over fewer outgoing connections."
+      description = " 99th percentile of the size of batches (in count of metric points, spans, or logs) in the [batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md). This shows the upper end of batch payloads in count of items that will be exported. The batch processor accepts spans, metrics, or logs to better compress the data and send it over fewer outgoing connections."
       type        = "timeseries"
       rank        = 9
       x_pos       = 0
@@ -756,7 +773,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
     }
     chart {
       name        = "99% Processor Batch Send Size in Bytes"
-      description = "99th percentile Of the size Of batches (in bytes) in the [batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md). This shows the upper end Of batch payloads in byte size that will be exported. The batch processor accepts spans, metrics, or logs to better compress the data and send it over fewer outgoing connections."
+      description = "99th percentile of the size of batches (in bytes) in the [batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md). This shows the upper end of batch payloads in byte size that will be exported. The batch processor accepts spans, metrics, or logs to better compress the data and send it over fewer outgoing connections."
       type        = "timeseries"
       rank        = 10
       x_pos       = 16
@@ -805,7 +822,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       y_pos  = 0
       width  = 48
       height = 6
-      text   = "Monitor the state Of your Collector [Processors](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/README.md) that operate on received telemetry before it is exported. Processors are optional components, and if your collectors do not include any processors, these charts will be empty.\n\nIn the case Of the [_memory_limiter_](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/memorylimiterprocessor/README.md) processor, new telemetry data will be blocked from passing through the pipeline by the _memory_limiter_, and show up in the Refused Metric Points, Spans, or Log Records charts. If telemetry is regularly refused due to memory limits, you likely need to scale up your cluster.\n\nFor more information, see https://opentelemetry.io/docs/collector/scaling/#when-to-scale "
+      text   = "Monitor the state of your Collector [Processors](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/README.md) that operate on received telemetry before it is exported. Processors are optional components, and if your collectors do not include any processors, these charts will be empty.\n\nIn the case of the [_memory_limiter_](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/memorylimiterprocessor/README.md) processor, new telemetry data will be blocked from passing through the pipeline by the _memory_limiter_, and show up in the Refused Metric Points, Spans, or Log Records charts. If telemetry is regularly refused due to memory limits, you likely need to scale up your cluster.\n\nFor more information, see https://opentelemetry.io/docs/collector/scaling/#when-to-scale "
     }
   }
   group {
@@ -815,7 +832,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
 
     chart {
       name        = "Sent Metric Points"
-      description = "Number Of metric points sent to the destination, including Cloud Observability"
+      description = "Number of metric points sent to the destination, including Cloud Observability"
       type        = "timeseries"
       rank        = 0
       x_pos       = 0
@@ -834,7 +851,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
     }
     chart {
       name        = "Sent Spans"
-      description = "Number Of spans successfully sent to destination, including Cloud Observability"
+      description = "Number of spans successfully sent to destination, including Cloud Observability"
       type        = "timeseries"
       rank        = 1
       x_pos       = 16
@@ -853,7 +870,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
     }
     chart {
       name        = "Sent Log Records"
-      description = "Number Of log records successfully sent to destination, including Cloud Observability"
+      description = "Number of log records successfully sent to destination, including Cloud Observability"
       type        = "timeseries"
       rank        = 2
       x_pos       = 32
@@ -872,7 +889,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
     }
     chart {
       name        = "Failed Enqueue Metric Points"
-      description = "Number Of metric points that failed to be sent to destination, including Cloud Observability"
+      description = "Number of metric points that failed to be sent to destination, including Cloud Observability"
       type        = "timeseries"
       rank        = 3
       x_pos       = 0
@@ -891,7 +908,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
     }
     chart {
       name        = "Failed Enqueue Spans"
-      description = "Number Of spans in failed attempts to send to destination, including Cloud Observability"
+      description = "Number of spans in failed attempts to send to destination, including Cloud Observability"
       type        = "timeseries"
       rank        = 4
       x_pos       = 16
@@ -910,7 +927,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
     }
     chart {
       name        = "Failed Enqueue Log Records"
-      description = "Number Of log records in failed attempts to send to destination, including Cloud Observability"
+      description = "Number of log records in failed attempts to send to destination, including Cloud Observability"
       type        = "timeseries"
       rank        = 5
       x_pos       = 32
@@ -929,7 +946,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
     }
     chart {
       name        = "Collector Exporter Queue Size"
-      description = "Current size Of the retry queue"
+      description = "Current size of the retry queue"
       type        = "timeseries"
       rank        = 6
       x_pos       = 0
@@ -948,7 +965,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
     }
     chart {
       name        = "Queue Capacity (in batches)"
-      description = "Indicates the capacity Of the retry queue (in batches) per collector pool"
+      description = "Indicates the capacity of the retry queue (in batches) per collector pool"
       type        = "timeseries"
       rank        = 7
       x_pos       = 16
@@ -967,7 +984,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
     }
     chart {
       name        = "Queue Usage [%]"
-      description = "Indicates the usage Of the in-memory telemetry exporter queue, relative to queue capacity per collector pool. If the queue usage reaches 100% capacity, the collector will reject data. The collector queues telemetry while waiting for a worker to be ready to send the telemetry"
+      description = "Indicates the usage of the in-memory telemetry exporter queue, relative to queue capacity per collector pool. If the queue usage reaches 100% capacity, the collector will reject data. The collector queues telemetry while waiting for a worker to be ready to send the telemetry"
       type        = "timeseries"
       rank        = 8
       x_pos       = 32
@@ -1048,7 +1065,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       y_pos  = 0
       width  = 48
       height = 5
-      text   = "Monitor the state Of your Collector [Exporters](https://github.com/open-telemetry/opentelemetry-collector/blob/main/exporter/README.md) that send telemetry to CloudObs and any other configured destinations.\n\nCheck the Queue Usage chart to ensure data isn't piling up. The collector will queue data in memory while waiting for a worker to become available to send the data. If there aren’t enough workers or the backend is too slow, data starts piling up in the queue. Increasing the queue size might alleviate pressure on the backend destination in this case.\n\nAn increase in the Failed Spans, Metrics, Logs chart indicates that sending data to the backend failed permanently and further triage is needed.\n"
+      text   = "Monitor the state of your Collector [Exporters](https://github.com/open-telemetry/opentelemetry-collector/blob/main/exporter/README.md) that send telemetry to CloudObs and any other configured destinations.\n\nCheck the Queue Usage chart to ensure data isn't piling up. The collector will queue data in memory while waiting for a worker to become available to send the data. If there aren’t enough workers or the backend is too slow, data starts piling up in the queue. Increasing the queue size might alleviate pressure on the backend destination in this case.\n\nAn increase in the Failed Spans, Metrics, Logs chart indicates that sending data to the backend failed permanently and further triage is needed.\n"
     }
   }
   group {
@@ -1058,7 +1075,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
 
     chart {
       name        = "99% CPU Usage [%]"
-      description = "99th percentile CPU usage Of the pods in each Collector pool"
+      description = "99th percentile CPU usage of the pods in each Collector pool"
       type        = "timeseries"
       rank        = 0
       x_pos       = 0
@@ -1070,14 +1087,14 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
         query_name   = "a"
         display      = "line"
         hidden       = false
-        query_string = "metric k8s.pod.cpu.utilization | filter k8s.pod.uid == $pod_uid | filter k8s.pod.name == $pod | filter k8s.cluster.name == $cluster | filter k8s.namespace.name == $namespace | filter service.name == $service_name | filter service.name =~ \".*collector\" | latest | group_by [\"service.name\"], distribution | point percentile(value, 99.0)"
+        query_string = "metric k8s.pod.cpu.utilization | filter k8s.pod.uid == $pod_uid | filter k8s.pod.name == $pod | filter k8s.cluster.name == $cluster | filter k8s.namespace.name == $namespace | filter service.name == $service_name | filter service.name =~ \".*collector\" | latest | group_by [\"service.name\"], distribution | point percentile(value, 99.0) * 100"
       }
 
       subtitle = ""
     }
     chart {
       name        = "Memory Usage [%]"
-      description = "Percent Of memory used relative to available per collector pool"
+      description = "Percent of memory used relative to available per collector pool"
       type        = "timeseries"
       rank        = 1
       x_pos       = 16
@@ -1096,7 +1113,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
     }
     chart {
       name        = "Network Ingress Bandwidth (bytes/sec)"
-      description = "The bandwidth Of network traffic received by each collector pool"
+      description = "The bandwidth of network traffic received by each collector pool"
       type        = "timeseries"
       rank        = 2
       x_pos       = 32
@@ -1115,7 +1132,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
     }
     chart {
       name        = "Average CPU Usage [%]"
-      description = "Average (arithmetic mean) Of CPU usage Of the pods in each Collector pool"
+      description = "Average (arithmetic mean) of CPU usage of the pods in each Collector pool"
       type        = "timeseries"
       rank        = 3
       x_pos       = 0
@@ -1127,14 +1144,14 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
         query_name   = "a"
         display      = "line"
         hidden       = false
-        query_string = "metric k8s.pod.cpu.utilization | filter k8s.pod.uid == $pod_uid | filter k8s.pod.name == $pod | filter k8s.cluster.name == $cluster | filter k8s.namespace.name == $namespace | filter service.name == $service_name | filter service.name =~ \".*collector\" | latest | group_by [\"service.name\"], distribution | point percentile(value, 50.0)"
+        query_string = "metric k8s.pod.cpu.utilization | filter k8s.pod.uid == $pod_uid | filter k8s.pod.name == $pod | filter k8s.cluster.name == $cluster | filter k8s.namespace.name == $namespace | filter service.name == $service_name | filter service.name =~ \".*collector\" | latest | group_by [\"service.name\"], distribution | point percentile(value, 50.0) * 100"
       }
 
       subtitle = ""
     }
     chart {
       name        = "99% Memory Used Per Pool"
-      description = "99th percentile Of memory used by the pods in each collector pool. This shows the upper end Of memory usage across the collector pods in a pool in absolute terms."
+      description = "99th percentile of memory used by the pods in each collector pool. This shows the upper end of memory usage across the collector pods in a pool in absolute terms."
       type        = "timeseries"
       rank        = 4
       x_pos       = 16
@@ -1153,7 +1170,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
     }
     chart {
       name        = "Network Egress Bandwidth (bytes/sec)"
-      description = "The bandwidth Of network traffic transmitted by each collector pool"
+      description = "The bandwidth of network traffic transmitted by each collector pool"
       type        = "timeseries"
       rank        = 5
       x_pos       = 32
@@ -1187,7 +1204,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
 
     chart {
       name        = "Uptime Per Pod [seconds]"
-      description = "The uptime Of each collector pod, represented in seconds"
+      description = "The uptime of each collector pod, represented in seconds"
       type        = "timeseries"
       rank        = 0
       x_pos       = 0
@@ -1213,7 +1230,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
     }
     chart {
       name        = "Running"
-      description = "Count Of collector pods in the Running phase"
+      description = "Count of collector pods in the Running phase"
       type        = "timeseries"
       rank        = 1
       x_pos       = 16
@@ -1232,7 +1249,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
     }
     chart {
       name        = "Pending"
-      description = "Count Of collector pods in the Pending phase"
+      description = "Count of collector pods in the Pending phase"
       type        = "timeseries"
       rank        = 2
       x_pos       = 32
@@ -1251,7 +1268,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
     }
     chart {
       name        = "Succeeded"
-      description = "Count Of collector pods in the Succeeded phase"
+      description = "Count of collector pods in the Succeeded phase"
       type        = "timeseries"
       rank        = 3
       x_pos       = 16
@@ -1270,7 +1287,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
     }
     chart {
       name        = "Failed"
-      description = "Count Of collector pods in the Failed phase"
+      description = "Count of collector pods in the Failed phase"
       type        = "timeseries"
       rank        = 4
       x_pos       = 32
@@ -1289,7 +1306,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
     }
     chart {
       name        = "Collector Pod Start Time"
-      description = "The start time Of each collector pod represented in UTC"
+      description = "The start time of each collector pod represented in UTC"
       type        = "timeseries"
       rank        = 5
       x_pos       = 0
@@ -1315,7 +1332,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
     }
     chart {
       name        = "Unknown"
-      description = "Count Of collector pods in the Unknown phase"
+      description = "Count of collector pods in the Unknown phase"
       type        = "timeseries"
       rank        = 6
       x_pos       = 16
@@ -1334,7 +1351,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
     }
     chart {
       name        = "Collectors By Pod Phase"
-      description = "The overall breakdown in percent Of collector pods in terms Of phase"
+      description = "The overall breakdown in percent of collector pods in terms of phase"
       type        = "timeseries"
       rank        = 7
       x_pos       = 32
