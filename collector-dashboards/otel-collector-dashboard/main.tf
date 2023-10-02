@@ -303,7 +303,24 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
         hidden       = false
         query_string = "metric otelcol_exporter_enqueue_failed_log_records | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [\"exporter\"], sum"
       }
-
+      query {
+        query_name   = "f"
+        display      = "line"
+        hidden       = false
+        query_string = "metric otelcol_exporter_send_failed_spans | filter (((((\"k8s.pod.name\" == $pod) && (\"k8s.pod.uid\" == $pod_uid)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [], sum"
+      }
+      query {
+        query_name   = "g"
+        display      = "line"
+        hidden       = false
+        query_string = "metric otelcol_exporter_send_failed_metric_points | filter (((((\"k8s.pod.name\" == $pod) && (\"k8s.pod.uid\" == $pod_uid)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [], sum"
+      }
+      query {
+        query_name   = "h"
+        display      = "line"
+        hidden       = false
+        query_string = "metric otelcol_exporter_send_failed_log_records | filter (((((\"k8s.pod.name\" == $pod) && (\"k8s.pod.uid\" == $pod_uid)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [], sum"
+      }
       subtitle = ""
     }
     chart {
@@ -474,7 +491,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       subtitle = ""
     }
     chart {
-      name        = "Rate Of Log Records Refused"
+      name        = "Rate Of Refused Log Records"
       description = "Rate Of log records that could not be pushed into the pipeline"
       type        = "timeseries"
       rank        = 5
@@ -585,7 +602,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
     }
     chart {
       name        = "Dropped Spans"
-      description = "Number Of metric points that were dropped"
+      description = "Number Of spans that were dropped"
       type        = "timeseries"
       rank        = 1
       x_pos       = 16
@@ -1070,7 +1087,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
         query_name   = "a"
         display      = "line"
         hidden       = false
-        query_string = "metric k8s.pod.cpu.utilization | filter k8s.pod.uid == $pod_uid | filter k8s.pod.name == $pod | filter k8s.cluster.name == $cluster | filter k8s.namespace.name == $namespace | filter service.name == $service_name | filter service.name =~ \".*collector\" | latest | group_by [\"service.name\"], distribution | point percentile(value, 99.0)"
+        query_string = "metric k8s.pod.cpu.utilization | filter k8s.pod.uid == $pod_uid | filter k8s.pod.name == $pod | filter k8s.cluster.name == $cluster | filter k8s.namespace.name == $namespace | filter service.name == $service_name | filter service.name =~ \".*collector\" | latest | group_by [\"service.name\"], distribution | point percentile(value, 99.0) * 100"
       }
 
       subtitle = ""
@@ -1127,7 +1144,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
         query_name   = "a"
         display      = "line"
         hidden       = false
-        query_string = "metric k8s.pod.cpu.utilization | filter k8s.pod.uid == $pod_uid | filter k8s.pod.name == $pod | filter k8s.cluster.name == $cluster | filter k8s.namespace.name == $namespace | filter service.name == $service_name | filter service.name =~ \".*collector\" | latest | group_by [\"service.name\"], distribution | point percentile(value, 50.0)"
+        query_string = "metric k8s.pod.cpu.utilization | filter k8s.pod.uid == $pod_uid | filter k8s.pod.name == $pod | filter k8s.cluster.name == $cluster | filter k8s.namespace.name == $namespace | filter service.name == $service_name | filter service.name =~ \".*collector\" | latest | group_by [\"service.name\"], distribution | point percentile(value, 50.0) * 100"
       }
 
       subtitle = ""
