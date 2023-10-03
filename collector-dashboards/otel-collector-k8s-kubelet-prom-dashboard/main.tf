@@ -10,7 +10,7 @@ terraform {
 
 resource "lightstep_dashboard" "k8s_kubelet_dashboard" {
   project_name          = var.lightstep_project
-  dashboard_name        = "K8S Kubelet (prometheus)"
+  dashboard_name        = "K8S Kubelet (Prometheus)"
   dashboard_description = "Monitor your K8S Kubelets with this overview dashboard where charts are powered by `kubelet_*` [metrics from Kubernetes](https://kubernetes.io/docs/reference/instrumentation/metrics/) that expose the metric data in Prometheus format."
 
   chart {

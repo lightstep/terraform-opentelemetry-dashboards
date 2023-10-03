@@ -10,8 +10,8 @@ terraform {
 
 resource "lightstep_dashboard" "host_metrics_prom_dashboard" {
   project_name          = var.lightstep_project
-  dashboard_name        = "Host Metrics (prometheus)"
-  dashboard_description = "Monitor hosts such as [Kubernetes nodes](https://kubernetes.io/docs/concepts/architecture/nodes/) with metrics from the Prometheus [**Node Exporter**](https://prometheus.io/docs/guides/node-exporter/).\n\nThe queries for these charts expect prometheus metric names. For a native OpenTelemetry solution, collect metrics with the OpenTelemetry [hostmetricsreceiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/hostmetricsreceiver) and use the CloudObs prebuilt Host Metrics dashboard."
+  dashboard_name        = "Host Metrics (Prometheus)"
+  dashboard_description = "Monitor hosts such as [Kubernetes nodes](https://kubernetes.io/docs/concepts/architecture/nodes/) with metrics from the Prometheus [**Node Exporter**](https://prometheus.io/docs/guides/node-exporter/).\n\nThe queries for these charts expect prometheus metric names. For a native OpenTelemetry solution, collect metrics with the OpenTelemetry [hostmetricsreceiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/hostmetricsreceiver) and use the prebuilt Host Metrics dashboard."
 
   chart {
     name = "Load Average"
