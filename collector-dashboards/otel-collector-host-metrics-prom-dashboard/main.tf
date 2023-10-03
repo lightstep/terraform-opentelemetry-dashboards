@@ -8,10 +8,10 @@ terraform {
   required_version = ">= v1.0.11"
 }
 
-resource "lightstep_dashboard" "k8s_node_exporter_dashboard" {
+resource "lightstep_dashboard" "host_metrics_prom_dashboard" {
   project_name          = var.lightstep_project
-  dashboard_name        = "Node Exporter"
-  dashboard_description = "Monitor your K8S nodes using this overview dashboard with Node Exporter."
+  dashboard_name        = "Host Metrics (Prometheus)"
+  dashboard_description = "Monitor hosts such as [Kubernetes nodes](https://kubernetes.io/docs/concepts/architecture/nodes/) with metrics from the Prometheus [**Node Exporter**](https://prometheus.io/docs/guides/node-exporter/).\n\nThe queries for these charts expect prometheus metric names. For a native OpenTelemetry solution, collect metrics with the OpenTelemetry [hostmetricsreceiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/hostmetricsreceiver) and use the prebuilt Host Metrics dashboard."
 
   chart {
     name = "Load Average"
@@ -258,5 +258,10 @@ EOT
     name                     = "service_name"
     default_values           = []
     suggestion_attribute_key = "service.name"
+  }
+
+  label {
+    key   = ""
+    value = "prometheus"
   }
 }
