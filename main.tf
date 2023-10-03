@@ -14,6 +14,11 @@ provider "lightstep" {
   environment     = var.lightstep_env
 }
 
+module "lightstep_otel_collector_activedirectorydsreceiver_dashboard" {
+  source            = "./collector-dashboards/otel-collector-activedirectorydsreceiver-dashboard"
+  lightstep_project = var.lightstep_project
+}
+
 module "lightstep_otel_collector_activemqreceiver_dashboard" {
   source            = "./collector-dashboards/otel-collector-activemqreceiver-dashboard"
   lightstep_project = var.lightstep_project
@@ -29,8 +34,8 @@ module "lightstep_otel_collector_apachereceiver_dashboard" {
   lightstep_project = var.lightstep_project
 }
 
-module "lightstep_otel_collector_arangodb_promreceiver_dashboard" {
-  source            = "./collector-dashboards/otel-collector-arangodb-promreceiver-dashboard"
+module "lightstep_otel_collector_arangodb" {
+  source            = "./collector-dashboards/otel-collector-arangodb"
   lightstep_project = var.lightstep_project
 }
 
@@ -139,6 +144,11 @@ module "lightstep_otel_collector_hostmetrics_disk_dashboard" {
   lightstep_project = var.lightstep_project
 }
 
+module "lightstep_otel_collector_hostmetrics_memory_dashboard" {
+  source            = "./collector-dashboards/otel-collector-hostmetrics-memory-dashboard"
+  lightstep_project = var.lightstep_project
+}
+
 module "lightstep_otel_collector_hostmetrics_paging_dashboard" {
   source            = "./collector-dashboards/otel-collector-hostmetrics-paging-dashboard"
   lightstep_project = var.lightstep_project
@@ -159,8 +169,8 @@ module "lightstep_otel_collector_iisreceiver_dashboard" {
   lightstep_project = var.lightstep_project
 }
 
-module "lightstep_otel_collector_jbosswildfly_prom_receiver_dashboard" {
-  source            = "./collector-dashboards/otel-collector-jbosswildfly-prom-receiver-dashboard"
+module "lightstep_otel_collector_jbosswildfly" {
+  source            = "./collector-dashboards/otel-collector-jbosswildfly"
   lightstep_project = var.lightstep_project
 }
 
@@ -179,8 +189,28 @@ module "lightstep_otel_collector_kafka_dashboard" {
   lightstep_project = var.lightstep_project
 }
 
+module "lightstep_otel_collector_kafkametricsreceiver_dashboard" {
+  source            = "./collector-dashboards/otel-collector-kafkametricsreceiver-dashboard"
+  lightstep_project = var.lightstep_project
+}
+
 module "lightstep_otel_collector_kubeletstatsreceiver_dashboard" {
   source            = "./collector-dashboards/otel-collector-kubeletstatsreceiver-dashboard"
+  lightstep_project = var.lightstep_project
+}
+
+module "lightstep_otel_collector_kubernetes_application_dashboard" {
+  source            = "./collector-dashboards/otel-collector-kubernetes-application-dashboard"
+  lightstep_project = var.lightstep_project
+}
+
+module "lightstep_otel_collector_kubernetes_comprehensive_dashboard" {
+  source            = "./collector-dashboards/otel-collector-kubernetes-comprehensive-dashboard"
+  lightstep_project = var.lightstep_project
+}
+
+module "lightstep_otel_collector_kubernetes_dashboard" {
+  source            = "./collector-dashboards/otel-collector-kubernetes-dashboard"
   lightstep_project = var.lightstep_project
 }
 
@@ -191,6 +221,11 @@ module "lightstep_otel_collector_memcachedreceiver_dashboard" {
 
 module "lightstep_otel_collector_minio_dashboard" {
   source            = "./collector-dashboards/otel-collector-minio-dashboard"
+  lightstep_project = var.lightstep_project
+}
+
+module "lightstep_otel_collector_mongodbatlasreceiver_dashboard" {
+  source            = "./collector-dashboards/otel-collector-mongodbatlasreceiver-dashboard"
   lightstep_project = var.lightstep_project
 }
 
@@ -234,6 +269,11 @@ module "lightstep_otel_collector_redisreceiver_dashboard" {
   lightstep_project = var.lightstep_project
 }
 
+module "lightstep_otel_collector_riakreceiver_dashboard" {
+  source            = "./collector-dashboards/otel-collector-riakreceiver-dashboard"
+  lightstep_project = var.lightstep_project
+}
+
 module "lightstep_otel_collector_snmp_dashboard" {
   source            = "./collector-dashboards/otel-collector-snmp-dashboard"
   lightstep_project = var.lightstep_project
@@ -241,6 +281,11 @@ module "lightstep_otel_collector_snmp_dashboard" {
 
 module "lightstep_otel_collector_solr_dashboard" {
   source            = "./collector-dashboards/otel-collector-solr-dashboard"
+  lightstep_project = var.lightstep_project
+}
+
+module "lightstep_otel_collector_sqlserverreceiver_dashboard" {
+  source            = "./collector-dashboards/otel-collector-sqlserverreceiver-dashboard"
   lightstep_project = var.lightstep_project
 }
 

@@ -5,6 +5,7 @@ terraform {
       version = "~> 1.79.0"
     }
   }
+  required_version = ">= v1.0.11"
 }
 
 variable "cloud_observability_project" {
@@ -28,16 +29,16 @@ provider "lightstep" {
 }
 
 module "lightstep_k8s_kubelet_dashboard" {
-  source                      = "github.com/lightstep/terraform-opentelemetry-dashboards//collector-dashboards/otel-collector-k8s-kubelet-prom-dashboard?ref=main"
+  source                      = "github.com/lightstep/terraform-opentelemetry-dashboards//collector-dashboards/otel-collector-k8s-kubelet-prom-dashboard?ref=v1.76.0-20230606"
   cloud_observability_project = var.cloud_observability_project
 }
 
 module "lightstep_k8s_node_exporter_dashboard" {
-  source                      = "github.com/lightstep/terraform-opentelemetry-dashboards//collector-dashboards/otel-collector-k8s-node-exporter-prom-dashboard?ref=main"
+  source                      = "github.com/lightstep/terraform-opentelemetry-dashboards//collector-dashboards/otel-collector-k8s-node-exporter-prom-dashboard?ref=v1.76.0-20230606"
   cloud_observability_project = var.cloud_observability_project
 }
 
 module "lightstep_k8s_pod_resources_dashboard" {
-  source                      = "github.com/lightstep/terraform-opentelemetry-dashboards//collector-dashboards/otel-collector-k8s-pod-resources-prom-dashboard?ref=main"
+  source                      = "github.com/lightstep/terraform-opentelemetry-dashboards//collector-dashboards/otel-collector-k8s-pod-resources-prom-dashboard?ref=v1.76.0-20230606"
   cloud_observability_project = var.cloud_observability_project
 }
