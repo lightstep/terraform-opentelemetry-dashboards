@@ -10,8 +10,8 @@ terraform {
 
 resource "lightstep_dashboard" "k8s_resources_pod_dashboard" {
   project_name          = var.lightstep_project
-  dashboard_name        = "Kubernetes Resources - Pod"
-  dashboard_description = "Monitor K8S Pod Resources with this overview dashboard."
+  dashboard_name        = "Kubernetes Resources - Pods (prometheus)"
+  dashboard_description = "Monitor K8S Pod Resources with this overview dashboard where charts are powered by Prometheus format metrics exposed by the [kube-state-metrics](https://github.com/kubernetes/kube-state-metrics) agent."
 
   chart {
     name = "Pods Containers Running"
@@ -194,5 +194,10 @@ EOT
     name                     = "container"
     default_values           = []
     suggestion_attribute_key = "container"
+  }
+
+  label {
+    key   = ""
+    value = "prometheus"
   }
 }

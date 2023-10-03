@@ -124,6 +124,11 @@ module "lightstep_otel_collector_host_dashboard" {
   lightstep_project = var.lightstep_project
 }
 
+module "lightstep_otel_collector_host_metrics_prom_dashboard" {
+  source            = "./collector-dashboards/otel-collector-host-metrics-prom-dashboard"
+  lightstep_project = var.lightstep_project
+}
+
 module "lightstep_otel_collector_hostmetrics_cpu_dashboard" {
   source            = "./collector-dashboards/otel-collector-hostmetrics-cpu-dashboard"
   lightstep_project = var.lightstep_project
@@ -161,11 +166,6 @@ module "lightstep_otel_collector_jbosswildfly_prom_receiver_dashboard" {
 
 module "lightstep_otel_collector_k8s_kubelet_prom_dashboard" {
   source            = "./collector-dashboards/otel-collector-k8s-kubelet-prom-dashboard"
-  lightstep_project = var.lightstep_project
-}
-
-module "lightstep_otel_collector_k8s_node_exporter_prom_dashboard" {
-  source            = "./collector-dashboards/otel-collector-k8s-node-exporter-prom-dashboard"
   lightstep_project = var.lightstep_project
 }
 
