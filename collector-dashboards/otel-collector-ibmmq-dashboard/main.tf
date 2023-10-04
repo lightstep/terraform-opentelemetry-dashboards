@@ -87,7 +87,7 @@ EOT
   }
 
   chart {
-    name = "CPU Time Estimate for Queue Manager Percentage"
+    name = "User CPU Time Estimate for Queue Manager Percentage"
     rank = "5"
     type = "timeseries"
 
@@ -101,7 +101,7 @@ EOT
   }
 
   chart {
-    name = "CPU Time Estimate for Queue Manager Percentage"
+    name = "Used Memory By Trace File in Bytes"
     rank = "6"
     type = "timeseries"
 
@@ -115,7 +115,7 @@ EOT
   }
 
   chart {
-    name = "CPU Time Estimate for Queue Manager Percentage"
+    name = "Memory Available For Trace File Percentage"
     rank = "7"
     type = "timeseries"
 
@@ -129,7 +129,7 @@ EOT
   }
 
   chart {
-    name = "CPU Time Estimate for Queue Manager Percentage"
+    name = "Topic Put In Bytes"
     rank = "8"
     type = "timeseries"
 
@@ -143,7 +143,7 @@ EOT
   }
 
   chart {
-    name = "CPU Time Estimate for Queue Manager Percentage"
+    name = "Topic Queue Manager Put"
     rank = "9"
     type = "timeseries"
 
@@ -157,7 +157,7 @@ EOT
   }
 
   chart {
-    name = "CPU Time Estimate for Queue Manager Percentage"
+    name = "CPU Time Estimate Percentage"
     rank = "10"
     type = "timeseries"
 
@@ -171,7 +171,7 @@ EOT
   }
 
   chart {
-    name = "CPU Time Estimate for Queue Manager Percentage"
+    name = "System CPU Time Estimate for Queue Manager Percentage"
     rank = "11"
     type = "timeseries"
 
@@ -243,20 +243,6 @@ EOT
   chart {
     name = "Queue Manager Purged Queue Count"
     rank = "16"
-    type = "timeseries"
-
-    query {
-      query_name   = "a"
-      display      = "line"
-      hidden       = false
-      query_string = "metric ibmmq_qmgr_purged_queue | rate | group_by [], sum"
-    }
-
-  }
-
-  chart {
-    name = "Queue Manager Purged Queue Count"
-    rank = "17"
     type = "timeseries"
 
     query {
