@@ -124,6 +124,11 @@ module "lightstep_otel_collector_host_dashboard" {
   lightstep_project = var.lightstep_project
 }
 
+module "lightstep_otel_collector_host_metrics_dashboard" {
+  source            = "./collector-dashboards/otel-collector-host-metrics-dashboard"
+  lightstep_project = var.lightstep_project
+}
+
 module "lightstep_otel_collector_host_metrics_prom_dashboard" {
   source            = "./collector-dashboards/otel-collector-host-metrics-prom-dashboard"
   lightstep_project = var.lightstep_project
