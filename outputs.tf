@@ -44,11 +44,6 @@ output "lightstep_otel_collector_cockroachdb_dashboard_url" {
   description = "Cloud Observability OpenTelemetry CockroachDB - Overview Dashboard"
 }
 
-output "lightstep_otel_collector_couchbasereceiver_dashboard_url" {
-  value       = module.lightstep_otel_collector_couchbasereceiver_dashboard.dashboard_url
-  description = "Cloud Observability OpenTelemetry couchbasereceiver Integration Dashboard"
-}
-
 output "lightstep_otel_collector_couchdbreceiver_dashboard_url" {
   value       = module.lightstep_otel_collector_couchdbreceiver_dashboard.dashboard_url
   description = "Cloud Observability OpenTelemetry CouchDB Receiver Dashboard"
@@ -192,7 +187,7 @@ output "lightstep_otel_collector_kubernetes_application_dashboard_url" {
 /*
 output "lightstep_otel_collector_kubernetes_comprehensive_dashboard_url" {
   value       = module.lightstep_otel_collector_kubernetes_comprehensive_dashboard.dashboard_url
-  description = "Cloud Observability OpenTelemetry Collector Comprehensive Kubernetes Dashboard "
+  description = "Cloud Observability OpenTelemetry Collector Comprehensive Kubernetes Dashboard"
 }
 
 output "lightstep_otel_collector_kubernetes_dashboard_url" {
