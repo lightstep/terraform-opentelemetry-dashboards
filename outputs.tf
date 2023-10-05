@@ -248,7 +248,7 @@ output "lightstep_otel_collector_powerdns_dashboard_url" {
 
 output "lightstep_otel_collector_rabbitmqreceiver_dashboard_url" {
   value       = module.lightstep_otel_collector_rabbitmqreceiver_dashboard.dashboard_url
-  description = "Cloud Observability OpenTelemetry RabbitMQ Dashboard"
+  description = "Cloud Observability OpenTelemetry RabbitMQ Dashboard Dashboard"
 }
 
 output "lightstep_otel_collector_redisreceiver_dashboard_url" {
@@ -268,7 +268,7 @@ output "lightstep_otel_collector_snmp_dashboard_url" {
 
 output "lightstep_otel_collector_solr_dashboard_url" {
   value       = module.lightstep_otel_collector_solr_dashboard.dashboard_url
-  description = "Cloud Observability OpenTelemetry Solr Overview Dashboard"
+  description = "Cloud Observability OpenTelemetry Solr Overview Dashboard Dashboard"
 }
 
 output "lightstep_otel_collector_sqlserverreceiver_dashboard_url" {
