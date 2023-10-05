@@ -2,7 +2,7 @@ terraform {
   required_providers {
     lightstep = {
       source  = "lightstep/lightstep"
-      version = "~> 1.79.0"
+      version = "~> 1.84.1"
     }
   }
   required_version = ">= v1.0.11"
@@ -56,11 +56,6 @@ module "lightstep_otel_collector_clickhouse_dashboard" {
 
 module "lightstep_otel_collector_cockroachdb_dashboard" {
   source            = "./collector-dashboards/otel-collector-cockroachdb-dashboard"
-  lightstep_project = var.lightstep_project
-}
-
-module "lightstep_otel_collector_couchbasereceiver_dashboard" {
-  source            = "./collector-dashboards/otel-collector-couchbasereceiver-dashboard"
   lightstep_project = var.lightstep_project
 }
 
