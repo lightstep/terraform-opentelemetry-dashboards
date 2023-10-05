@@ -10,7 +10,7 @@ terraform {
 
 resource "lightstep_dashboard" "host_metrics_dashboard" {
   project_name          = var.lightstep_project
-  dashboard_name        = "Host Metrics "
+  dashboard_name        = "Host Metrics"
   dashboard_description = "Monitor hosts such as [Kubernetes nodes](https://kubernetes.io/docs/concepts/architecture/nodes/) with metrics from the OpenTelemetry [**hostmetricsreceiver**](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/hostmetricsreceiver)"
 
   group {
