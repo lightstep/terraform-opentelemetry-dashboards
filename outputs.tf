@@ -109,6 +109,11 @@ output "lightstep_otel_collector_host_dashboard_url" {
   description = "Cloud Observability OpenTelemetry / Host Dashboard"
 }
 
+output "lightstep_otel_collector_host_metrics_dashboard_url" {
+  value       = module.lightstep_otel_collector_host_metrics_dashboard.dashboard_url
+  description = "Cloud Observability OpenTelemetry Host Metrics Dashboard"
+}
+
 output "lightstep_otel_collector_host_metrics_prom_dashboard_url" {
   value       = module.lightstep_otel_collector_host_metrics_prom_dashboard.dashboard_url
   description = "Cloud Observability OpenTelemetry Host Metrics (Prometheus) Dashboard"
