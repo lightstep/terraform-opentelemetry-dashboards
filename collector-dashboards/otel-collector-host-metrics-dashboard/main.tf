@@ -18,6 +18,15 @@ resource "lightstep_dashboard" "host_metrics_dashboard" {
     title           = ""
     visibility_type = "implicit"
 
+    text_panel {
+      name   = "About this dashboard"
+      x_pos  = 0
+      y_pos  = 0
+      width  = 48
+      height = 10
+      text   = "This dashboard monitors resource usage across host systems, including [Kubernetes nodes](https://kubernetes.io/docs/concepts/architecture/nodes/). The charts are powered by metrics from the OpenTelemetry [**hostmetricsreceiver**](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/hostmetricsreceiver) with the following scrapers and optional metrics enabled:\n* [cpu](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/hostmetricsreceiver/internal/scraper/cpuscraper/documentation.md) (with [`system.cpu.utilization`](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/hostmetricsreceiver/internal/scraper/cpuscraper/documentation.md#systemcpuutilization) enabled)\n* [disk](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/hostmetricsreceiver/internal/scraper/diskscraper/documentation.md)\n* [filesystem](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/hostmetricsreceiver/internal/scraper/filesystemscraper/documentation.md#hostmetricsreceiverfilesystem) (with [`system.filesystem.utilization`](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/hostmetricsreceiver/internal/scraper/filesystemscraper/documentation.md#systemfilesystemutilization) enabled)\n* [load](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/hostmetricsreceiver/internal/scraper/loadscraper/documentation.md)\n* [memory](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/hostmetricsreceiver/internal/scraper/memoryscraper/documentation.md) (with [`system.memory.utilization`](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/hostmetricsreceiver/internal/scraper/memoryscraper/documentation.md#systemmemoryutilization) enabled)\n* [network](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/hostmetricsreceiver/internal/scraper/networkscraper/documentation.md)\n\nThese metrics are equivalent to the [Prometheus Node Exporter](https://prometheus.io/docs/guides/node-exporter/)."
+    }
+
     chart {
       name        = "Load Average"
       description = ""
@@ -128,7 +137,7 @@ resource "lightstep_dashboard" "host_metrics_dashboard" {
       }
     }
     chart {
-      name        = "Disk I/O (seconds)"
+      name        = "Disk I/O (Time)"
       description = ""
       type        = "timeseries"
       rank        = 5
@@ -200,15 +209,6 @@ resource "lightstep_dashboard" "host_metrics_dashboard" {
         hidden       = false
         query_string = "metric system.network.io | filter (((\"k8s.node.name\" == $k8s_node) && (\"k8s.cluster.name\" == $k8s_cluster)) && (\"direction\" == \"transmit\")) | rate | group_by [\"device\"], sum"
       }
-    }
-
-    text_panel {
-      name   = "About this dashboard"
-      x_pos  = 0
-      y_pos  = 0
-      width  = 48
-      height = 10
-      text   = "This dashboard monitors resource usage across host systems, including [Kubernetes nodes](https://kubernetes.io/docs/concepts/architecture/nodes/). The charts are powered by metrics from the OpenTelemetry [**hostmetricsreceiver**](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/hostmetricsreceiver) with the following scrapers and optional metrics enabled:\n* [cpu](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/hostmetricsreceiver/internal/scraper/cpuscraper/documentation.md) (with [`system.cpu.utilization`](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/hostmetricsreceiver/internal/scraper/cpuscraper/documentation.md#systemcpuutilization) enabled)\n* [disk](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/hostmetricsreceiver/internal/scraper/diskscraper/documentation.md)\n* [filesystem](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/hostmetricsreceiver/internal/scraper/filesystemscraper/documentation.md#hostmetricsreceiverfilesystem) (with [`system.filesystem.utilization`](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/hostmetricsreceiver/internal/scraper/filesystemscraper/documentation.md#systemfilesystemutilization) enabled)\n* [load](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/hostmetricsreceiver/internal/scraper/loadscraper/documentation.md)\n* [memory](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/hostmetricsreceiver/internal/scraper/memoryscraper/documentation.md) (with [`system.memory.utilization`](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/hostmetricsreceiver/internal/scraper/memoryscraper/documentation.md#systemmemoryutilization) enabled)\n* [network](https://github.com/open-telemetry/opentelemetry-collector-contrib/blob/main/receiver/hostmetricsreceiver/internal/scraper/networkscraper/documentation.md)\n\nThese metrics are equivalent to the [Prometheus Node Exporter](https://prometheus.io/docs/guides/node-exporter/)."
     }
   }
 
