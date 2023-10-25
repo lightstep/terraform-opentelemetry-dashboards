@@ -19,7 +19,7 @@ For a more in-depth recommendation on how to monitor and alert on the OpenTeleme
     ## Example: Create OpenTelemetry Collector Dashboard
     module "otel-collector-dashboard" {
       source            = "./terraform-opentelemetry-dashboards/collector-dashboards/otel-collector-dashboard"
-      cloud_observability_project = "dev-jkart"
+      lightstep_project = "dev-jkart"
     }
 
     ## Example: expose your module outputs
