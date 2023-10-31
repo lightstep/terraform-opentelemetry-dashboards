@@ -9,7 +9,7 @@ terraform {
 }
 
 resource "lightstep_dashboard" "otel_collector_dashboard" {
-  dashboard_name        = "K8S OpenTelemetry Collectors"
+  dashboard_name        = "K8s OpenTelemetry Collectors"
   project_name          = var.lightstep_project
   dashboard_description = "A top down dashboard for monitoring the health of your OpenTelemetry Collectors running in kubernetes"
 
