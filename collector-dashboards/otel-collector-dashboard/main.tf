@@ -9,9 +9,9 @@ terraform {
 }
 
 resource "lightstep_dashboard" "otel_collector_dashboard" {
-  dashboard_name        = "OpenTelemetry Collectors running in Kubernetes"
+  dashboard_name        = "K8s OpenTelemetry Collectors"
   project_name          = var.lightstep_project
-  dashboard_description = "A top down dashboard for your Opentelemetry Collector configuration on a kubernetes cluster."
+  dashboard_description = "A top down dashboard for monitoring the health of your OpenTelemetry Collectors running in kubernetes"
 
   group {
     rank            = 0
@@ -363,7 +363,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
     }
     chart {
       name        = "Pods In An Unhealthy Phase"
-      description = "Count of pods in the Failed or Unknown phase. If the chart has \"No data reported\", this likely means there has not been a pod in an unhealthy phase so far."
+      description = "Count of pods in the Failed or Unknown phase. If the chart has \"No data found\", this likely means there has not been a pod in an unhealthy phase so far."
       type        = "timeseries"
       rank        = 8
       x_pos       = 32
@@ -387,7 +387,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       y_pos  = 0
       width  = 48
       height = 6
-      text   = "This dashboard monitors the health of your [OpenTelemetry Collectors](https://opentelemetry.io/docs/collector/) that are running in Kubernetes. For more on Collectors, see https://docs.lightstep.com/docs/collector-home-page\n\nUse template variables to filter to collector pools and individual collector instances. Filter to a specific collector pool with the `$service.name` template variable. Collector pools running in k8s have a service name that ends with \"collector\"\n\nIf the charts indicate \"No Data Reported\" you may not be sending metrics for that chart."
+      text   = "This dashboard monitors the health of your [OpenTelemetry Collectors](https://docs.lightstep.com/docs/collector-home-page) that are running in Kubernetes. It works best when collectors are provisioned with the [otel-cloud-stack chart](https://docs.lightstep.com/docs/quick-start-infra-otel-first#send-kubernetes-metrics-to-cloud-observability).\n\nUse template variables to filter data. To filter to specific collectors, use the `$service.name` template variable. Collectors running in k8s have a service name that ends with \"collector\". Filter to individual collector pods with the `$pod` or `$pod_uid` template variables.\n\nIf the charts indicate \"No data found\" you may not be sending metrics from the collectors for that chart."
     }
   }
   group {
