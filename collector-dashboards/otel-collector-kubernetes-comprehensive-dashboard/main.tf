@@ -102,13 +102,13 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
           query_name   = "a"
           display      = "line"
           hidden       = false
-          query_string = "metric k8s.node.condition_ready | latest | group_by ['k8s.node.name'], sum | point_filter value == 1"
+          query_string = "metric k8s.node.condition_ready | latest | group_by [\"k8s.node.name\"], sum | point_filter value == 1"
         }
         query {
           query_name   = "b"
           display      = "line"
           hidden       = false
-          query_string = "metric k8s.node.condition_ready | time_shift 15m | latest | group_by ['k8s.node.name'], sum | point_filter value == 1"
+          query_string = "metric k8s.node.condition_ready | time_shift 15m | latest | group_by [\"k8s.node.name\"], sum | point_filter value == 1"
         }
       }
 
@@ -765,7 +765,8 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
       title           = "Cluster Overview"
       visibility_type = "explicit"
 
-      chart { // TODO no phase attribute to filter by
+      chart {
+        // TODO no phase attribute to filter by
         name   = "Total Active Namespaces"
         type   = "timeseries"
         rank   = 0
@@ -781,7 +782,8 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
           query_string = "metric k8s.namespace.phase | filter (namespace == $namespace) | latest | group_by [], count_nonzero"
         }
       }
-      chart { // TODO no equivalent metric?
+      chart {
+        // TODO no equivalent metric?
         name   = "Total Secrets"
         type   = "timeseries"
         rank   = 1
@@ -797,7 +799,8 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
           query_string = "metric kube_secret_info | filter (namespace == $namespace) | latest | group_by [], count_nonzero"
         }
       }
-      chart {// TODO no equivalent metric?
+      chart {
+        // TODO no equivalent metric?
         name   = "Total ConfigMaps"
         type   = "timeseries"
         rank   = 2
@@ -927,3 +930,4 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
       suggestion_attribute_key = "node"
     }
   }
+}
