@@ -51,7 +51,7 @@ output "lightstep_otel_collector_couchdbreceiver_dashboard_url" {
 
 output "lightstep_otel_collector_dashboard_url" {
   value       = module.lightstep_otel_collector_dashboard.dashboard_url
-  description = "Cloud Observability OpenTelemetry Collectors running in Kubernetes Dashboard"
+  description = "Cloud Observability OpenTelemetry K8S OpenTelemetry Collectors Dashboard"
 }
 
 output "lightstep_otel_collector_dockerstats_dashboard_url" {

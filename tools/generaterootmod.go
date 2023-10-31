@@ -17,7 +17,7 @@ func writeMainHead(w io.Writer) {
   required_providers {
     lightstep = {
       source  = "lightstep/lightstep"
-      version = "~> 1.84.1"
+      version = "~> 1.84.2"
     }
   }
   required_version = ">= v1.0.11"

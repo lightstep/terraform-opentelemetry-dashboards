@@ -9,9 +9,9 @@ terraform {
 }
 
 resource "lightstep_dashboard" "otel_collector_dashboard" {
-  dashboard_name        = "OpenTelemetry Collectors running in Kubernetes"
+  dashboard_name        = "K8S OpenTelemetry Collectors"
   project_name          = var.lightstep_project
-  dashboard_description = "A top down dashboard for your Opentelemetry Collector configuration on a kubernetes cluster."
+  dashboard_description = "A top down dashboard for monitoring the health of your OpenTelemetry Collectors running in kubernetes"
 
   group {
     rank            = 0

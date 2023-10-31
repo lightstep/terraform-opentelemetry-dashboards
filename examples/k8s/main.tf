@@ -29,16 +29,16 @@ provider "lightstep" {
 }
 
 module "lightstep_k8s_kubelet_dashboard" {
-  source                      = "github.com/lightstep/terraform-opentelemetry-dashboards//collector-dashboards/otel-collector-k8s-kubelet-prom-dashboard?ref=v1.76.0-20230606"
+  source            = "github.com/lightstep/terraform-opentelemetry-dashboards//collector-dashboards/otel-collector-k8s-kubelet-prom-dashboard?ref=v1.76.0-20230606"
   lightstep_project = var.lightstep_project
 }
 
 module "lightstep_k8s_node_exporter_dashboard" {
-  source                      = "github.com/lightstep/terraform-opentelemetry-dashboards//collector-dashboards/otel-collector-k8s-node-exporter-prom-dashboard?ref=v1.76.0-20230606"
+  source            = "github.com/lightstep/terraform-opentelemetry-dashboards//collector-dashboards/otel-collector-k8s-node-exporter-prom-dashboard?ref=v1.76.0-20230606"
   lightstep_project = var.lightstep_project
 }
 
 module "lightstep_k8s_pod_resources_dashboard" {
-  source                      = "github.com/lightstep/terraform-opentelemetry-dashboards//collector-dashboards/otel-collector-k8s-pod-resources-prom-dashboard?ref=v1.76.0-20230606"
+  source            = "github.com/lightstep/terraform-opentelemetry-dashboards//collector-dashboards/otel-collector-k8s-pod-resources-prom-dashboard?ref=v1.76.0-20230606"
   lightstep_project = var.lightstep_project
 }
