@@ -51,7 +51,6 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
       }
     }
   }
-
   group {
     rank            = 5
     title           = "Nodes"
@@ -169,7 +168,6 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
       }
     }
   }
-
   group {
     rank            = 4
     title           = "Daemonsets"
@@ -676,23 +674,24 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
         query_string = "metric k8s.volume.capacity | filter (k8s.namespace.name == $namespace)| latest | group_by [\"k8s.volume.name\"], count_nonzero | group_by [], sum"
       }
     }
+  }
 
 
-    template_variable {
-      name                     = "pod"
-      default_values           = []
-      suggestion_attribute_key = "pod"
-    }
-    template_variable {
-      name                     = "namespace"
-      default_values           = []
-      suggestion_attribute_key = "namespace"
-    }
-    template_variable {
-      name                     = "node"
-      default_values           = []
-      suggestion_attribute_key = "node"
-    }
+  template_variable {
+    name                     = "pod"
+    default_values           = []
+    suggestion_attribute_key = "pod"
+  }
+  template_variable {
+    name                     = "namespace"
+    default_values           = []
+    suggestion_attribute_key = "namespace"
+  }
+  template_variable {
+    name                     = "node"
+    default_values           = []
+    suggestion_attribute_key = "node"
   }
 }
+
 
