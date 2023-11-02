@@ -7,14 +7,13 @@ terraform {
   }
   required_version = ">= v1.0.11"
 }
-
 resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboard_otel_native" {
-  project_name          = var.lightstep_project
-  dashboard_name        = "OpenTelemetry Collector Comprehensive Kubernetes Dashboard (OTel metrics)"
+  project_name          = "jacob-demo"
+  dashboard_name        = "[jason tf test] OpenTelemetry Collector Comprehensive Kubernetes Dashboard (OTel metrics)"
   dashboard_description = "A comprehensive dashboard for monitoring Kubernetes clusters using the OpenTelemetry Collector with OTel native metrics"
 
   group {
-    rank            = 3
+    rank            = 0
     title           = "Deployments"
     visibility_type = "explicit"
 
@@ -52,7 +51,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
     }
   }
   group {
-    rank            = 5
+    rank            = 1
     title           = "Nodes"
     visibility_type = "explicit"
 
@@ -82,9 +81,9 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
     chart {
       name   = "Nodes Readiness Flapping (Restarts)"
       type   = "timeseries"
-      rank   = 2
-      x_pos  = 0
-      y_pos  = 8
+      rank   = 1
+      x_pos  = 16
+      y_pos  = 0
       width  = 16
       height = 8
 
@@ -103,7 +102,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
     }
   }
   group {
-    rank            = 7
+    rank            = 2
     title           = "Jobs"
     visibility_type = "explicit"
 
@@ -169,7 +168,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
     }
   }
   group {
-    rank            = 4
+    rank            = 3
     title           = "Daemonsets"
     visibility_type = "explicit"
 
@@ -192,8 +191,8 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
     chart {
       name   = "Daemonsets Ready By Namespace"
       type   = "timeseries"
-      rank   = 2
-      x_pos  = 32
+      rank   = 1
+      x_pos  = 16
       y_pos  = 0
       width  = 16
       height = 8
@@ -208,9 +207,9 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
     chart {
       name   = "Daemonsets Schedules"
       type   = "timeseries"
-      rank   = 3
-      x_pos  = 0
-      y_pos  = 8
+      rank   = 2
+      x_pos  = 32
+      y_pos  = 0
       width  = 16
       height = 8
 
@@ -230,9 +229,9 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
     chart {
       name   = "Daemonsets Status"
       type   = "timeseries"
-      rank   = 4
-      x_pos  = 16
-      y_pos  = 8
+      rank   = 3
+      x_pos  = 0
+      y_pos  = 16
       width  = 16
       height = 8
 
@@ -240,7 +239,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
         query_name   = "a"
         display      = "line"
         hidden       = false
-        query_string = "metric kube_daemonset_status_number_misscheduled | filter (namespace == $namespace) | latest | group_by [\"daemonset\"], sum"
+        query_string = "metric k8s.daemonset.name | filter k8s.namespace.name == $namespace | latest | group_by [\"k8s.daemonset.name\"], sum"
       }
       query {
         query_name   = "c"
@@ -251,19 +250,14 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
     }
   }
   group {
-    rank            = 0
-    title           = ""
-    visibility_type = "implicit"
-  }
-  group {
-    rank            = 2
+    rank            = 4
     title           = "Cluster Health"
     visibility_type = "explicit"
 
     chart {
       name   = "Cluster CPU Usage (%)"
       type   = "timeseries"
-      rank   = 1
+      rank   = 0
       x_pos  = 16
       y_pos  = 0
       width  = 16
@@ -279,8 +273,8 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
     chart {
       name   = "Cluster Memory Usage (%)"
       type   = "timeseries"
-      rank   = 2
-      x_pos  = 32
+      rank   = 1
+      x_pos  = 16
       y_pos  = 0
       width  = 16
       height = 8
@@ -296,9 +290,9 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
     chart {
       name   = "Cluster CPU Capacity"
       type   = "timeseries"
-      rank   = 4
-      x_pos  = 16
-      y_pos  = 8
+      rank   = 2
+      x_pos  = 32
+      y_pos  = 0
       width  = 16
       height = 8
 
@@ -319,8 +313,8 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
     chart {
       name   = "Cluster Memory Capacity"
       type   = "timeseries"
-      rank   = 5
-      x_pos  = 32
+      rank   = 3
+      x_pos  = 0
       y_pos  = 8
       width  = 16
       height = 8
@@ -347,7 +341,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
     chart {
       name   = "Cluster Disk Usage (%)"
       type   = "timeseries"
-      rank   = 6
+      rank   = 4
       x_pos  = 0
       y_pos  = 16
       width  = 16
@@ -363,7 +357,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
     chart {
       name   = "Network Operational Status"
       type   = "timeseries"
-      rank   = 7
+      rank   = 5
       x_pos  = 16
       y_pos  = 16
       width  = 16
@@ -379,7 +373,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
     chart {
       name   = "Node Disk Capacity"
       type   = "timeseries"
-      rank   = 8
+      rank   = 6
       x_pos  = 0
       y_pos  = 24
       width  = 16
@@ -395,7 +389,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
     chart {
       name   = "Network Usage (bytes/s)"
       type   = "timeseries"
-      rank   = 9
+      rank   = 7
       x_pos  = 16
       y_pos  = 24
       width  = 16
@@ -410,7 +404,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
     }
   }
   group {
-    rank            = 6
+    rank            = 5
     title           = "Pods"
     visibility_type = "explicit"
 
@@ -456,7 +450,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
     }
   }
   group {
-    rank            = 8
+    rank            = 6
     title           = "Containers"
     visibility_type = "explicit"
 
@@ -605,7 +599,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
     }
   }
   group {
-    rank            = 1
+    rank            = 7
     title           = "Cluster Overview"
     visibility_type = "explicit"
 
@@ -625,13 +619,12 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
         query_string = "metric k8s.namespace.phase | latest | group_by [\"k8s.namespace.name\"], sum | point_filter value == 1 | group_by [], count_nonzero"
       }
     }
-
     chart {
       name   = "Total Statefulsets"
       type   = "timeseries"
-      rank   = 4
+      rank   = 1
       x_pos  = 16
-      y_pos  = 8
+      y_pos  = 0
       width  = 16
       height = 8
 
@@ -645,9 +638,9 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
     chart {
       name   = "Total Persistent Volume Claims"
       type   = "timeseries"
-      rank   = 5
+      rank   = 2
       x_pos  = 32
-      y_pos  = 8
+      y_pos  = 0
       width  = 16
       height = 8
 
@@ -661,9 +654,9 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
     chart {
       name   = "Total Persistent Volume"
       type   = "timeseries"
-      rank   = 6
+      rank   = 3
       x_pos  = 0
-      y_pos  = 16
+      y_pos  = 8
       width  = 16
       height = 8
 
@@ -680,18 +673,16 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
   template_variable {
     name                     = "pod"
     default_values           = []
-    suggestion_attribute_key = "pod"
+    suggestion_attribute_key = "k8s.pod.name"
   }
   template_variable {
     name                     = "namespace"
     default_values           = []
-    suggestion_attribute_key = "namespace"
+    suggestion_attribute_key = "k8s.namespace.name"
   }
   template_variable {
     name                     = "node"
     default_values           = []
-    suggestion_attribute_key = "node"
+    suggestion_attribute_key = "k8s.node.name"
   }
 }
-
-
