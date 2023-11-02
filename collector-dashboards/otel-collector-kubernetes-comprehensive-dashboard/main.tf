@@ -8,7 +8,7 @@ terraform {
   required_version = ">= v1.0.11"
 }
 resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboard_otel_native" {
-  project_name          = "jacob-demo"
+  project_name          = var.lightstep_project
   dashboard_name        = "[jason tf test] OpenTelemetry Collector Comprehensive Kubernetes Dashboard (OTel metrics)"
   dashboard_description = "A comprehensive dashboard for monitoring Kubernetes clusters using the OpenTelemetry Collector with OTel native metrics"
 
