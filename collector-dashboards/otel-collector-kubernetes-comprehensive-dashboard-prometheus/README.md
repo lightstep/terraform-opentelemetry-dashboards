@@ -1,6 +1,7 @@
 # Terraform Resource for Lightstep Kubernetes Comprehensive OpenTelemetry Dashboard (Prometheus)
 
-This is a Terraform resource for a dashboard that monitors Kubernetes metrics scraped via a Prometheus receiver.
+This is a Terraform resource for a dashboard that monitors a Kubernetes cluster running an OpenTelemetry Collector scraping kube-state-metrics.
+
 
 ## How to Use This Module
 
