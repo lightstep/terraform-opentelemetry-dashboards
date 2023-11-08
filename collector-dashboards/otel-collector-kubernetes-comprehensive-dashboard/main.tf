@@ -11,7 +11,7 @@ terraform {
 resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboard" {
   project_name          = var.lightstep_project
   dashboard_name        = "Kubernetes Comprehensive Dashboard"
-  dashboard_description = "A comprehensive dashboard for monitoring Kubernetes clusters using the OpenTelemetry Collector."
+  dashboard_description = "A comprehensive dashboard for monitoring Kubernetes metrics outputted by the OpenTelemetry collectors set up with the [otel-cloud-stack](https://github.com/lightstep/otel-collector-charts/tree/main/charts/otel-cloud-stack) collector config, which includes the [k8sclusterreceiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/k8sclusterreceiver) and [kubeletstatsreceiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/kubeletstatsreceiver)."
 
 
   group {
