@@ -2,7 +2,7 @@ terraform {
   required_providers {
     lightstep = {
       source  = "lightstep/lightstep"
-      version = "~> 1.84.2"
+      version = "~> 1.84.1"
     }
   }
   required_version = ">= v1.0.11"
@@ -204,13 +204,13 @@ module "lightstep_otel_collector_kubernetes_application_dashboard" {
   lightstep_project = var.lightstep_project
 }
 
-module "lightstep_otel_collector_kubernetes_comprehensive_dashboard_prometheus" {
-  source            = "collector-dashboards/otel-collector-kubernetes-comprehensive-dashboard-prometheus"
+module "lightstep_otel_collector_kubernetes_comprehensive_dashboard" {
+  source            = "./collector-dashboards/otel-collector-kubernetes-comprehensive-dashboard"
   lightstep_project = var.lightstep_project
 }
 
-module "lightstep_otel_collector_kubernetes_comprehensive_dashboard" {
-  source            = "collector-dashboards/otel-collector-kubernetes-comprehensive-dashboard"
+module "lightstep_otel_collector_kubernetes_comprehensive_dashboard_prometheus" {
+  source            = "./collector-dashboards/otel-collector-kubernetes-comprehensive-dashboard-prometheus"
   lightstep_project = var.lightstep_project
 }
 
