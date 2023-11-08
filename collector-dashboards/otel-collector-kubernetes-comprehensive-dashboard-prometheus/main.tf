@@ -10,7 +10,7 @@ terraform {
 
 resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboard_prometheus" {
   project_name          = var.lightstep_project
-  dashboard_name        = "OpenTelemetry Collector Comprehensive Kubernetes Dashboard (Prometheus)"
+  dashboard_name        = "Kubernetes Comprehensive Dashboard (Prometheus)"
   dashboard_description = "A comprehensive dashboard for monitoring Kubernetes clusters using the OpenTelemetry Collector with Prometheus metrics."
 
   group {
