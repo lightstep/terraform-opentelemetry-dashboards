@@ -15,7 +15,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
 
 
   group {
-    rank            = 0
+    rank            = 1
     title           = "Nodes"
     visibility_type = "explicit"
 
@@ -170,7 +170,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
     }
   }
   group {
-    rank            = 1
+    rank            = 2
     title           = "Deployments"
     visibility_type = "explicit"
 
@@ -208,7 +208,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
     }
   }
   group {
-    rank            = 2
+    rank            = 3
     title           = "Jobs"
     visibility_type = "explicit"
 
@@ -274,7 +274,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
     }
   }
   group {
-    rank            = 3
+    rank            = 4
     title           = "Daemonsets"
     visibility_type = "explicit"
 
@@ -507,7 +507,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
     }
   }
   group {
-    rank            = 7
+    rank            = 0
     title           = "Cluster Overview"
     visibility_type = "explicit"
 
