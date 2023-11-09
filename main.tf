@@ -209,6 +209,11 @@ module "lightstep_otel_collector_kubernetes_comprehensive_dashboard" {
   lightstep_project = var.lightstep_project
 }
 
+module "lightstep_otel_collector_kubernetes_comprehensive_dashboard_prometheus" {
+  source            = "./collector-dashboards/otel-collector-kubernetes-comprehensive-dashboard-prometheus"
+  lightstep_project = var.lightstep_project
+}
+
 module "lightstep_otel_collector_kubernetes_dashboard" {
   source            = "./collector-dashboards/otel-collector-kubernetes-dashboard"
   lightstep_project = var.lightstep_project

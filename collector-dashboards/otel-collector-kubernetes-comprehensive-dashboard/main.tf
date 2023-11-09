@@ -10,16 +10,17 @@ terraform {
 
 resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboard" {
   project_name          = var.lightstep_project
-  dashboard_name        = "OpenTelemetry Collector Comprehensive Kubernetes Dashboard"
-  dashboard_description = "A comprehensive dashboard for monitoring Kubernetes clusters using the OpenTelemetry Collector."
+  dashboard_name        = "Kubernetes Comprehensive Dashboard"
+  dashboard_description = "A comprehensive dashboard for monitoring Kubernetes metrics outputted by the OpenTelemetry collectors set up with the [otel-cloud-stack](https://github.com/lightstep/otel-collector-charts/tree/main/charts/otel-cloud-stack) collector config, which includes the [k8sclusterreceiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/k8sclusterreceiver) and [kubeletstatsreceiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/kubeletstatsreceiver)."
+
 
   group {
-    rank            = 3
-    title           = "Deployments"
+    rank            = 1
+    title           = "Nodes"
     visibility_type = "explicit"
 
     chart {
-      name   = "Deployment Replicas Total"
+      name   = "Node Readiness"
       type   = "timeseries"
       rank   = 0
       x_pos  = 0
@@ -29,9 +30,164 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
 
       query {
         query_name   = "a"
-        display      = "big_number"
+        display      = "line"
         hidden       = false
-        query_string = "metric kube_deployment_status_replicas | filter (namespace == $namespace) | latest | group_by [], sum"
+        query_string = "metric k8s.node.condition_ready | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace && k8s.node.name == $node | latest | group_by [\"k8s.node.name\"], sum"
+      }
+    }
+    chart {
+      name   = "Node CPU Usage (%)"
+      type   = "timeseries"
+      rank   = 1
+      x_pos  = 16
+      y_pos  = 0
+      width  = 16
+      height = 8
+
+      query {
+        query_name   = "a"
+        display      = "line"
+        hidden       = false
+        query_string = "with\n  a = metric k8s.node.cpu.utilization | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace && k8s.node.name == $node | latest | group_by [], sum;\n  b = metric k8s.node.allocatable_cpu | filter k8s.node.name == $node | latest | group_by [], sum;\njoin (((a / b)*100)), a=0, b=0"
+      }
+    }
+    chart {
+      name   = "Node Memory Usage (%)"
+      type   = "timeseries"
+      rank   = 2
+      x_pos  = 32
+      y_pos  = 0
+      width  = 16
+      height = 8
+
+      query {
+        query_name   = "a"
+        display      = "line"
+        hidden       = false
+        query_string = "with\n  a = metric k8s.node.memory.usage | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace && k8s.node.name == $node | latest | group_by [], sum;\n  b = metric k8s.node.allocatable_memory | filter k8s.node.name == $node | latest | group_by [], sum;\njoin (((a / b)*100)), a=0, b=0"
+      }
+    }
+
+    chart {
+      name   = "Node CPU Capacity"
+      type   = "timeseries"
+      rank   = 3
+      x_pos  = 0
+      y_pos  = 8
+      width  = 16
+      height = 8
+
+      query {
+        query_name   = "a"
+        display      = "line"
+        hidden       = false
+        query_string = "metric k8s.node.cpu.utilization | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace && k8s.node.name == $node | latest | group_by [], sum"
+      }
+      query {
+        query_name   = "b"
+        display      = "line"
+        hidden       = false
+        query_string = "metric k8s.node.allocatable_cpu | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace && k8s.node.name == $node | latest | group_by [], sum"
+      }
+    }
+
+    chart {
+      name   = "Node Memory Capacity"
+      type   = "timeseries"
+      rank   = 4
+      x_pos  = 16
+      y_pos  = 8
+      width  = 16
+      height = 8
+
+      query {
+        query_name   = "a"
+        display      = "line"
+        hidden       = false
+        query_string = "metric k8s.node.memory.usage | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace && k8s.node.name == $node  | latest | group_by [], sum"
+      }
+      query {
+        query_name   = "b"
+        display      = "line"
+        hidden       = false
+        query_string = "metric k8s.node.allocatable_memory | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace && k8s.node.name == $node | latest | group_by [], sum"
+      }
+      query {
+        query_name   = "c"
+        display      = "line"
+        hidden       = false
+        query_string = "metric k8s.node.memory.available | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace && k8s.node.name == $node | latest | group_by [], sum"
+      }
+    }
+    chart {
+      name   = "Node Disk Usage (%)"
+      type   = "timeseries"
+      rank   = 5
+      x_pos  = 32
+      y_pos  = 8
+      width  = 16
+      height = 8
+
+      query {
+        query_name   = "a"
+        display      = "line"
+        hidden       = false
+        query_string = "with\n  a = metric k8s.node.filesystem.usage | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace && k8s.node.name == $node | latest | group_by [], sum;\n  b = metric k8s.node.filesystem.capacity | filter k8s.cluster.name == $cluster | latest | group_by [], sum;\njoin (((a/b)*100)), a=0, b=0"
+      }
+    }
+    chart {
+      name   = "Node Disk Capacity"
+      type   = "timeseries"
+      rank   = 6
+      x_pos  = 0
+      y_pos  = 16
+      width  = 16
+      height = 8
+
+
+      query {
+        query_name   = "a"
+        display      = "line"
+        hidden       = false
+        query_string = "metric k8s.node.filesystem.available | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace && k8s.node.name == $node | latest | group_by [], sum"
+      }
+    }
+    chart {
+      name   = "Node Network Usage (bytes/s)"
+      type   = "timeseries"
+      rank   = 7
+      x_pos  = 16
+      y_pos  = 16
+      width  = 16
+      height = 8
+
+      query {
+        query_name   = "a"
+        display      = "line"
+        hidden       = false
+        query_string = "metric k8s.node.network.io | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace && k8s.node.name == $node | rate | group_by [\"direction\"], sum"
+      }
+    }
+  }
+  group {
+    rank            = 2
+    title           = "Deployments"
+    visibility_type = "explicit"
+
+    chart {
+      name   = "Deployment Replicas Available"
+      type   = "timeseries"
+      rank   = 0
+      x_pos  = 0
+      y_pos  = 0
+      width  = 16
+      height = 8
+
+      query {
+        query_name   = "a"
+        display      = "line"
+        hidden       = false
+        query_string = "metric k8s.deployment.available | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace | latest | group_by [], sum"
       }
     }
     chart {
@@ -45,162 +201,14 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
 
       query {
         query_name   = "a"
-        display      = "big_number"
-        hidden       = false
-        query_string = "metric kube_deployment_status_replicas_unavailable | filter (namespace == $namespace) | latest 5m | group_by [], sum"
-      }
-    }
-    chart {
-      name   = "Deployment Replicas Status"
-      type   = "timeseries"
-      rank   = 2
-      x_pos  = 0
-      y_pos  = 8
-      width  = 16
-      height = 8
-
-      query {
-        query_name   = "a"
         display      = "line"
         hidden       = false
-        query_string = "metric kube_deployment_status_replicas | filter (namespace == $namespace) | latest | group_by [], sum"
-      }
-      query {
-        query_name   = "b"
-        display      = "line"
-        hidden       = false
-        query_string = "metric kube_deployment_status_replicas_available | filter (namespace == $namespace) | latest | group_by [], sum"
-      }
-      query {
-        query_name   = "c"
-        display      = "line"
-        hidden       = false
-        query_string = "metric kube_deployment_status_replicas_ready | filter (namespace == $namespace) | latest | group_by [], sum"
-      }
-      query {
-        query_name   = "d"
-        display      = "line"
-        hidden       = false
-        query_string = "metric kube_deployment_status_replicas_unavailable | filter (namespace == $namespace) | latest | group_by [], sum"
-      }
-      query {
-        query_name   = "e"
-        display      = "line"
-        hidden       = false
-        query_string = "metric kube_deployment_status_replicas_updated | filter (namespace == $namespace) | latest | group_by [], sum"
-      }
-    }
-    chart {
-      name   = "Deployments Condition"
-      type   = "timeseries"
-      rank   = 3
-      x_pos  = 16
-      y_pos  = 8
-      width  = 16
-      height = 8
-
-      query {
-        query_name   = "a"
-        display      = "line"
-        hidden       = false
-        query_string = "metric kube_deployment_status_condition | filter ((namespace == $namespace) && (((status == \"true\") || (status == 1)) || (status == 1.0))) | latest | group_by [\"condition\"], sum"
-      }
-    }
-    chart {
-      name   = "Deployments Available By Namespace"
-      type   = "timeseries"
-      rank   = 5
-      x_pos  = 32
-      y_pos  = 0
-      width  = 16
-      height = 8
-
-      query {
-        query_name   = "a"
-        display      = "table"
-        hidden       = false
-        query_string = "metric kube_deployment_status_condition | filter (((namespace == $namespace) && (condition == \"Available\")) && (((status == \"true\") || (status == 1)) || (status == 1.0))) | latest | group_by [\"namespace\", \"deployment\"], sum"
+        query_string = "with a = metric k8s.deployment.available | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace | latest 5m | group_by [], sum; b = metric k8s.deployment.desired | filter (k8s.namespace.name == $namespace) | latest 5m | group_by [], sum; join b-a"
       }
     }
   }
   group {
-    rank            = 5
-    title           = "Nodes"
-    visibility_type = "explicit"
-
-    chart {
-      name   = "Nodes Total"
-      type   = "timeseries"
-      rank   = 0
-      x_pos  = 0
-      y_pos  = 0
-      width  = 16
-      height = 8
-
-      query {
-        query_name   = "a"
-        display      = "big_number"
-        hidden       = false
-        query_string = "metric kube_node_info | filter (node == $node) | latest | group_by [], sum"
-      }
-    }
-    chart {
-      name   = "Nodes Unavailable"
-      type   = "timeseries"
-      rank   = 1
-      x_pos  = 16
-      y_pos  = 0
-      width  = 16
-      height = 8
-
-      query {
-        query_name   = "a"
-        display      = "big_number"
-        hidden       = false
-        query_string = "metric kube_node_spec_unschedulable | filter (node == $node) | latest | group_by [], sum"
-      }
-    }
-    chart {
-      name   = "Nodes Readiness Flapping (Restarts)"
-      type   = "timeseries"
-      rank   = 2
-      x_pos  = 0
-      y_pos  = 8
-      width  = 16
-      height = 8
-
-      query {
-        query_name   = "a"
-        display      = "line"
-        hidden       = false
-        query_string = "metric kube_node_status_condition | filter (((node == $node) && (condition == \"Ready\")) && (((status == \"true\") || (status == 1)) || (status == 1.0))) | latest | group_by [\"node\"], sum"
-      }
-      query {
-        query_name   = "b"
-        display      = "line"
-        hidden       = false
-        query_string = "metric kube_node_status_condition | time_shift 15m | filter (((node == $node) && (condition == \"Ready\")) && (((status == \"true\") || (status == 1)) || (status == 1.0))) | latest | group_by [\"node\"], sum"
-      }
-    }
-    chart {
-      name   = "Nodes Condition"
-      type   = "timeseries"
-      rank   = 3
-      x_pos  = 16
-      y_pos  = 8
-      width  = 16
-      height = 8
-
-      query {
-        query_name   = "a"
-        display      = "line"
-        hidden       = false
-        query_string = "metric kube_node_status_condition | filter ((node == $node) && (((status == \"true\") || (status == 1)) || (status == 1.0))) | latest | group_by [\"condition\"], sum"
-      }
-    }
-  }
-  group {
-    rank            = 7
+    rank            = 3
     title           = "Jobs"
     visibility_type = "explicit"
 
@@ -217,19 +225,19 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
         query_name   = "a"
         display      = "line"
         hidden       = false
-        query_string = "metric kube_job_status_active | filter (namespace == $namespace) | latest 1m | group_by [], sum"
+        query_string = "metric k8s.job.active_pods | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace | latest 1m | group_by [], sum"
       }
       query {
         query_name   = "b"
         display      = "line"
         hidden       = false
-        query_string = "metric kube_job_status_succeeded | filter (namespace == $namespace) | rate 1m | group_by [], sum"
+        query_string = "metric k8s.job.successful_pods | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace | rate 1m | group_by [], sum"
       }
       query {
         query_name   = "c"
         display      = "line"
         hidden       = false
-        query_string = "metric kube_job_status_failed | filter (namespace == $namespace) | rate 1m | group_by [], sum"
+        query_string = "metric k8s.job.failed_pods | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace | rate 1m | group_by [], sum"
       }
     }
     chart {
@@ -243,9 +251,9 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
 
       query {
         query_name   = "a"
-        display      = "big_number"
+        display      = "line"
         hidden       = false
-        query_string = "metric kube_job_status_succeeded | filter (namespace == $namespace) | latest | group_by [], sum"
+        query_string = "metric k8s.job.successful_pods | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace | latest | group_by [], sum"
       }
     }
     chart {
@@ -259,31 +267,15 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
 
       query {
         query_name   = "a"
-        display      = "big_number"
+        display      = "line"
         hidden       = false
-        query_string = "metric kube_job_status_failed | filter (namespace == $namespace) | latest | group_by [], sum"
-      }
-    }
-    chart {
-      name   = "Cron Jobs Total"
-      type   = "timeseries"
-      rank   = 3
-      x_pos  = 0
-      y_pos  = 8
-      width  = 16
-      height = 8
-
-      query {
-        query_name   = "a"
-        display      = "big_number"
-        hidden       = false
-        query_string = "metric kube_cronjob_info | filter (namespace == $namespace) | latest | group_by [], count_nonzero"
+        query_string = "metric k8s.job.failed_pods | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace | latest | group_by [], sum"
       }
     }
   }
   group {
     rank            = 4
-    title           = "New Section"
+    title           = "Daemonsets"
     visibility_type = "explicit"
 
     chart {
@@ -297,32 +289,16 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
 
       query {
         query_name   = "a"
-        display      = "big_number"
+        display      = "line"
         hidden       = false
-        query_string = "with\n  a = metric kube_daemonset_status_number_available | filter (namespace == $namespace) | latest | group_by [], sum;\n  b = metric kube_daemonset_status_number_unavailable | filter (namespace == $namespace) | latest | group_by [], sum;\njoin ((a + b)), a=0, b=0"
-      }
-    }
-    chart {
-      name   = "Daemonset Unavailable"
-      type   = "timeseries"
-      rank   = 1
-      x_pos  = 16
-      y_pos  = 0
-      width  = 16
-      height = 8
-
-      query {
-        query_name   = "a"
-        display      = "big_number"
-        hidden       = false
-        query_string = "metric kube_daemonset_status_number_unavailable | filter (namespace == $namespace) | latest 5m | group_by [], sum"
+        query_string = "with\n  a = metric k8s.daemonset.ready_nodes | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace | latest | group_by [], sum;\n  b = metric kube_daemonset_status_number_unavailable | filter k8s.namespace.name == $namespace | latest | group_by [], sum;\njoin ((a + b)), a=0, b=0"
       }
     }
     chart {
       name   = "Daemonsets Ready By Namespace"
       type   = "timeseries"
-      rank   = 2
-      x_pos  = 32
+      rank   = 1
+      x_pos  = 16
       y_pos  = 0
       width  = 16
       height = 8
@@ -331,110 +307,11 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
         query_name   = "a"
         display      = "table"
         hidden       = false
-        query_string = "metric kube_daemonset_status_number_ready | filter (namespace == $namespace) | latest | group_by [\"daemonset\", \"namespace\"], sum"
+        query_string = "metric k8s.daemonset.ready_nodes | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace | latest | group_by [\"k8s.namespace.name\", \"k8s.daemonset.name\"], sum"
       }
     }
     chart {
       name   = "Daemonsets Schedules"
-      type   = "timeseries"
-      rank   = 3
-      x_pos  = 0
-      y_pos  = 8
-      width  = 16
-      height = 8
-
-      query {
-        query_name   = "a"
-        display      = "line"
-        hidden       = false
-        query_string = "metric kube_daemonset_status_current_number_scheduled | filter (namespace == $namespace) | latest | group_by [\"daemonset\"], sum"
-      }
-      query {
-        query_name   = "b"
-        display      = "line"
-        hidden       = false
-        query_string = "metric kube_daemonset_status_desired_number_scheduled | filter (namespace == $namespace) | latest | group_by [\"daemonset\"], sum"
-      }
-    }
-    chart {
-      name   = "Daemonsets Status"
-      type   = "timeseries"
-      rank   = 4
-      x_pos  = 16
-      y_pos  = 8
-      width  = 16
-      height = 8
-
-      query {
-        query_name   = "a"
-        display      = "line"
-        hidden       = false
-        query_string = "metric kube_daemonset_status_number_misscheduled | filter (namespace == $namespace) | latest | group_by [\"daemonset\"], sum"
-      }
-      query {
-        query_name   = "b"
-        display      = "line"
-        hidden       = false
-        query_string = "metric kube_daemonset_status_number_available | filter (namespace == $namespace) | latest | group_by [\"daemonset\"], sum"
-      }
-      query {
-        query_name   = "c"
-        display      = "line"
-        hidden       = false
-        query_string = "metric kube_daemonset_status_number_ready | filter (namespace == $namespace) | latest | group_by [\"daemonset\"], sum"
-      }
-      query {
-        query_name   = "d"
-        display      = "line"
-        hidden       = false
-        query_string = "metric kube_daemonset_status_number_unavailable | filter (namespace == $namespace) | latest | group_by [\"daemonset\"], sum"
-      }
-    }
-  }
-  group {
-    rank            = 0
-    title           = ""
-    visibility_type = "implicit"
-  }
-  group {
-    rank            = 2
-    title           = "Cluster Health"
-    visibility_type = "explicit"
-
-    chart {
-      name   = "Cluster Pod Usage (%)"
-      type   = "timeseries"
-      rank   = 0
-      x_pos  = 0
-      y_pos  = 0
-      width  = 16
-      height = 8
-
-      query {
-        query_name   = "a"
-        display      = "big_number"
-        hidden       = false
-        query_string = "with\n  a = metric kube_pod_info | filter (node == $node) | latest | group_by [], sum;\n  b = metric kube_node_status_allocatable | filter ((resource == \"pods\") && (node == $node)) | latest | group_by [], sum;\njoin (((a / b)*100)), a=0, b=0"
-      }
-    }
-    chart {
-      name   = "Cluster CPU Usage (%)"
-      type   = "timeseries"
-      rank   = 1
-      x_pos  = 16
-      y_pos  = 0
-      width  = 16
-      height = 8
-
-      query {
-        query_name   = "a"
-        display      = "big_number"
-        hidden       = false
-        query_string = "with\n  a = metric kube_pod_container_resource_requests | filter ((resource == \"cpu\") && (node == $node)) | latest | group_by [], sum;\n  b = metric kube_node_status_allocatable | filter ((resource == \"cpu\") && (node == $node)) | latest | group_by [], sum;\njoin (((a / b)*100)), a=0, b=0"
-      }
-    }
-    chart {
-      name   = "Cluster Memory Usage (%)"
       type   = "timeseries"
       rank   = 2
       x_pos  = 32
@@ -444,110 +321,22 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
 
       query {
         query_name   = "a"
-        display      = "big_number"
+        display      = "line"
         hidden       = false
-        query_string = "with\n  a = metric kube_pod_container_resource_requests | filter (((resource == \"memory\") && (node == $node)) && (unit == \"byte\")) | latest | group_by [], sum;\n  b = metric kube_node_status_allocatable | filter (((resource == \"memory\") && (node == $node)) && (unit == \"byte\")) | latest | group_by [], sum;\njoin (((a / b)*100)), a=0, b=0"
+        query_string = "metric k8s.daemonset.current_scheduled_nodes | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace | latest | group_by [\"k8s.daemonset.name\"], sum"
+      }
+      query {
+        query_name   = "b"
+        display      = "line"
+        hidden       = false
+        query_string = "metric k8s.daemonset.desired_scheduled_nodes | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace | latest | group_by [\"k8s.daemonset.name\"], sum"
       }
     }
     chart {
-      name   = "Cluster Pod Capacity"
+      name   = "Daemonsets Status"
       type   = "timeseries"
       rank   = 3
       x_pos  = 0
-      y_pos  = 8
-      width  = 16
-      height = 8
-
-      query {
-        query_name   = "a"
-        display      = "line"
-        hidden       = false
-        query_string = "metric kube_pod_info | filter (node == $node) | latest | group_by [], sum"
-      }
-      query {
-        query_name   = "b"
-        display      = "line"
-        hidden       = false
-        query_string = "metric kube_node_status_allocatable | filter ((resource == \"pods\") && (node == $node)) | latest | group_by [], sum"
-      }
-      query {
-        query_name   = "c"
-        display      = "line"
-        hidden       = false
-        query_string = "metric kube_node_status_capacity | filter ((resource == \"pods\") && (node == $node)) | latest | group_by [], sum"
-      }
-    }
-    chart {
-      name   = "Cluster CPU Capacity"
-      type   = "timeseries"
-      rank   = 4
-      x_pos  = 16
-      y_pos  = 8
-      width  = 16
-      height = 8
-
-      query {
-        query_name   = "a"
-        display      = "line"
-        hidden       = false
-        query_string = "metric kube_pod_container_resource_requests | filter ((resource == \"cpu\") && (node == $node)) | latest | group_by [], sum"
-      }
-      query {
-        query_name   = "b"
-        display      = "line"
-        hidden       = false
-        query_string = "metric kube_node_status_allocatable | filter ((resource == \"cpu\") && (node == $node)) | latest | group_by [], sum"
-      }
-    }
-    chart {
-      name   = "Cluster Memory Capacity"
-      type   = "timeseries"
-      rank   = 5
-      x_pos  = 32
-      y_pos  = 8
-      width  = 16
-      height = 8
-
-      query {
-        query_name   = "a"
-        display      = "line"
-        hidden       = false
-        query_string = "metric kube_pod_container_resource_requests | filter (((resource == \"memory\") && (node == $node)) && (unit == \"byte\")) | latest | group_by [], sum"
-      }
-      query {
-        query_name   = "b"
-        display      = "line"
-        hidden       = false
-        query_string = "metric kube_node_status_allocatable | filter (((resource == \"memory\") && (node == $node)) && (unit == \"byte\")) | latest | group_by [], sum"
-      }
-      query {
-        query_name   = "c"
-        display      = "line"
-        hidden       = false
-        query_string = "metric kube_node_status_capacity | filter (((resource == \"memory\") && (node == $node)) && (unit == \"byte\")) | latest | group_by [], sum"
-      }
-    }
-    chart {
-      name   = "Cluster Disk Usage (%)"
-      type   = "timeseries"
-      rank   = 6
-      x_pos  = 0
-      y_pos  = 16
-      width  = 16
-      height = 8
-
-      query {
-        query_name   = "a"
-        display      = "big_number"
-        hidden       = false
-        query_string = "with\n  a = metric node_filesystem_size_bytes | filter (device !~ \"rootfs\") | latest | group_by [], sum;\n  b = metric node_filesystem_free_bytes | filter (device !~ \"rootfs\") | latest | group_by [], sum;\njoin ((((a - b)/ a)*100)), a=0, b=0"
-      }
-    }
-    chart {
-      name   = "Network Operational Status"
-      type   = "timeseries"
-      rank   = 7
-      x_pos  = 16
       y_pos  = 16
       width  = 16
       height = 8
@@ -556,56 +345,18 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
         query_name   = "a"
         display      = "line"
         hidden       = false
-        query_string = "metric node_network_up | latest | group_by [], sum"
+        query_string = "metric k8s.daemonset.name | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace | latest | group_by [\"k8s.daemonset.name\"], sum"
       }
       query {
-        query_name   = "b"
+        query_name   = "c"
         display      = "line"
         hidden       = false
-        query_string = "metric node_network_carrier | latest | group_by [], sum"
-      }
-    }
-    chart {
-      name   = "Cluster Disk Capacity"
-      type   = "timeseries"
-      rank   = 8
-      x_pos  = 0
-      y_pos  = 24
-      width  = 16
-      height = 8
-
-      query {
-        query_name   = "a"
-        display      = "line"
-        hidden       = false
-        query_string = "with\n  a = metric node_filesystem_size_bytes | filter (device !~ \"rootfs\") | latest | group_by [], sum;\n  b = metric node_filesystem_free_bytes | filter (device !~ \"rootfs\") | latest | group_by [], sum;\njoin ((a - b)), a=0, b=0"
-      }
-    }
-    chart {
-      name   = "Network Usage"
-      type   = "timeseries"
-      rank   = 9
-      x_pos  = 16
-      y_pos  = 24
-      width  = 16
-      height = 8
-
-      query {
-        query_name   = "a"
-        display      = "line"
-        hidden       = false
-        query_string = "metric node_network_receive_bytes | rate | group_by [], sum"
-      }
-      query {
-        query_name   = "b"
-        display      = "line"
-        hidden       = false
-        query_string = "metric node_network_transmit_bytes | rate | group_by [], sum"
+        query_string = "metric k8s.daemonset.ready_nodes | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace | latest | group_by [\"k8s.daemonset.name\"], sum"
       }
     }
   }
   group {
-    rank            = 6
+    rank            = 5
     title           = "Pods"
     visibility_type = "explicit"
 
@@ -622,16 +373,12 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
         query_name = "a"
         display    = "table"
 
-        # display_type_options {
-        #   sort_by        = "value"
-        #   sort_direction = "desc"
-        # }
         hidden       = false
-        query_string = "metric kube_pod_info | filter ((namespace == $namespace) && (node == $node)) | latest | group_by [\"namespace\"], sum"
+        query_string = "metric k8s.pod.phase | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace && k8s.node.name == $node | latest | group_by [\"k8s.namespace.name\"], count_nonzero"
       }
     }
     chart {
-      name   = "Pods Readiness Flapping (Restarts)"
+      name   = "Pods Ready"
       type   = "timeseries"
       rank   = 1
       x_pos  = 16
@@ -639,22 +386,23 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
       width  = 16
       height = 8
 
+      #  k8s.pod.phase represents current phase of the pod (1 - Pending, 2 - Running, 3 - Succeeded, 4 - Failed, 5 - Unknown)
       query {
         query_name   = "a"
         display      = "line"
         hidden       = false
-        query_string = "metric kube_pod_status_ready | filter (((((condition == \"true\") || (condition == 1)) || (condition == 1.0)) && (namespace == $namespace)) && (pod == $pod)) | latest | group_by [], sum"
+        query_string = "metric k8s.pod.phase | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace && k8s.pod.name == $pod | point_filter value == 2 | latest | group_by [], sum"
       }
       query {
         query_name   = "b"
         display      = "line"
         hidden       = false
-        query_string = "metric kube_pod_status_ready | time_shift 15m | filter (((((condition == \"true\") || (condition == 1)) || (condition == 1.0)) && (namespace == $namespace)) && (pod == $pod)) | latest | group_by [], sum"
+        query_string = "metric k8s.pod.phase | time_shift 15m | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace && k8s.pod.name == $pod | point_filter value == 2 | latest | group_by [], sum"
       }
     }
   }
   group {
-    rank            = 8
+    rank            = 6
     title           = "Containers"
     visibility_type = "explicit"
 
@@ -668,38 +416,20 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
       height = 8
 
       query {
-        query_name   = "a"
-        display      = "line"
-        hidden       = false
-        query_string = "metric kube_pod_container_status_running | filter ((namespace == $namespace) && (pod == $pod)) | latest | group_by [], sum"
-      }
-      query {
-        query_name   = "b"
-        display      = "line"
-        hidden       = false
-        query_string = "metric kube_pod_container_status_waiting | filter ((namespace == $namespace) && (pod == $pod)) | latest | group_by [], sum"
-      }
-      query {
-        query_name   = "c"
-        display      = "line"
-        hidden       = false
-        query_string = "metric kube_pod_container_status_terminated | filter ((namespace == $namespace) && (pod == $pod)) | latest | group_by [], sum"
-      }
-      query {
         query_name   = "d"
         display      = "line"
         hidden       = false
-        query_string = "metric kube_pod_container_status_restarts | filter ((namespace == $namespace) && (pod == $pod)) | rate | group_by [], sum"
+        query_string = "metric k8s.container.restarts | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace && k8s.pod.name == $pod | rate | group_by [], sum"
       }
       query {
         query_name   = "e"
         display      = "line"
         hidden       = false
-        query_string = "metric kube_pod_container_status_ready | filter ((namespace == $namespace) && (pod == $pod)) | latest | group_by [], sum"
+        query_string = "metric k8s.container.ready | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace && k8s.pod.name == $pod | latest | group_by [], sum"
       }
     }
     chart {
-      name   = "Containers CPU Overcommit"
+      name   = "Containers Readiness Flapping (Restarts)"
       type   = "timeseries"
       rank   = 1
       x_pos  = 16
@@ -711,17 +441,17 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
         query_name   = "a"
         display      = "line"
         hidden       = false
-        query_string = "metric kube_pod_container_resource_limits | filter (((((resource == \"cpu\") && (pod == $pod)) && (node == $node)) && (unit == \"core\")) && (namespace == $namespace)) | latest | group_by [], sum"
+        query_string = "metric k8s.container.restarts | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace && k8s.pod.name == $pod | rate | group_by [\"k8s.namespace.name\"], sum"
       }
       query {
         query_name   = "b"
         display      = "line"
         hidden       = false
-        query_string = "metric kube_node_status_capacity | filter (((resource == \"cpu\") && (node == $node)) && (unit == \"core\")) | latest | group_by [], sum"
+        query_string = "metric k8s.container.restarts | time_shift 30m | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace && k8s.pod.name == $pod | rate | group_by [\"k8s.namespace.name\"], sum"
       }
     }
     chart {
-      name   = "Containers Memory Overcommit"
+      name   = "Containers CPU Utilization"
       type   = "timeseries"
       rank   = 2
       x_pos  = 32
@@ -733,17 +463,11 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
         query_name   = "a"
         display      = "line"
         hidden       = false
-        query_string = "metric kube_pod_container_resource_limits | filter (((((pod == $pod) && (node == $node)) && (namespace == $namespace)) && (resource == \"memory\")) && (unit == \"byte\")) | latest | group_by [], sum"
-      }
-      query {
-        query_name   = "b"
-        display      = "line"
-        hidden       = false
-        query_string = "metric kube_node_status_capacity | filter (((resource == \"memory\") && (node == $node)) && (unit == \"byte\")) | latest | group_by [], sum"
+        query_string = "metric container.cpu.utilization | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace && k8s.node.name == $node && k8s.pod.name == $pod  | latest | group_by [], sum"
       }
     }
     chart {
-      name   = "Containers Readiness Flapping (Restarts)"
+      name   = "Containers Memory Requests"
       type   = "timeseries"
       rank   = 3
       x_pos  = 0
@@ -755,17 +479,17 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
         query_name   = "a"
         display      = "line"
         hidden       = false
-        query_string = "metric kube_pod_container_status_restarts | filter ((namespace == $namespace) && (pod == $pod)) | rate | group_by [\"namespace\"], sum"
+        query_string = "metric k8s.container.memory_request | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace && k8s.node.name == $node && k8s.pod.name == $pod | latest | group_by [], sum"
       }
       query {
         query_name   = "b"
         display      = "line"
         hidden       = false
-        query_string = "metric kube_pod_container_status_restarts | time_shift 30m | filter ((namespace == $namespace) && (pod == $pod)) | rate | group_by [\"namespace\"], sum"
+        query_string = "metric k8s.container.memory_limit | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace && k8s.node.name == $node && k8s.pod.name == $pod | latest | group_by [], sum"
       }
     }
     chart {
-      name   = "Containers CPU Requests"
+      name   = "Total Containers By Namespace"
       type   = "timeseries"
       rank   = 4
       x_pos  = 16
@@ -774,64 +498,16 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
       height = 8
 
       query {
-        query_name   = "a"
-        display      = "line"
-        hidden       = false
-        query_string = "metric kube_pod_container_resource_requests | filter (((((namespace == $namespace) && (node == $node)) && (pod == $pod)) && (resource == \"cpu\")) && (unit == \"core\")) | latest | group_by [], sum"
-      }
-      query {
-        query_name   = "b"
-        display      = "line"
-        hidden       = false
-        query_string = "metric kube_node_status_capacity | filter (((resource == \"cpu\") && (node == $node)) && (unit == \"core\")) | latest | group_by [], sum"
-      }
-    }
-    chart {
-      name   = "Containers Memory Requests"
-      type   = "timeseries"
-      rank   = 5
-      x_pos  = 32
-      y_pos  = 8
-      width  = 16
-      height = 8
-
-      query {
-        query_name   = "a"
-        display      = "line"
-        hidden       = false
-        query_string = "metric kube_pod_container_resource_requests | filter (((((namespace == $namespace) && (node == $node)) && (pod == $pod)) && (resource == \"memory\")) && (unit == \"byte\")) | latest | group_by [], sum"
-      }
-      query {
-        query_name   = "b"
-        display      = "line"
-        hidden       = false
-        query_string = "metric kube_node_status_capacity | filter (((resource == \"memory\") && (node == $node)) && (unit == \"byte\")) | latest | group_by [], sum"
-      }
-    }
-    chart {
-      name   = "Total Containers By Namespace"
-      type   = "timeseries"
-      rank   = 6
-      x_pos  = 0
-      y_pos  = 16
-      width  = 16
-      height = 8
-
-      query {
         query_name = "a"
         display    = "table"
 
-        # display_type_options {
-        #   sort_by        = "value"
-        #   sort_direction = "desc"
-        # }
         hidden       = false
-        query_string = "metric kube_pod_container_info | filter ((namespace == $namespace) && (pod == $pod)) | latest | group_by [\"namespace\"], sum"
+        query_string = "metric k8s.container.ready | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace && k8s.pod.name == $pod | latest | group_by [\"k8s.namespace.name\"], sum"
       }
     }
   }
   group {
-    rank            = 1
+    rank            = 0
     title           = "Cluster Overview"
     visibility_type = "explicit"
 
@@ -846,13 +522,13 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
 
       query {
         query_name   = "a"
-        display      = "big_number"
+        display      = "line"
         hidden       = false
-        query_string = "metric kube_namespace_status_phase | filter ((phase == \"Active\") && (namespace == $namespace)) | latest | group_by [], count_nonzero"
+        query_string = "metric k8s.namespace.phase | filter k8s.cluster.name == $cluster | latest | group_by [\"k8s.namespace.name\"], sum | point_filter value == 1 | group_by [], count_nonzero"
       }
     }
     chart {
-      name   = "Total Secrets"
+      name   = "Total Statefulsets"
       type   = "timeseries"
       rank   = 1
       x_pos  = 16
@@ -862,13 +538,13 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
 
       query {
         query_name   = "a"
-        display      = "big_number"
+        display      = "line"
         hidden       = false
-        query_string = "metric kube_secret_info | filter (namespace == $namespace) | latest | group_by [], count_nonzero"
+        query_string = "metric k8s.statefulset.current_pods | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace | latest | group_by [], count_nonzero"
       }
     }
     chart {
-      name   = "Total ConfigMaps"
+      name   = "Total Persistent Volume Claims"
       type   = "timeseries"
       rank   = 2
       x_pos  = 32
@@ -878,13 +554,13 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
 
       query {
         query_name   = "a"
-        display      = "big_number"
+        display      = "line"
         hidden       = false
-        query_string = "metric kube_configmap_info | filter (namespace == $namespace) | latest | group_by [], count_nonzero"
+        query_string = "metric k8s.volume.capacity | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace | latest | group_by [\"k8s.persistentvolumeclaim.name\"], count_nonzero"
       }
     }
     chart {
-      name   = "Total Services"
+      name   = "Total Persistent Volume"
       type   = "timeseries"
       rank   = 3
       x_pos  = 0
@@ -894,106 +570,32 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
 
       query {
         query_name   = "a"
-        display      = "big_number"
+        display      = "line"
         hidden       = false
-        query_string = "metric kube_service_info | filter (namespace == $namespace) | latest | group_by [], count_nonzero"
-      }
-    }
-    chart {
-      name   = "Total Statefulsets"
-      type   = "timeseries"
-      rank   = 4
-      x_pos  = 16
-      y_pos  = 8
-      width  = 16
-      height = 8
-
-      query {
-        query_name   = "a"
-        display      = "big_number"
-        hidden       = false
-        query_string = "metric kube_statefulset_status_replicas_current | filter (namespace == $namespace) | latest | group_by [], count_nonzero"
-      }
-    }
-    chart {
-      name   = "Total Persistent Volume Claims"
-      type   = "timeseries"
-      rank   = 5
-      x_pos  = 32
-      y_pos  = 8
-      width  = 16
-      height = 8
-
-      query {
-        query_name   = "a"
-        display      = "big_number"
-        hidden       = false
-        query_string = "metric kube_persistentvolumeclaim_info | filter (namespace == $namespace) | latest | group_by [], count_nonzero"
-      }
-    }
-    chart {
-      name   = "Total Persistent Volume"
-      type   = "timeseries"
-      rank   = 6
-      x_pos  = 0
-      y_pos  = 16
-      width  = 16
-      height = 8
-
-      query {
-        query_name   = "a"
-        display      = "big_number"
-        hidden       = false
-        query_string = "metric kube_persistentvolume_info | latest | group_by [], count_nonzero"
-      }
-    }
-    chart {
-      name   = "Storage Classes"
-      type   = "timeseries"
-      rank   = 7
-      x_pos  = 16
-      y_pos  = 16
-      width  = 16
-      height = 8
-
-      query {
-        query_name   = "a"
-        display      = "table"
-        hidden       = false
-        query_string = "metric kube_storageclass_info | latest | group_by [\"storageclass\", \"provisioner\", \"volume_binding_mode\"], sum"
-      }
-    }
-    chart {
-      name   = "Ingress Classes"
-      type   = "timeseries"
-      rank   = 8
-      x_pos  = 32
-      y_pos  = 16
-      width  = 16
-      height = 8
-
-      query {
-        query_name   = "a"
-        display      = "table"
-        hidden       = false
-        query_string = "metric kube_ingressclass_info | rate | group_by [\"ingressclass\"], sum"
+        query_string = "metric k8s.volume.capacity | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace | latest | group_by [\"k8s.volume.name\"], count_nonzero | group_by [], sum"
       }
     }
   }
+
 
   template_variable {
     name                     = "pod"
     default_values           = []
-    suggestion_attribute_key = "pod"
+    suggestion_attribute_key = "k8s.pod.name"
   }
   template_variable {
     name                     = "namespace"
     default_values           = []
-    suggestion_attribute_key = "namespace"
+    suggestion_attribute_key = "k8s.namespace.name"
   }
   template_variable {
     name                     = "node"
     default_values           = []
-    suggestion_attribute_key = "node"
+    suggestion_attribute_key = "k8s.node.name"
+  }
+  template_variable {
+    name                     = "cluster"
+    default_values           = []
+    suggestion_attribute_key = "k8s.cluster.name"
   }
 }
