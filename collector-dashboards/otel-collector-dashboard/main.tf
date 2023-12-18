@@ -671,7 +671,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
         query_name   = "a"
         display      = "line"
         hidden       = false
-        query_string = "metric otelcol_processor_refused_spans | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [\"processor\", \"$service_name\"], sum"
+        query_string = "metric otelcol_processor_refused_spans | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [\"processor\", \"service.name\"], sum"
       }
 
       subtitle = ""
