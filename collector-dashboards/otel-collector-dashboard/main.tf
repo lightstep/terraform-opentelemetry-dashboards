@@ -228,37 +228,37 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
         query_name   = "a"
         display      = "line"
         hidden       = false
-        query_string = "metric otelcol_processor_dropped_metric_points | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [\"processor\"], sum"
+        query_string = "metric otelcol_processor_dropped_metric_points | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [\"processor\", \"service.name\"], sum"
       }
       query {
         query_name   = "b"
         display      = "line"
         hidden       = false
-        query_string = "metric otelcol_processor_dropped_spans | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [\"processor\"], sum"
+        query_string = "metric otelcol_processor_dropped_spans | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [\"processor\", \"service.name\"], sum"
       }
       query {
         query_name   = "c"
         display      = "line"
         hidden       = false
-        query_string = "metric otelcol_processor_dropped_log_records | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [\"processor\"], sum"
+        query_string = "metric otelcol_processor_dropped_log_records | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [\"processor\", \"service.name\"], sum"
       }
       query {
         query_name   = "d"
         display      = "line"
         hidden       = false
-        query_string = "metric otelcol_processor_refused_metric_points | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [\"processor\"], sum"
+        query_string = "metric otelcol_processor_refused_metric_points | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [\"service.name\", \"processor\"], sum"
       }
       query {
         query_name   = "e"
         display      = "line"
         hidden       = false
-        query_string = "metric otelcol_processor_refused_spans | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [\"processor\"], sum"
+        query_string = "metric otelcol_processor_refused_spans | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [\"processor\", \"service.name\"], sum"
       }
       query {
         query_name   = "f"
         display      = "line"
         hidden       = false
-        query_string = "metric otelcol_processor_refused_log_records | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [\"processor\"], sum"
+        query_string = "metric otelcol_processor_refused_log_records | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [\"processor\", \"service.name\"], sum"
       }
 
       subtitle = ""
@@ -447,7 +447,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
         query_name   = "a"
         display      = "line"
         hidden       = false
-        query_string = "metric otelcol_receiver_accepted_log_records | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [\"service.name\", \"receiver\", \"processor\"], sum"
+        query_string = "metric otelcol_receiver_accepted_log_records | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [\"service.name\", \"receiver\"], sum"
       }
 
       subtitle = ""
@@ -466,7 +466,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
         query_name   = "b"
         display      = "line"
         hidden       = false
-        query_string = "metric otelcol_receiver_refused_metric_points | filter (((((\"service.name\" == $service_name) && (\"k8s.namespace.name\" == $namespace)) && (\"k8s.pod.name\" == $pod)) && (\"k8s.pod.uid\" == $pod_uid)) && (\"k8s.cluster.name\" == $cluster)) | rate | group_by [\"receiver\", \"service.name\", \"processor\"], sum"
+        query_string = "metric otelcol_receiver_refused_metric_points | filter (((((\"service.name\" == $service_name) && (\"k8s.namespace.name\" == $namespace)) && (\"k8s.pod.name\" == $pod)) && (\"k8s.pod.uid\" == $pod_uid)) && (\"k8s.cluster.name\" == $cluster)) | rate | group_by [\"receiver\", \"service.name\"], sum"
       }
 
       subtitle = ""
@@ -504,7 +504,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
         query_name   = "a"
         display      = "line"
         hidden       = false
-        query_string = "metric otelcol_receiver_refused_log_records | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [\"service.name\", \"receiver\", \"processor\"], sum"
+        query_string = "metric otelcol_receiver_refused_log_records | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [\"service.name\", \"receiver\"], sum"
       }
 
       subtitle = ""
@@ -652,7 +652,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
         query_name   = "a"
         display      = "line"
         hidden       = false
-        query_string = "metric otelcol_processor_refused_metric_points | filter (((((\"k8s.namespace.name\" == $namespace) && (\"k8s.pod.name\" == $pod)) && (\"k8s.pod.uid\" == $pod_uid)) && (\"service_name\" == $service_name)) && (\"k8s.cluster.name\" == $cluster)) | rate | group_by [], sum"
+        query_string = "metric otelcol_processor_refused_metric_points | filter (((((\"k8s.namespace.name\" == $namespace) && (\"k8s.pod.name\" == $pod)) && (\"k8s.pod.uid\" == $pod_uid)) && (\"service_name\" == $service_name)) && (\"k8s.cluster.name\" == $cluster)) | rate | group_by [\"service.name\", \"processor\"], sum"
       }
 
       subtitle = ""
@@ -690,7 +690,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
         query_name   = "a"
         display      = "line"
         hidden       = false
-        query_string = "metric otelcol_processor_refused_log_records | filter (((((\"service.name\" == $service_name) && (\"k8s.pod.uid\" == $pod_uid)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"k8s.pod.name\" == $pod)) | rate | group_by [\"service.name\"], sum"
+        query_string = "metric otelcol_processor_refused_log_records | filter (((((\"service.name\" == $service_name) && (\"k8s.pod.uid\" == $pod_uid)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"k8s.pod.name\" == $pod)) | rate | group_by [\"service.name\", \"processor\"], sum"
       }
 
       subtitle = ""
