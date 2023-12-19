@@ -50,7 +50,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
         query_name   = "d"
         display      = "line"
         hidden       = false
-        query_string = "metric otelcol_processor_dropped_metric_points | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [], sum"
+        query_string = "metric otelcol_processor_refused_metric_points | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [], sum"
       }
       query {
         query_name   = "e"
@@ -387,7 +387,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       y_pos  = 0
       width  = 48
       height = 6
-      text   = "This dashboard monitors the health of your [OpenTelemetry Collectors](https://docs.lightstep.com/docs/collector-home-page) that are running in Kubernetes. It works best when collectors are provisioned with the [otel-cloud-stack chart](https://docs.lightstep.com/docs/quick-start-infra-otel-first#send-kubernetes-metrics-to-cloud-observability).\n\nUse template variables to filter data. To filter to specific collectors, use the `$service.name` template variable. Collectors running in k8s have a service name that ends with \"collector\". Filter to individual collector pods with the `$pod` or `$pod_uid` template variables.\n\nIf the charts indicate \"No data found\" you may not be sending metrics from the collectors for that chart."
+      text   = "This dashboard monitors the health of your [OpenTelemetry Collectors](https://docs.lightstep.com/docs/collector-home-page) that are running in Kubernetes. It works best when collectors are provisioned with the [otel-cloud-stack chart](https://docs.lightstep.com/docs/quick-start-infra-otel-first#send-kubernetes-metrics-to-cloud-observability).\n\nUse template variables to filter data. To filter to specific collectors, use the `$service_name` template variable. Collectors running in k8s have a service name that ends with \"collector\". Filter to individual collector pods with the `$pod` or `$pod_uid` template variables.\n\nIf the charts indicate \"No data found\" you may not be sending metrics from the collectors for that chart."
     }
   }
   group {
@@ -561,7 +561,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
         query_name   = "a"
         display      = "line"
         hidden       = false
-        query_string = "with\n  errors = metric otelcol_scraper_errored_metric_points | filter k8s.pod.uid == $pod_uid | filter k8s.pod.name == $pod | filter k8s.cluster.name == $cluster | filter k8s.namespace.name == $namespace | filter service.name == $service_name | rate | group_by [\"service.name\"], sum;\n  successes = metric otelcol_scraper_scraped_metric_points | filter k8s.pod.uid == $pod_uid | filter k8s.pod.name == $pod | filter k8s.cluster.name == $cluster | filter k8s.namespace.name == $namespace | filter service.name == $service_name | rate | group_by [\"service.name\"], sum;\njoin errors * 100.0 / (errors + successes), errors=0, successes=1"
+        query_string = "with\n  errors = metric otelcol_scraper_errored_metric_points | filter k8s.pod.uid == $pod_uid && k8s.pod.name == $pod && k8s.cluster.name == $cluster && k8s.namespace.name == $namespace && service.name == $service_name | rate | group_by [\"service.name\", \"receiver\"], sum;\n  successes = metric otelcol_scraper_scraped_metric_points | filter k8s.pod.uid == $pod_uid && k8s.pod.name == $pod && k8s.cluster.name == $cluster && k8s.namespace.name == $namespace && service.name == $service_name | rate | group_by [\"service.name\", \"receiver\"], sum;\njoin errors * 100.0 / (errors + successes), errors=0, successes=1"
       }
 
       subtitle = ""
@@ -652,7 +652,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
         query_name   = "a"
         display      = "line"
         hidden       = false
-        query_string = "metric otelcol_processor_refused_metric_points | filter (((((\"k8s.namespace.name\" == $namespace) && (\"k8s.pod.name\" == $pod)) && (\"k8s.pod.uid\" == $pod_uid)) && (\"service_name\" == $service_name)) && (\"k8s.cluster.name\" == $cluster)) | rate | group_by [], sum"
+        query_string = "metric otelcol_processor_refused_metric_points | filter (((((\"k8s.namespace.name\" == $namespace) && (\"k8s.pod.name\" == $pod)) && (\"k8s.pod.uid\" == $pod_uid)) && (\"service_name\" == $service_name)) && (\"k8s.cluster.name\" == $cluster)) | rate | group_by [\"service.name\", \"processor\"], sum"
       }
 
       subtitle = ""
@@ -671,7 +671,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
         query_name   = "a"
         display      = "line"
         hidden       = false
-        query_string = "metric otelcol_processor_refused_spans | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [\"processor\", \"$service_name\"], sum"
+        query_string = "metric otelcol_processor_refused_spans | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | rate | group_by [\"processor\", \"service.name\"], sum"
       }
 
       subtitle = ""
@@ -690,7 +690,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
         query_name   = "a"
         display      = "line"
         hidden       = false
-        query_string = "metric otelcol_processor_refused_log_records | filter (((((\"service.name\" == $service_name) && (\"k8s.pod.uid\" == $pod_uid)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"k8s.pod.name\" == $pod)) | rate | group_by [\"service.name\"], sum"
+        query_string = "metric otelcol_processor_refused_log_records | filter (((((\"service.name\" == $service_name) && (\"k8s.pod.uid\" == $pod_uid)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"k8s.pod.name\" == $pod)) | rate | group_by [\"service.name\", \"processor\"], sum"
       }
 
       subtitle = ""
@@ -753,7 +753,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       subtitle = ""
     }
     chart {
-      name        = "99% Processor Batch Send Size"
+      name        = "p99 Processor Batch Send Size"
       description = " 99th percentile of the size of batches (in count of metric points, spans, or logs) in the [batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md). This shows the upper end of batch payloads in count of items that will be exported. The batch processor accepts spans, metrics, or logs to better compress the data and send it over fewer outgoing connections."
       type        = "timeseries"
       rank        = 9
@@ -766,13 +766,13 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
         query_name   = "a"
         display      = "line"
         hidden       = false
-        query_string = "metric otelcol_processor_batch_batch_send_size | filter k8s.pod.uid == $pod_uid | filter k8s.pod.name == $pod | filter k8s.cluster.name == $cluster | filter k8s.namespace.name == $namespace | filter \"service.name\" == $service_name | delta | group_by [\"processor\", \"service.name\"], distribution | point percentile(value, 99.0)"
+        query_string = "metric otelcol_processor_batch_batch_send_size | filter (((((\"k8s.pod.uid\" == $pod_uid) && (\"k8s.pod.name\" == $pod)) && (\"k8s.cluster.name\" == $cluster)) && (\"k8s.namespace.name\" == $namespace)) && (\"service.name\" == $service_name)) | delta | group_by [\"processor\", \"service.name\"], sum | point percentile(value, 99.0)"
       }
 
       subtitle = ""
     }
     chart {
-      name        = "99% Processor Batch Send Size in Bytes"
+      name        = "p99 Processor Batch Send Size in Bytes"
       description = "99th percentile of the size of batches (in bytes) in the [batch processor](https://github.com/open-telemetry/opentelemetry-collector/blob/main/processor/batchprocessor/README.md). This shows the upper end of batch payloads in byte size that will be exported. The batch processor accepts spans, metrics, or logs to better compress the data and send it over fewer outgoing connections."
       type        = "timeseries"
       rank        = 10
@@ -785,7 +785,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
         query_name   = "a"
         display      = "line"
         hidden       = false
-        query_string = "metric otelcol_processor_batch_batch_send_size_bytes | filter k8s.pod.uid == $pod_uid | filter k8s.pod.name == $pod | filter k8s.cluster.name == $cluster | filter k8s.namespace.name == $namespace | filter \"service.name\" == $service_name | delta | group_by [\"processor\", \"service.name\"], distribution | point percentile(value, 99.0)"
+        query_string = "metric otelcol_processor_batch_batch_send_size_bytes | filter k8s.pod.uid == $pod_uid && k8s.pod.name == $pod && k8s.cluster.name == $cluster && k8s.namespace.name == $namespace && \"service.name\" == $service_name | delta | group_by [\"processor\", \"service.name\"], sum | point percentile(value, 99.0)"
       }
 
       subtitle = ""
@@ -1015,7 +1015,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
         query_name   = "a"
         display      = "line"
         hidden       = false
-        query_string = "metric otelcol_exporter_send_failed_spans | filter (((((\"k8s.namespace.name\" == $namespace) && (\"k8s.pod.name\" == $pod)) && (\"k8s.pod.uid\" == $pod_uid)) && (\"k8s.cluster.name\" == $cluster)) && (\"service.name\" == $service_name)) | rate | group_by [\"service.name\"], sum"
+        query_string = "metric otelcol_exporter_send_failed_spans | filter (((((\"k8s.namespace.name\" == $namespace) && (\"k8s.pod.name\" == $pod)) && (\"k8s.pod.uid\" == $pod_uid)) && (\"k8s.cluster.name\" == $cluster)) && (\"service.name\" == $service_name)) | rate | group_by [\"service.name\", \"exporter\"], sum"
       }
 
       subtitle = ""
@@ -1034,7 +1034,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
         query_name   = "a"
         display      = "line"
         hidden       = false
-        query_string = "metric otelcol_exporter_send_failed_metric_points | filter (((((\"k8s.namespace.name\" == $namespace) && (\"k8s.pod.name\" == $pod)) && (\"k8s.pod.uid\" == $pod_uid)) && (\"k8s.cluster.name\" == $cluster)) && (\"service.name\" == $service_name)) | rate | group_by [\"service.name\"], sum"
+        query_string = "metric otelcol_exporter_send_failed_metric_points | filter (((((\"k8s.namespace.name\" == $namespace) && (\"k8s.pod.name\" == $pod)) && (\"k8s.pod.uid\" == $pod_uid)) && (\"k8s.cluster.name\" == $cluster)) && (\"service.name\" == $service_name)) | rate | group_by [\"service.name\",  \"exporter\"], sum"
       }
 
       subtitle = ""
@@ -1053,7 +1053,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
         query_name   = "a"
         display      = "line"
         hidden       = false
-        query_string = "metric otelcol_exporter_send_failed_log_records | filter (((((\"k8s.namespace.name\" == $namespace) && (\"k8s.pod.name\" == $pod)) && (\"k8s.pod.uid\" == $pod_uid)) && (\"k8s.cluster.name\" == $cluster)) && (\"service.name\" == $service_name)) | rate | group_by [\"service.name\"], sum"
+        query_string = "metric otelcol_exporter_send_failed_log_records | filter (((((\"k8s.namespace.name\" == $namespace) && (\"k8s.pod.name\" == $pod)) && (\"k8s.pod.uid\" == $pod_uid)) && (\"k8s.cluster.name\" == $cluster)) && (\"service.name\" == $service_name)) | rate | group_by [\"service.name\",  \"exporter\"], sum"
       }
 
       subtitle = ""
@@ -1074,7 +1074,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
     visibility_type = "explicit"
 
     chart {
-      name        = "99% CPU Usage [%]"
+      name        = "p99 CPU Usage [%]"
       description = "99th percentile CPU usage of the pods in each Collector pool"
       type        = "timeseries"
       rank        = 0
@@ -1087,7 +1087,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
         query_name   = "a"
         display      = "line"
         hidden       = false
-        query_string = "metric k8s.pod.cpu.utilization | filter k8s.pod.uid == $pod_uid | filter k8s.pod.name == $pod | filter k8s.cluster.name == $cluster | filter k8s.namespace.name == $namespace | filter service.name == $service_name | filter service.name =~ \".*collector\" | latest | group_by [\"service.name\"], distribution | point percentile(value, 99.0) * 100"
+        query_string = "metric k8s.pod.cpu.utilization | filter k8s.pod.uid == $pod_uid && k8s.pod.name == $pod && k8s.cluster.name == $cluster && k8s.namespace.name == $namespace && service.name == $service_name && service.name =~ \".*collector\" | latest | group_by [\"service.name\"], distribution | point percentile(value, 99.0) * 100"
       }
 
       subtitle = ""
@@ -1106,7 +1106,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
         query_name   = "a"
         display      = "line"
         hidden       = false
-        query_string = "with\n  usage = metric k8s.pod.memory.usage | filter k8s.pod.uid == $pod_uid | filter k8s.pod.name == $pod | filter k8s.cluster.name == $cluster | filter k8s.namespace.name == $namespace | filter service.name == $service_name | filter service.name =~ \".*collector\" | latest | group_by [\"service.name\"], sum;\n  available = metric k8s.pod.memory.available | filter k8s.pod.uid == $pod_uid | filter k8s.pod.name == $pod | filter k8s.cluster.name == $cluster | filter k8s.namespace.name == $namespace | filter service.name == $service_name | filter service.name =~ \".*collector\" | latest | group_by [\"service.name\"], sum;\njoin usage / available * 100.0, usage=0, available=1"
+        query_string = "with\n  usage = metric k8s.pod.memory.usage | filter k8s.pod.uid == $pod_uid | filter k8s.pod.name == $pod | filter k8s.cluster.name == $cluster | filter k8s.namespace.name == $namespace | filter service.name == $service_name | filter service.name =~ \".*collector\" | latest | group_by [\"service.name\"], sum;\n  available = metric k8s.pod.memory.available | filter k8s.pod.uid == $pod_uid | filter k8s.pod.name == $pod | filter k8s.cluster.name == $cluster | filter k8s.namespace.name == $namespace | filter service.name == $service_name | filter service.name =~ \".*collector\" | latest | group_by [\"service.name\"], sum;\njoin usage / available * 100.0, usage=0, available=0"
       }
 
       subtitle = ""
@@ -1150,7 +1150,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       subtitle = ""
     }
     chart {
-      name        = "99% Memory Used Per Pool"
+      name        = "p99 Memory Used Per Pool"
       description = "99th percentile of memory used by the pods in each collector pool. This shows the upper end of memory usage across the collector pods in a pool in absolute terms."
       type        = "timeseries"
       rank        = 4
@@ -1229,7 +1229,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       subtitle = ""
     }
     chart {
-      name        = "Running"
+      name        = "Pods in Running Phase"
       description = "Count of collector pods in the Running phase"
       type        = "timeseries"
       rank        = 1
@@ -1248,7 +1248,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       subtitle = ""
     }
     chart {
-      name        = "Pending"
+      name        = "Pods in Pending Phase"
       description = "Count of collector pods in the Pending phase"
       type        = "timeseries"
       rank        = 2
@@ -1267,7 +1267,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       subtitle = ""
     }
     chart {
-      name        = "Succeeded"
+      name        = "Pods in Succeeded Phase"
       description = "Count of collector pods in the Succeeded phase"
       type        = "timeseries"
       rank        = 3
@@ -1286,7 +1286,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       subtitle = ""
     }
     chart {
-      name        = "Failed"
+      name        = "Pods in Failed Phase"
       description = "Count of collector pods in the Failed phase"
       type        = "timeseries"
       rank        = 4
@@ -1331,7 +1331,7 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       subtitle = ""
     }
     chart {
-      name        = "Unknown"
+      name        = "Pods in Unknown Phase"
       description = "Count of collector pods in the Unknown phase"
       type        = "timeseries"
       rank        = 6
@@ -1360,31 +1360,31 @@ resource "lightstep_dashboard" "otel_collector_dashboard" {
       height      = 8
 
       query {
-        query_name   = "a"
+        query_name   = "Pending"
         display      = "area"
         hidden       = false
         query_string = "with\n  pending = metric k8s.pod.phase | filter k8s.pod.uid == $pod_uid | filter k8s.pod.name == $pod | filter k8s.cluster.name == $cluster | filter k8s.namespace.name == $namespace | filter service.name == $service_name | filter service.name =~ \".*collector\" | point_filter value == 1 | latest 1m | group_by [], count_nonzero;\n  total = metric k8s.pod.phase | filter k8s.pod.uid == $pod_uid | filter k8s.pod.name == $pod | filter k8s.cluster.name == $cluster | filter k8s.namespace.name == $namespace | filter service.name == $service_name | filter service.name =~ \".*collector\" | latest 1m | group_by [], count_nonzero;\njoin pending * 100.0 / total, pending=0, total=1"
       }
       query {
-        query_name   = "b"
+        query_name   = "Running"
         display      = "area"
         hidden       = false
         query_string = "with\n  running = metric k8s.pod.phase | filter k8s.pod.uid == $pod_uid | filter k8s.pod.name == $pod | filter k8s.cluster.name == $cluster | filter k8s.namespace.name == $namespace | filter service.name == $service_name | filter service.name =~ \".*collector\" | point_filter value == 2 | latest 1m | group_by [], count_nonzero;\n  total = metric k8s.pod.phase | filter k8s.pod.uid == $pod_uid | filter k8s.pod.name == $pod | filter k8s.cluster.name == $cluster | filter k8s.namespace.name == $namespace | filter service.name == $service_name | filter service.name =~ \".*collector\" | latest 1m | group_by [], count_nonzero;\njoin running * 100.0 / total, running=0, total=1"
       }
       query {
-        query_name   = "c"
+        query_name   = "Success"
         display      = "area"
         hidden       = false
         query_string = "with\n  success = metric k8s.pod.phase | filter k8s.pod.uid == $pod_uid | filter k8s.pod.name == $pod | filter k8s.cluster.name == $cluster | filter k8s.namespace.name == $namespace | filter service.name == $service_name | filter service.name =~ \".*collector\" | point_filter value == 3 | latest 1m | group_by [], count_nonzero;\n  total = metric k8s.pod.phase | filter k8s.pod.uid == $pod_uid | filter k8s.pod.name == $pod | filter k8s.cluster.name == $cluster | filter k8s.namespace.name == $namespace | filter service.name == $service_name | filter service.name =~ \".*collector\" | latest 1m | group_by [], count_nonzero;\njoin success * 100.0 / total, success=0, total=1"
       }
       query {
-        query_name   = "d"
+        query_name   = "Failed"
         display      = "area"
         hidden       = false
         query_string = "with\n  failed = metric k8s.pod.phase | filter k8s.pod.uid == $pod_uid | filter k8s.pod.name == $pod | filter k8s.cluster.name == $cluster | filter k8s.namespace.name == $namespace | filter service.name == $service_name | filter service.name =~ \".*collector\" | point_filter value == 4 | latest 1m | group_by [], count_nonzero;\n  total = metric k8s.pod.phase | filter k8s.pod.uid == $pod_uid | filter k8s.pod.name == $pod | filter k8s.cluster.name == $cluster | filter k8s.namespace.name == $namespace | filter service.name == $service_name | filter service.name =~ \".*collector\" | latest 1m | group_by [], count_nonzero;\njoin failed * 100.0 / total, failed=0, total=1"
       }
       query {
-        query_name   = "e"
+        query_name   = "Unknown"
         display      = "area"
         hidden       = false
         query_string = "with\n  unknown = metric k8s.pod.phase | filter k8s.pod.uid == $pod_uid | filter k8s.pod.name == $pod | filter k8s.cluster.name == $cluster | filter k8s.namespace.name == $namespace | filter service.name == $service_name | filter service.name =~ \".*collector\" | point_filter value == 5 | latest 1m | group_by [], count_nonzero;\n  total = metric k8s.pod.phase | filter k8s.pod.uid == $pod_uid | filter k8s.pod.name == $pod | filter k8s.cluster.name == $cluster | filter k8s.namespace.name == $namespace | filter service.name == $service_name | filter service.name =~ \".*collector\" | latest 1m | group_by [], count_nonzero;\njoin unknown * 100.0 / total, unknown=0, total=1"
