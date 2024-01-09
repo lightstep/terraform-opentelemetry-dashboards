@@ -291,7 +291,7 @@ resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboar
         query_name   = "a"
         display      = "line"
         hidden       = false
-        query_string = "with\n  a = metric k8s.daemonset.ready_nodes | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace | latest | group_by [], sum;\n  b = metric kube_daemonset_status_number_unavailable | filter k8s.namespace.name == $namespace | latest | group_by [], sum;\njoin ((a + b)), a=0, b=0"
+        query_string = "metric k8s.daemonset.ready_nodes | filter k8s.cluster.name == $cluster && k8s.namespace.name == $namespace | latest | group_by [], sum"
       }
     }
     chart {
