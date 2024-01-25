@@ -201,7 +201,7 @@ output "lightstep_otel_collector_kubernetes_comprehensive_dashboard_prometheus_u
 
 output "lightstep_otel_collector_kubernetes_dashboard_url" {
   value       = module.lightstep_otel_collector_kubernetes_dashboard.dashboard_url
-  description = "Cloud Observability OpenTelemetry  Dashboard"
+  description = "Cloud Observability OpenTelemetry Kubernetes Dashboard"
 }
 
 output "lightstep_otel_collector_memcachedreceiver_dashboard_url" {
