@@ -311,5 +311,5 @@ output "lightstep_otel_operator_dashboard_url" {
 
 output "lightstep_otel_target_allocator_dashboard_url" {
   value       = module.lightstep_otel_target_allocator_dashboard.dashboard_url
-  description = "Cloud Observability OpenTelemetry Target Allocator Dashboard"
+  description = "Cloud Observability OpenTelemetry OTel Target Allocator Dashboard"
 }
