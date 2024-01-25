@@ -12,7 +12,7 @@ fmt:
 
 check:
 	terraform fmt -check -recursive
-	tflint --config .tflint.hcl --recursive --minimum-failure-severity=error
+	tflint --recursive --minimum-failure-severity=error
 
 # warning - this will destroy you terraform state file
 clean:
