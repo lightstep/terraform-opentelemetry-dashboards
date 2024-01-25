@@ -10,7 +10,7 @@ terraform {
 
 resource "lightstep_dashboard" "otel_collector_kafkametricsreceiver_dashboard" {
   project_name   = var.lightstep_project
-  dashboard_name = "OpenTelemetry kafkametricsreceiver Integration"
+  dashboard_name = "kafkametricsreceiver Integration"
 
 
 

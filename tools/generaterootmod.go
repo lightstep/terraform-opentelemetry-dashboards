@@ -12,6 +12,33 @@ import (
 	"strings"
 )
 
+func writeMainHead(w io.Writer) error {
+	const subModulesDirectoryPath = "collector-dashboards"
+	requiredProvidersBlock, err := getRequiredProvidersVersion(subModulesDirectoryPath)
+	if err != nil {
+		return err
+	}
+
+	fmt.Fprintf(w, `terraform {
+  required_providers {
+    lightstep = {
+      source  = "lightstep/lightstep"
+      %s
+    }
+  }
+  required_version = ">= v1.0.11"
+}
+
+provider "lightstep" {
+  api_key_env_var = var.lightstep_api_key_env_var
+  organization    = var.lightstep_organization
+  environment     = var.lightstep_env
+}
+`, requiredProvidersBlock)
+
+	return nil
+}
+
 func getRequiredProvidersVersion(dirPath string) (string, error) {
 	files, err := os.ReadDir(dirPath)
 	if err != nil {
@@ -49,32 +76,6 @@ func getRequiredProvidersVersion(dirPath string) (string, error) {
 	}
 
 	return buf.String(), nil
-}
-
-func writeMainHead(w io.Writer, dirPath string) error {
-	requiredProvidersBlock, err := getRequiredProvidersVersion(dirPath)
-	if err != nil {
-		return err
-	}
-
-	fmt.Fprintf(w, `terraform {
-  required_providers {
-    lightstep = {
-      source  = "lightstep/lightstep"
-      %s
-    }
-  }
-  required_version = ">= v1.0.11"
-}
-
-provider "lightstep" {
-  api_key_env_var = var.lightstep_api_key_env_var
-  organization    = var.lightstep_organization
-  environment     = var.lightstep_env
-}
-`, requiredProvidersBlock)
-
-	return nil
 }
 
 func writeMainModuleBlocks(w io.Writer, dirPath string) error {
@@ -225,7 +226,7 @@ func main() {
 	}
 	defer rootMain.Close()
 
-	writeMainHead(rootMain, "collector-dashboards")
+	writeMainHead(rootMain)
 	if err := writeMainModuleBlocks(rootMain, "collector-dashboards"); err != nil {
 		log.Fatal(err)
 	}

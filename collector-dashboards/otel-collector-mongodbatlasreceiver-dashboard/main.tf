@@ -10,7 +10,7 @@ terraform {
 
 resource "lightstep_dashboard" "otel_collector_mongoatlasreceiver_dashboard" {
   project_name   = var.lightstep_project
-  dashboard_name = "OpenTelemetry mongoatlasreceiver Integration"
+  dashboard_name = "mongoatlasreceiver Integration"
 
 
 

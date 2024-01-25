@@ -10,7 +10,7 @@ terraform {
 
 resource "lightstep_dashboard" "otel_collector_riakreceiver_dashboard" {
   project_name   = var.lightstep_project
-  dashboard_name = "OpenTelemetry riakreceiver Integration"
+  dashboard_name = "riakreceiver Integration"
 
 
 

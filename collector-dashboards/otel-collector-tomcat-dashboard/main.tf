@@ -10,7 +10,7 @@ terraform {
 
 resource "lightstep_dashboard" "otel_collector_tomcat_dashboard" {
   project_name          = var.lightstep_project
-  dashboard_name        = "Apache Tomcat Dashboard"
+  dashboard_name        = "Apache Tomcat"
   dashboard_description = "Monitor Tomcat with this metric dashboard."
 
   chart {

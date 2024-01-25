@@ -11,7 +11,7 @@ terraform {
 resource "lightstep_dashboard" "otel_collector_hostmetrics_memory_dashboard" {
 
   project_name   = var.lightstep_project
-  dashboard_name = "OpenTelemetry / Host Metrics / Memory"
+  dashboard_name = "Host Metrics / Memory"
 
 
   chart {

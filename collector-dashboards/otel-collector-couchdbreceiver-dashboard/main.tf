@@ -10,7 +10,7 @@ terraform {
 
 resource "lightstep_dashboard" "otel_collector_couchdbreceiver_dashboard" {
   project_name   = var.lightstep_project
-  dashboard_name = "OpenTelemetry CouchDB Receiver"
+  dashboard_name = "CouchDB Receiver"
 
   chart {
     name = "CouchDB Average Request Time"

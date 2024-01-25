@@ -10,7 +10,7 @@ terraform {
 
 resource "lightstep_dashboard" "otel_collector_kubernetes_comprehensive_dashboard_prometheus" {
   project_name          = var.lightstep_project
-  dashboard_name        = "Kubernetes Comprehensive Dashboard (Prometheus)"
+  dashboard_name        = "Kubernetes Comprehensive (Prometheus)"
   dashboard_description = "A comprehensive dashboard that monitors a Kubernetes cluster running an OpenTelemetry Collector that scrapes [kube-state-metrics](https://github.com/kubernetes/kube-state-metrics) with a [prometheus receiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/prometheusreceiver)."
   group {
     rank            = 3

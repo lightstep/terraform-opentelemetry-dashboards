@@ -11,7 +11,7 @@ terraform {
 
 resource "lightstep_dashboard" "otel_collector_hadoop_dashboard" {
   project_name          = var.lightstep_project
-  dashboard_name        = "Hadoop Dashboard"
+  dashboard_name        = "Hadoop"
   dashboard_description = "Monitor OpenTelemetry Hadoop metrics"
 
   chart {

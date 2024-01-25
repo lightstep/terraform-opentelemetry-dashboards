@@ -10,7 +10,7 @@ terraform {
 
 resource "lightstep_dashboard" "otel_collector_solr_dashboard" {
   project_name          = var.lightstep_project
-  dashboard_name        = "Solr Overview Dashboard"
+  dashboard_name        = "Solr Overview"
   dashboard_description = "Monitor Solr metrics with the OTel Collector's jmx receiver."
 
   chart {
