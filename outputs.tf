@@ -16,7 +16,7 @@ output "lightstep_otel_collector_airflow_dashboard_url" {
 
 output "lightstep_otel_collector_apachereceiver_dashboard_url" {
   value       = module.lightstep_otel_collector_apachereceiver_dashboard.dashboard_url
-  description = "Cloud Observability OpenTelemetry / Apache Integration Dashboard"
+  description = "Cloud Observability OpenTelemetry Apache Integration Dashboard"
 }
 
 output "lightstep_otel_collector_arangodb_url" {
@@ -106,7 +106,7 @@ output "lightstep_otel_collector_hbase_dashboard_url" {
 
 output "lightstep_otel_collector_host_dashboard_url" {
   value       = module.lightstep_otel_collector_host_dashboard.dashboard_url
-  description = "Cloud Observability OpenTelemetry / Host Dashboard"
+  description = "Cloud Observability OpenTelemetry Host Dashboard"
 }
 
 output "lightstep_otel_collector_host_metrics_dashboard_url" {
@@ -121,12 +121,12 @@ output "lightstep_otel_collector_host_metrics_prom_dashboard_url" {
 
 output "lightstep_otel_collector_hostmetrics_cpu_dashboard_url" {
   value       = module.lightstep_otel_collector_hostmetrics_cpu_dashboard.dashboard_url
-  description = "Cloud Observability OpenTelemetry / Host Metrics / CPU Dashboard"
+  description = "Cloud Observability OpenTelemetry  Host Metrics / CPU Dashboard"
 }
 
 output "lightstep_otel_collector_hostmetrics_disk_dashboard_url" {
   value       = module.lightstep_otel_collector_hostmetrics_disk_dashboard.dashboard_url
-  description = "Cloud Observability OpenTelemetry / Host Metrics / Disk Dashboard"
+  description = "Cloud Observability OpenTelemetry  Host Metrics / Disk Dashboard"
 }
 
 output "lightstep_otel_collector_hostmetrics_memory_dashboard_url" {
@@ -136,7 +136,7 @@ output "lightstep_otel_collector_hostmetrics_memory_dashboard_url" {
 
 output "lightstep_otel_collector_hostmetrics_paging_dashboard_url" {
   value       = module.lightstep_otel_collector_hostmetrics_paging_dashboard.dashboard_url
-  description = "Cloud Observability OpenTelemetry / Host Metrics / Paging Dashboard"
+  description = "Cloud Observability OpenTelemetry  Host Metrics / Paging Dashboard"
 }
 
 output "lightstep_otel_collector_httpcheck_dashboard_url" {
@@ -201,7 +201,7 @@ output "lightstep_otel_collector_kubernetes_comprehensive_dashboard_prometheus_u
 
 output "lightstep_otel_collector_kubernetes_dashboard_url" {
   value       = module.lightstep_otel_collector_kubernetes_dashboard.dashboard_url
-  description = "Cloud Observability OpenTelemetry  Dashboard"
+  description = "Cloud Observability OpenTelemetry Kubernetes Dashboard"
 }
 
 output "lightstep_otel_collector_memcachedreceiver_dashboard_url" {

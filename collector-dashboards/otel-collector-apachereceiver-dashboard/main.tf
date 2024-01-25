@@ -10,7 +10,7 @@ terraform {
 
 resource "lightstep_dashboard" "otel_collector_apachereceiver_dashboard" {
   project_name          = var.lightstep_project
-  dashboard_name        = "/ Apache Integration"
+  dashboard_name        = "Apache Integration"
   dashboard_description = "Monitor Apache HTTP Server with this dashboard."
 
   chart {

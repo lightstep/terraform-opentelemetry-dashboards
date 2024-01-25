@@ -10,7 +10,7 @@ terraform {
 
 resource "lightstep_dashboard" "otel_collector_hostmetrics_paging_dashboard" {
   project_name          = var.lightstep_project
-  dashboard_name        = "/ Host Metrics / Paging"
+  dashboard_name        = " Host Metrics / Paging"
   dashboard_description = "Monitor Host Paging metrics."
 
   chart {
