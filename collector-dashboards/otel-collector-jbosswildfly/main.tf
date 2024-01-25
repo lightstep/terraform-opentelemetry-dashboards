@@ -10,7 +10,7 @@ terraform {
 
 resource "lightstep_dashboard" "otel_collector_wildfly_dashboard" {
   project_name          = var.lightstep_project
-  dashboard_name        = "OpenTelemetry JBoss Wildfly Dashboard"
+  dashboard_name        = "JBoss Wildfly Dashboard"
   dashboard_description = "Monitor JBoss Wildfly metrics with this summary dashboard."
 
   chart {

@@ -10,7 +10,7 @@ terraform {
 
 resource "lightstep_dashboard" "otel_collector_arangodb_dashboard" {
   project_name          = var.lightstep_project
-  dashboard_name        = "OpenTelemetry ArangoDB Dashboard"
+  dashboard_name        = "ArangoDB Dashboard"
   dashboard_description = "Monitor ArangoDB metrics with this summary dashboard."
 
   chart {

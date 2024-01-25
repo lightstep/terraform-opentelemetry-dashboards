@@ -11,7 +11,7 @@ terraform {
 
 resource "lightstep_dashboard" "otel_collector_ibmmq_dashboard" {
   project_name          = var.lightstep_project
-  dashboard_name        = "OpenTelemetry IBMMQ Integration"
+  dashboard_name        = "IBMMQ Integration"
   dashboard_description = "Monitoring OpenTelemetry Collector - IBMMQ Metrics"
 
   chart {
