@@ -4,6 +4,7 @@ ready: gen fmt check
 
 # generate the root module: main.tf, variables.tf, outputs.tf and README.md
 gen:
+	terraform init -upgrade
 	go run tools/generaterootmod.go
 
 fmt:
