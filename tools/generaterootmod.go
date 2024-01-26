@@ -12,12 +12,18 @@ import (
 	"strings"
 )
 
-func writeMainHead(w io.Writer) {
-	fmt.Fprint(w, `terraform {
+func writeMainHead(w io.Writer) error {
+	const subModulesDirectoryPath = "collector-dashboards"
+	requiredProvidersVersion, err := getRequiredProvidersVersion(subModulesDirectoryPath)
+	if err != nil {
+		return err
+	}
+
+	fmt.Fprintf(w, `terraform {
   required_providers {
     lightstep = {
       source  = "lightstep/lightstep"
-      version = "~> 1.84.2"
+      %s
     }
   }
   required_version = ">= v1.0.11"
@@ -28,7 +34,48 @@ provider "lightstep" {
   organization    = var.lightstep_organization
   environment     = var.lightstep_env
 }
-`)
+`, requiredProvidersVersion)
+
+	return nil
+}
+
+func getRequiredProvidersVersion(dirPath string) (string, error) {
+	files, err := os.ReadDir(dirPath)
+	if err != nil {
+		return "", err
+	}
+
+	for _, file := range files {
+		if file.IsDir() {
+			dirPath = filepath.Join(dirPath, file.Name())
+			break
+		}
+	}
+
+	file, err := os.Open(filepath.Join(dirPath, "main.tf"))
+	if err != nil {
+		return "", err
+	}
+	defer file.Close()
+
+	var buf bytes.Buffer
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Text()
+		match, err := regexp.MatchString(`^\s*version\s*= `, line)
+		if err != nil {
+			return "", err
+		}
+		if match {
+			buf.WriteString(line)
+		}
+	}
+
+	if err := scanner.Err(); err != nil {
+		log.Fatal(err)
+	}
+
+	return buf.String(), nil
 }
 
 func writeMainModuleBlocks(w io.Writer, dirPath string) error {

@@ -10,7 +10,7 @@ terraform {
 
 resource "lightstep_dashboard" "otel_collector_sqlserverreceiver_dashboard" {
   project_name   = var.lightstep_project
-  dashboard_name = "OpenTelemetry sqlserverreceiver Integration"
+  dashboard_name = "sqlserverreceiver Integration"
 
 
 

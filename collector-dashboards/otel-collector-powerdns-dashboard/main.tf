@@ -10,7 +10,7 @@ terraform {
 
 resource "lightstep_dashboard" "otel_collector_powerdnsreceiver_dashboard" {
   project_name          = var.lightstep_project
-  dashboard_name        = "OpenTelemetry powerdnsreceiver Integration"
+  dashboard_name        = "powerdnsreceiver Integration"
   dashboard_description = ""
 
   chart {

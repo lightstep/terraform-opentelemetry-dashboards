@@ -11,7 +11,7 @@ terraform {
 resource "lightstep_dashboard" "otel_collector_host_dashboard" {
 
   project_name          = var.lightstep_project
-  dashboard_name        = "OpenTelemetry / Host"
+  dashboard_name        = "Host"
   dashboard_description = "Monitor Host with this metrics overview dashboard."
 
   chart {

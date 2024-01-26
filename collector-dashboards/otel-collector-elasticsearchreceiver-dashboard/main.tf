@@ -10,7 +10,7 @@ terraform {
 
 resource "lightstep_dashboard" "otel_collector_elasticsearchreceiver_dashboard" {
   project_name   = var.lightstep_project
-  dashboard_name = "OpenTelemetry Elasticsearchreceiver Receiver"
+  dashboard_name = "Elasticsearchreceiver Receiver"
 
   chart {
     name = "Elasticsearch Cluster Data Nodes"

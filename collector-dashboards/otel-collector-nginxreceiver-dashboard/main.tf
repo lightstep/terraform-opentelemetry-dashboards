@@ -10,7 +10,7 @@ terraform {
 
 resource "lightstep_dashboard" "otel_collector_nginxreceiver_dashboard" {
   project_name          = var.lightstep_project
-  dashboard_name        = "OpenTelemetry Nginx Integration"
+  dashboard_name        = "Nginx Integration"
   dashboard_description = "Monitor Nginx with this metrics overview dashboard."
 
   chart {

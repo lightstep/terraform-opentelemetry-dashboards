@@ -10,7 +10,7 @@ terraform {
 
 resource "lightstep_dashboard" "otel_collector_hostmetrics_cpu_dashboard" {
   project_name          = var.lightstep_project
-  dashboard_name        = "OpenTelemetry / Host Metrics / CPU"
+  dashboard_name        = "Host Metrics / CPU"
   dashboard_description = "Monitor Host CPU metrics."
 
   chart {

@@ -10,7 +10,7 @@ terraform {
 
 resource "lightstep_dashboard" "otel_collector_memcachedreceiver_dashboard" {
   project_name          = var.lightstep_project
-  dashboard_name        = "OpenTelemetry memcachedreceiver Integration"
+  dashboard_name        = "memcachedreceiver Integration"
   dashboard_description = "Monitor Memcached performance with this overview dashboard."
 
   chart {
