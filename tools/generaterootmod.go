@@ -14,7 +14,7 @@ import (
 
 func writeMainHead(w io.Writer) error {
 	const subModulesDirectoryPath = "collector-dashboards"
-	requiredProvidersBlock, err := getRequiredProvidersVersion(subModulesDirectoryPath)
+	requiredProvidersVersion, err := getRequiredProvidersVersion(subModulesDirectoryPath)
 	if err != nil {
 		return err
 	}
@@ -34,7 +34,7 @@ provider "lightstep" {
   organization    = var.lightstep_organization
   environment     = var.lightstep_env
 }
-`, requiredProvidersBlock)
+`, requiredProvidersVersion)
 
 	return nil
 }
