@@ -201,7 +201,7 @@ output "lightstep_otel_collector_kubernetes_comprehensive_dashboard_prometheus_u
 
 output "lightstep_otel_collector_kubernetes_dashboard_url" {
   value       = module.lightstep_otel_collector_kubernetes_dashboard.dashboard_url
-  description = "Cloud Observability OpenTelemetry Kubernetes Dashboard"
+  description = "Cloud Observability OpenTelemetry  Dashboard"
 }
 
 output "lightstep_otel_collector_memcachedreceiver_dashboard_url" {
@@ -262,6 +262,21 @@ output "lightstep_otel_collector_redisreceiver_dashboard_url" {
 output "lightstep_otel_collector_riakreceiver_dashboard_url" {
   value       = module.lightstep_otel_collector_riakreceiver_dashboard.dashboard_url
   description = "Cloud Observability OpenTelemetry riakreceiver Integration Dashboard"
+}
+
+output "lightstep_otel_collector_sentryhost_dashboard_url" {
+  value       = module.lightstep_otel_collector_sentryhost_dashboard.dashboard_url
+  description = "Cloud Observability OpenTelemetry Hardware Sentry - Host Dashboard"
+}
+
+output "lightstep_otel_collector_sentryobservability_dashboard_url" {
+  value       = module.lightstep_otel_collector_sentryobservability_dashboard.dashboard_url
+  description = "Cloud Observability OpenTelemetry Hardware Sentry - Observability & Sustainability Dashboard"
+}
+
+output "lightstep_otel_collector_sentrysite_dashboard_url" {
+  value       = module.lightstep_otel_collector_sentrysite_dashboard.dashboard_url
+  description = "Cloud Observability OpenTelemetry Hardware Sentry - Site Dashboard"
 }
 
 output "lightstep_otel_collector_snmp_dashboard_url" {
