@@ -279,6 +279,21 @@ module "lightstep_otel_collector_riakreceiver_dashboard" {
   lightstep_project = var.lightstep_project
 }
 
+module "lightstep_otel_collector_sentryhost_dashboard" {
+  source            = "./collector-dashboards/otel-collector-sentryhost-dashboard"
+  lightstep_project = var.lightstep_project
+}
+
+module "lightstep_otel_collector_sentryobservability_dashboard" {
+  source            = "./collector-dashboards/otel-collector-sentryobservability-dashboard"
+  lightstep_project = var.lightstep_project
+}
+
+module "lightstep_otel_collector_sentrysite_dashboard" {
+  source            = "./collector-dashboards/otel-collector-sentrysite-dashboard"
+  lightstep_project = var.lightstep_project
+}
+
 module "lightstep_otel_collector_snmp_dashboard" {
   source            = "./collector-dashboards/otel-collector-snmp-dashboard"
   lightstep_project = var.lightstep_project

@@ -264,6 +264,21 @@ output "lightstep_otel_collector_riakreceiver_dashboard_url" {
   description = "Cloud Observability OpenTelemetry riakreceiver Integration Dashboard"
 }
 
+output "lightstep_otel_collector_sentryhost_dashboard_url" {
+  value       = module.lightstep_otel_collector_sentryhost_dashboard.dashboard_url
+  description = "Cloud Observability OpenTelemetry Hardware Sentry - Host Dashboard"
+}
+
+output "lightstep_otel_collector_sentryobservability_dashboard_url" {
+  value       = module.lightstep_otel_collector_sentryobservability_dashboard.dashboard_url
+  description = "Cloud Observability OpenTelemetry Hardware Sentry - Observability & Sustainability Dashboard"
+}
+
+output "lightstep_otel_collector_sentrysite_dashboard_url" {
+  value       = module.lightstep_otel_collector_sentrysite_dashboard.dashboard_url
+  description = "Cloud Observability OpenTelemetry Hardware Sentry - Site Dashboard"
+}
+
 output "lightstep_otel_collector_snmp_dashboard_url" {
   value       = module.lightstep_otel_collector_snmp_dashboard.dashboard_url
   description = "Cloud Observability OpenTelemetry SNMP Metrics Dashboard"
